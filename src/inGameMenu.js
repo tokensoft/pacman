@@ -7,20 +7,37 @@ var inGameMenu = (function() {
     var getMainMenu = function() {
         return practiceMode ? practiceMenu : menu;
     };
+    var getTsftMenu = function() {
+        return practiceMode ? practiceMenu : tsftMenu;
+    };
     var showMainMenu = function() {
         getMainMenu().enable();
     };
     var hideMainMenu = function() {
         getMainMenu().disable();
     };
+    var showTsftMenu = function() {
+        getTsftMenu().enable();
+    };
+    var hideTsftMenu = function() {
+        getTsftMenu().disable();
+    };
 
     // button to enable in-game menu
-    var btn = new Button(mapWidth/2 - w/2,mapHeight,w,h, function() {
+    var btn = new Button(mapWidth/2 - w/2 - mapWidth/8,mapHeight,w,h, function() {
         showMainMenu();
         vcr.onHudDisable();
     });
     btn.setText("MENU");
     btn.setFont(tileSize+"px ArcadeR","#FFF");
+
+    // button to enable in-game menu
+    var tsbtn = new Button(mapWidth/2 - w/2 + mapWidth/8,mapHeight,w,h, function() {
+        showTsftMenu();
+        vcr.onHudDisable();
+    });
+    tsbtn.setText("TSFT");
+    tsbtn.setFont(tileSize+"px ArcadeR","#FFF");
 
     // confirms a menu action
     var confirmMenu = new Menu("QUESTION?",2*tileSize,5*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
@@ -56,6 +73,22 @@ var inGameMenu = (function() {
         });
     });
     menu.backButton = menu.buttons[0];
+
+    // tokensoft menu
+    var tsftMenu = new Menu("PAUSED",2*tileSize,5*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    tsftMenu.addTextButton("RESUME", function() {
+        tsftMenu.disable();
+    });
+    tsftMenu.addTextButton("WEBSITE", function() {
+        window.open('https://www.tokensoft.io', '_blank');
+    });
+    tsftMenu.addTextButton("BLOG", function() {
+        window.open('https://www.tokensoft.io/blog', '_blank');
+    });
+    tsftMenu.addTextButton("ABOUT", function() {
+        window.open('https://www.tokensoft.io/about', '_blank');
+    });
+    tsftMenu.backButton = tsftMenu.buttons[0];
 
     // practice menu
     var practiceMenu = new Menu("PAUSED",2*tileSize,5*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
@@ -128,7 +161,7 @@ var inGameMenu = (function() {
     });
     cheatsMenu.backButton = cheatsMenu.buttons[cheatsMenu.buttons.length-1];
 
-    var menus = [menu, practiceMenu, confirmMenu, cheatsMenu];
+    var menus = [menu, tsftMenu, practiceMenu, confirmMenu, cheatsMenu];
     var getVisibleMenu = function() {
         var len = menus.length;
         var i;
@@ -144,13 +177,16 @@ var inGameMenu = (function() {
     return {
         onHudEnable: function() {
             btn.enable();
+            tsbtn.enable();
         },
         onHudDisable: function() {
             btn.disable();
+            tsbtn.disable();
         },
         update: function() {
             if (btn.isEnabled) {
                 btn.update();
+                tsbtn.update();
             }
         },
         draw: function(ctx) {
@@ -162,6 +198,7 @@ var inGameMenu = (function() {
             }
             else {
                 btn.draw(ctx);
+                tsbtn.draw(ctx);
             }
         },
         isOpen: function() {
