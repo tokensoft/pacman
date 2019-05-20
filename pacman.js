@@ -166,6 +166,7 @@ var GAME_PACMAN = 0;
 var GAME_MSPACMAN = 1;
 var GAME_COOKIE = 2;
 var GAME_OTTO = 3;
+var GAME_SOFTMAN = 4;
 
 var practiceMode = false;
 var turboMode = false;
@@ -174,7 +175,7 @@ var turboMode = false;
 var gameMode = GAME_PACMAN;
 var getGameName = (function(){
 
-    var names = ["PAC-MAN", "MS PAC-MAN", "COOKIE-MAN","CRAZY OTTO"];
+    var names = ["PAC-MAN", "MS PAC-MAN", "COOKIE-MAN","CRAZY OTTO", "SOFT-MAN"];
     
     return function(mode) {
         if (mode == undefined) {
@@ -230,6 +231,19 @@ var getGameDescription = (function(){
             "REMAKE:",
             "SHAUN WILLIAMS",
         ],
+        [
+            "THE UNRELEASED",
+            "SOFT-MAN PROTOTYPE:",
+            "GCC (C) 1981",
+            "",
+            "SPRITES REFERENCED FROM",
+            "STEVE GOLSON'S",
+            "CAX 2012 PRESENTATION",
+            "",
+            "REMAKE:",
+            "MASONICGIT",
+        ],
+
     ];
     
     return function(mode) {
@@ -255,6 +269,9 @@ var getGhostNames = function(mode) {
     }
     else if (mode == GAME_COOKIE) {
         return ["elmo","piggy","rosita","zoe"];
+    }
+    else if (mode == GAME_SOFTMAN) {
+        return ["sec","cftc","fincen","nydfs"];
     }
 };
 
@@ -289,6 +306,10 @@ var getPlayerDrawFunc = function(mode) {
     else if (mode == GAME_COOKIE) {
         //return atlas.drawCookiemanSprite;
         return drawCookiemanSprite;
+    }
+    else if (mode == GAME_SOFTMAN) {
+        //return atlas.drawSoftmanSprite;
+        return drawSoftmanSprite;
     }
 };
 
@@ -365,12 +386,14 @@ var scores = [
     0,0, // mspac
     0,0, // cookie
     0,0, // otto
+    0,0, // softman
     0 ];
 var highScores = [
     10000,10000, // pacman
     10000,10000, // mspac
     10000,10000, // cookie
     10000,10000, // otto
+    10000,10000, // softman
     ];
 
 var getScoreIndex = function() {
@@ -3010,6 +3033,12 @@ var atlas = (function(){
         copyCellTo(row,col,destCtx,x,y);
     };
 
+    var copySoftmanSprite = function(destCtx,x,y,dirEnum,frame) {
+        var row = 8;
+        var col = dirEnum*3+frame;
+        copyCellTo(row,col,destCtx,x,y);
+    };
+
     var copyFruitSprite = function(destCtx,x,y,name) {
         var row = 0;
         var col = {
@@ -3042,6 +3071,7 @@ var atlas = (function(){
         drawPacmanSprite: copyPacmanSprite,
         drawMsPacmanSprite: copyMsPacmanSprite,
         drawCookiemanSprite: copyCookiemanSprite,
+	drawSoftmanSprite: drawSoftmanSprite, 
         drawFruitSprite: copyFruitSprite,
         drawGhostPoints: copyGhostPoints,
         drawPacFruitPoints: copyPacFruitPoints,
@@ -6601,6 +6631,115 @@ var drawCookiemanSprite = (function(){
     };
 })();
 
+var drawSoftmanSprite = (function(){
+
+    // TODO: draw pupils separately in atlas
+    //      composite the body frame and a random pupil frame when drawing soft-man
+
+    var prevFrame = undefined;
+    var sx1 = 0; // shift x for first pupil
+    var sy1 = 0; // shift y for first pupil
+    var sx2 = 0; // shift x for second pupil
+    var sy2 = 0; // shift y for second pupil
+
+    var er = 2.1; // eye radius
+    var pr = 1; // pupil radius
+
+    var movePupils = function() {
+        var a1 = Math.random()*Math.PI*2;
+        var a2 = Math.random()*Math.PI*2;
+        var r1 = Math.random()*pr;
+        var r2 = Math.random()*pr;
+
+        sx1 = Math.cos(a1)*r1;
+        sy1 = Math.sin(a1)*r1;
+        sx2 = Math.cos(a2)*r2;
+        sy2 = Math.sin(a2)*r2;
+    };
+
+    return function(ctx,x,y,dirEnum,frame,shake,rot_angle) {
+        var angle = 0;
+
+        // draw body
+        var draw = function(angle) {
+            //angle = Math.PI/6*frame;
+            drawPacmanSprite(ctx,x,y,dirEnum,angle,undefined,undefined,undefined,undefined,"#0e54ce",rot_angle);
+        };
+        if (frame == 0) {
+            // closed
+            draw(0);
+        }
+        else if (frame == 1) {
+            // open
+            angle = Math.atan(4/5);
+            draw(angle);
+            angle = Math.atan(4/8); // angle for drawing eye
+        }
+        else if (frame == 2) {
+            // wide
+            angle = Math.atan(6/3);
+            draw(angle);
+            angle = Math.atan(6/6); // angle for drawing eye
+        }
+
+        ctx.save();
+        ctx.translate(x,y);
+        if (rot_angle) {
+            ctx.rotate(rot_angle);
+        }
+
+        // reflect or rotate sprite according to current direction
+        var d90 = Math.PI/2;
+        if (dirEnum == DIR_UP)
+            ctx.rotate(-d90);
+        else if (dirEnum == DIR_DOWN)
+            ctx.rotate(d90);
+        else if (dirEnum == DIR_LEFT)
+            ctx.scale(-1,1);
+
+        var x = -4; // pivot point
+        var y = -3.5;
+        var r1 = 3;   // distance from pivot of first eye
+        var r2 = 6; // distance from pivot of second eye
+        angle /= 3; // angle from pivot point
+        angle += Math.PI/8;
+        var c = Math.cos(angle);
+        var s = Math.sin(angle);
+
+        if (shake) {
+            if (frame != prevFrame) {
+                movePupils();
+            }
+            prevFrame = frame;
+        }
+
+        // second eyeball
+        ctx.beginPath();
+        ctx.arc(x+r2*c, y-r2*s, er, 0, Math.PI*2);
+        ctx.fillStyle = "#FFF";
+        ctx.fill();
+        // second pupil
+        ctx.beginPath();
+        ctx.arc(x+r2*c+sx2, y-r2*s+sy2, pr, 0, Math.PI*2);
+        ctx.fillStyle = "#000";
+        ctx.fill();
+
+        // first eyeball
+        ctx.beginPath();
+        ctx.arc(x+r1*c, y-r1*s, er, 0, Math.PI*2);
+        ctx.fillStyle = "#FFF";
+        ctx.fill();
+        // first pupil
+        ctx.beginPath();
+        ctx.arc(x+r1*c+sx1, y-r1*s+sy1, pr, 0, Math.PI*2);
+        ctx.fillStyle = "#000";
+        ctx.fill();
+
+        ctx.restore();
+
+    };
+})();
+
 ////////////////////////////////////////////////////////////////////
 // FRUIT SPRITES
 
@@ -9385,7 +9524,7 @@ var setFruitFromGameMode = (function() {
     var mspacfruit = new MsPacFruit();
     fruit = pacfruit;
     return function() {
-        if (gameMode == GAME_PACMAN) {
+        if (gameMode == GAME_PACMAN || gameMode == GAME_SOFTMAN) {
             fruit = pacfruit;
         }
         else {
@@ -9664,6 +9803,14 @@ var homeState = (function(){
         },
         function(ctx,x,y,frame) {
             drawCookiemanSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame), true);
+        });
+    menu.addTextIconButton(getGameName(GAME_SOFTMAN),
+        function() {
+            gameMode = GAME_SOFTMAN;
+            exitTo(preNewGameState);
+        },
+        function(ctx,x,y,frame) {
+            drawSoftmanSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame), true);
         });
 
     menu.addSpacer(0.5);
@@ -10491,6 +10638,14 @@ var scoreState = (function(){
         ctx.fillStyle = scoreColor; ctx.fillText(highScores[5], x,y);
         drawContrails(x+2*tileSize,y+tileSize/2);
         atlas.drawCookiemanSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,1);
+
+        y += tileSize*3;
+        ctx.fillStyle = scoreColor; ctx.fillText(highScores[4], x,y);
+        atlas.drawSoftmanSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,1);
+        y += tileSize*2;
+        ctx.fillStyle = scoreColor; ctx.fillText(highScores[5], x,y);
+        drawContrails(x+2*tileSize,y+tileSize/2);
+        atlas.drawSoftmanSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,1);
     };
 
     var drawFood = function(ctx) {
@@ -10780,15 +10935,16 @@ var readyNewState = newChildObject(readyState, {
 
         // increment level and ready the next map
         level++;
-        if (gameMode == GAME_PACMAN) {
-            map = mapPacman;
-        }
-        else if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
+        if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
             setNextMsPacMap();
         }
         else if (gameMode == GAME_COOKIE) {
             setNextCookieMap();
         }
+        else {
+            map = mapPacman;
+        }
+
         map.resetCurrent();
         fruit.onNewLevel();
         renderer.drawMap();
@@ -12775,18 +12931,18 @@ var getLevelAct = function(level) {
 };
 
 var getActColor = function(act) {
-    if (gameMode == GAME_PACMAN) {
+    if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
+        return getMsPacActColor(act);
+    }
+    else if (gameMode == GAME_COOKIE) {
+        return getCookieActColor(act);
+    }
+    else {
         return {
             wallFillColor: mapPacman.wallFillColor,
             wallStrokeColor: mapPacman.wallStrokeColor,
             pelletColor: mapPacman.pelletColor,
         };
-    }
-    else if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
-        return getMsPacActColor(act);
-    }
-    else if (gameMode == GAME_COOKIE) {
-        return getCookieActColor(act);
     }
 };
 
@@ -13556,7 +13712,7 @@ window.addEventListener("load", function() {
 		switchState(learnState);
 	}
 	else if (anchor == "cheat_pac" || anchor == "cheat_mspac") {
-		gameMode = (anchor == "cheat_pac") ? GAME_PACMAN : GAME_MSPACMAN;
+	        gameMode = (anchor == "cheat_pac") ? GAME_PACMAN : GAME_MSPACMAN;
 		practiceMode = true;
         switchState(newGameState);
 		for (var i=0; i<4; i++) {

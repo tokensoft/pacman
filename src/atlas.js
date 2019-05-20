@@ -480,6 +480,12 @@ var atlas = (function(){
         copyCellTo(row,col,destCtx,x,y);
     };
 
+    var copySoftmanSprite = function(destCtx,x,y,dirEnum,frame) {
+        var row = 8;
+        var col = dirEnum*3+frame;
+        copyCellTo(row,col,destCtx,x,y);
+    };
+
     var copyFruitSprite = function(destCtx,x,y,name) {
         var row = 0;
         var col = {
@@ -512,6 +518,7 @@ var atlas = (function(){
         drawPacmanSprite: copyPacmanSprite,
         drawMsPacmanSprite: copyMsPacmanSprite,
         drawCookiemanSprite: copyCookiemanSprite,
+	drawSoftmanSprite: drawSoftmanSprite, 
         drawFruitSprite: copyFruitSprite,
         drawGhostPoints: copyGhostPoints,
         drawPacFruitPoints: copyPacFruitPoints,

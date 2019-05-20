@@ -182,18 +182,18 @@ var getLevelAct = function(level) {
 };
 
 var getActColor = function(act) {
-    if (gameMode == GAME_PACMAN) {
+    if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
+        return getMsPacActColor(act);
+    }
+    else if (gameMode == GAME_COOKIE) {
+        return getCookieActColor(act);
+    }
+    else {
         return {
             wallFillColor: mapPacman.wallFillColor,
             wallStrokeColor: mapPacman.wallStrokeColor,
             pelletColor: mapPacman.pelletColor,
         };
-    }
-    else if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
-        return getMsPacActColor(act);
-    }
-    else if (gameMode == GAME_COOKIE) {
-        return getCookieActColor(act);
     }
 };
 

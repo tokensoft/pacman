@@ -6,6 +6,7 @@ var GAME_PACMAN = 0;
 var GAME_MSPACMAN = 1;
 var GAME_COOKIE = 2;
 var GAME_OTTO = 3;
+var GAME_SOFTMAN = 4;
 
 var practiceMode = false;
 var turboMode = false;
@@ -14,7 +15,7 @@ var turboMode = false;
 var gameMode = GAME_PACMAN;
 var getGameName = (function(){
 
-    var names = ["PAC-MAN", "MS PAC-MAN", "COOKIE-MAN","CRAZY OTTO"];
+    var names = ["PAC-MAN", "MS PAC-MAN", "COOKIE-MAN","CRAZY OTTO", "SOFT-MAN"];
     
     return function(mode) {
         if (mode == undefined) {
@@ -70,6 +71,19 @@ var getGameDescription = (function(){
             "REMAKE:",
             "SHAUN WILLIAMS",
         ],
+        [
+            "THE UNRELEASED",
+            "SOFT-MAN PROTOTYPE:",
+            "GCC (C) 1981",
+            "",
+            "SPRITES REFERENCED FROM",
+            "STEVE GOLSON'S",
+            "CAX 2012 PRESENTATION",
+            "",
+            "REMAKE:",
+            "MASONICGIT",
+        ],
+
     ];
     
     return function(mode) {
@@ -95,6 +109,9 @@ var getGhostNames = function(mode) {
     }
     else if (mode == GAME_COOKIE) {
         return ["elmo","piggy","rosita","zoe"];
+    }
+    else if (mode == GAME_SOFTMAN) {
+        return ["sec","cftc","fincen","nydfs"];
     }
 };
 
@@ -129,6 +146,10 @@ var getPlayerDrawFunc = function(mode) {
     else if (mode == GAME_COOKIE) {
         //return atlas.drawCookiemanSprite;
         return drawCookiemanSprite;
+    }
+    else if (mode == GAME_SOFTMAN) {
+        //return atlas.drawSoftmanSprite;
+        return drawSoftmanSprite;
     }
 };
 
@@ -205,12 +226,14 @@ var scores = [
     0,0, // mspac
     0,0, // cookie
     0,0, // otto
+    0,0, // softman
     0 ];
 var highScores = [
     10000,10000, // pacman
     10000,10000, // mspac
     10000,10000, // cookie
     10000,10000, // otto
+    10000,10000, // softman
     ];
 
 var getScoreIndex = function() {

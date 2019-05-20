@@ -126,6 +126,14 @@ var homeState = (function(){
         function(ctx,x,y,frame) {
             drawCookiemanSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame), true);
         });
+    menu.addTextIconButton(getGameName(GAME_SOFTMAN),
+        function() {
+            gameMode = GAME_SOFTMAN;
+            exitTo(preNewGameState);
+        },
+        function(ctx,x,y,frame) {
+            drawSoftmanSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame), true);
+        });
 
     menu.addSpacer(0.5);
     menu.addTextIconButton("LEARN",
@@ -952,6 +960,14 @@ var scoreState = (function(){
         ctx.fillStyle = scoreColor; ctx.fillText(highScores[5], x,y);
         drawContrails(x+2*tileSize,y+tileSize/2);
         atlas.drawCookiemanSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,1);
+
+        y += tileSize*3;
+        ctx.fillStyle = scoreColor; ctx.fillText(highScores[4], x,y);
+        atlas.drawSoftmanSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,1);
+        y += tileSize*2;
+        ctx.fillStyle = scoreColor; ctx.fillText(highScores[5], x,y);
+        drawContrails(x+2*tileSize,y+tileSize/2);
+        atlas.drawSoftmanSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,1);
     };
 
     var drawFood = function(ctx) {
@@ -1241,15 +1257,16 @@ var readyNewState = newChildObject(readyState, {
 
         // increment level and ready the next map
         level++;
-        if (gameMode == GAME_PACMAN) {
-            map = mapPacman;
-        }
-        else if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
+        if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
             setNextMsPacMap();
         }
         else if (gameMode == GAME_COOKIE) {
             setNextCookieMap();
         }
+        else {
+            map = mapPacman;
+        }
+
         map.resetCurrent();
         fruit.onNewLevel();
         renderer.drawMap();

@@ -340,7 +340,7 @@ var setFruitFromGameMode = (function() {
     var mspacfruit = new MsPacFruit();
     fruit = pacfruit;
     return function() {
-        if (gameMode == GAME_PACMAN) {
+        if (gameMode == GAME_PACMAN || gameMode == GAME_SOFTMAN) {
             fruit = pacfruit;
         }
         else {
