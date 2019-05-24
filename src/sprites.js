@@ -1483,8 +1483,8 @@ var drawPacmanSprite = function(ctx,x,y,dirEnum,angle,mouthShift,scale,centerShi
 
 // draw giant pacman body
 var drawGiantPacmanSprite = function(ctx,x,y,dirEnum,frame) {
-
-    var color = "#FF0";
+    
+    var color;
     var mouthShift = 0;
     var angle = 0;
     if (frame == 1) {
@@ -1514,11 +1514,20 @@ var drawGiantPacmanSprite = function(ctx,x,y,dirEnum,frame) {
     ctx.arc(0,0,16,angle,2*Math.PI-angle);
     ctx.closePath();
 
+    // select and set color
+
+    if (gameMode = GAME_SOFTMAN) {
+        color = "#0e54ce"
+    }
+    else {
+        color = "#FF0";      
+    }
     ctx.fillStyle = color;
     ctx.fill();
 
     ctx.restore();
 };
+
 
 var drawMsPacmanSprite = function(ctx,x,y,dirEnum,frame,rot_angle) {
     var angle = 0;

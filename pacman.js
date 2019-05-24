@@ -6387,8 +6387,8 @@ var drawPacmanSprite = function(ctx,x,y,dirEnum,angle,mouthShift,scale,centerShi
 
 // draw giant pacman body
 var drawGiantPacmanSprite = function(ctx,x,y,dirEnum,frame) {
-
-    var color = "#FF0";
+    
+    var color;
     var mouthShift = 0;
     var angle = 0;
     if (frame == 1) {
@@ -6418,11 +6418,20 @@ var drawGiantPacmanSprite = function(ctx,x,y,dirEnum,frame) {
     ctx.arc(0,0,16,angle,2*Math.PI-angle);
     ctx.closePath();
 
+    // select and set color
+
+    if (gameMode = GAME_SOFTMAN) {
+        color = "#0e54ce"
+    }
+    else {
+        color = "#FF0";      
+    }
     ctx.fillStyle = color;
     ctx.fill();
 
     ctx.restore();
 };
+
 
 var drawMsPacmanSprite = function(ctx,x,y,dirEnum,frame,rot_angle) {
     var angle = 0;
@@ -12690,6 +12699,7 @@ var cutscenes = [
     [mspacmanCutscene1, mspacmanCutscene2], // GAME_MSPACMAN
     [cookieCutscene1, cookieCutscene2], // GAME_COOKIE
     [mspacmanCutscene1, mspacmanCutscene2], // GAME_OTTO
+    [pacmanCutscene1], // GAME_SOFTMAN - play pacman cutscene for now
 ];
 
 var isInCutScene = function() {
@@ -12705,23 +12715,7 @@ var isInCutScene = function() {
 
 // TODO: no cutscene after board 17 (last one after completing board 17)
 var triggerCutsceneAtEndLevel = function() {
-    if (gameMode == GAME_PACMAN) {
-        if (level == 2) {
-            playCutScene(pacmanCutscene1, readyNewState);
-            return true;
-        }
-        /*
-        else if (level == 5) {
-            playCutScene(pacmanCutscene2, readyNewState);
-            return true;
-        }
-        else if (level >= 9 && (level-9)%4 == 0) {
-            playCutScene(pacmanCutscene3, readyNewState);
-            return true;
-        }
-        */
-    }
-    else if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
+    if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
         if (level == 2) {
             playCutScene(mspacmanCutscene1, readyNewState);
             return true;
@@ -12740,6 +12734,20 @@ var triggerCutsceneAtEndLevel = function() {
             playCutScene(cookieCutscene2, readyNewState);
             return true;
         }
+    }
+    else {
+            playCutScene(pacmanCutscene1, readyNewState);
+            return true;
+        /*
+        else if (level == 5) {
+            playCutScene(pacmanCutscene2, readyNewState);
+            return true;
+        }
+        else if (level >= 9 && (level-9)%4 == 0) {
+            playCutScene(pacmanCutscene3, readyNewState);
+            return true;
+        }
+        */
     }
 
     // no cutscene triggered

@@ -1080,6 +1080,7 @@ var cutscenes = [
     [mspacmanCutscene1, mspacmanCutscene2], // GAME_MSPACMAN
     [cookieCutscene1, cookieCutscene2], // GAME_COOKIE
     [mspacmanCutscene1, mspacmanCutscene2], // GAME_OTTO
+    [pacmanCutscene1], // GAME_SOFTMAN - play pacman cutscene for now
 ];
 
 var isInCutScene = function() {
@@ -1095,23 +1096,7 @@ var isInCutScene = function() {
 
 // TODO: no cutscene after board 17 (last one after completing board 17)
 var triggerCutsceneAtEndLevel = function() {
-    if (gameMode == GAME_PACMAN) {
-        if (level == 2) {
-            playCutScene(pacmanCutscene1, readyNewState);
-            return true;
-        }
-        /*
-        else if (level == 5) {
-            playCutScene(pacmanCutscene2, readyNewState);
-            return true;
-        }
-        else if (level >= 9 && (level-9)%4 == 0) {
-            playCutScene(pacmanCutscene3, readyNewState);
-            return true;
-        }
-        */
-    }
-    else if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
+    if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
         if (level == 2) {
             playCutScene(mspacmanCutscene1, readyNewState);
             return true;
@@ -1130,6 +1115,20 @@ var triggerCutsceneAtEndLevel = function() {
             playCutScene(cookieCutscene2, readyNewState);
             return true;
         }
+    }
+    else {
+            playCutScene(pacmanCutscene1, readyNewState);
+            return true;
+        /*
+        else if (level == 5) {
+            playCutScene(pacmanCutscene2, readyNewState);
+            return true;
+        }
+        else if (level >= 9 && (level-9)%4 == 0) {
+            playCutScene(pacmanCutscene3, readyNewState);
+            return true;
+        }
+        */
     }
 
     // no cutscene triggered
