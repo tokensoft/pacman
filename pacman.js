@@ -9789,6 +9789,14 @@ var homeState = (function(){
         frame %= 4;
         return frame;
     };
+    menu.addTextIconButton(getGameName(GAME_SOFTMAN),
+        function() {
+            gameMode = GAME_SOFTMAN;
+            exitTo(preNewGameState);
+        },
+        function(ctx,x,y,frame) {
+            drawSoftmanSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame), true);
+        });
     menu.addTextIconButton(getGameName(GAME_PACMAN),
         function() {
             gameMode = GAME_PACMAN;
@@ -9813,13 +9821,13 @@ var homeState = (function(){
         function(ctx,x,y,frame) {
             drawCookiemanSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame), true);
         });
-    menu.addTextIconButton(getGameName(GAME_SOFTMAN),
+    menu.addTextIconButton(getGameName(GAME_OTTO),
         function() {
-            gameMode = GAME_SOFTMAN;
+            gameMode = GAME_OTTO;
             exitTo(preNewGameState);
         },
         function(ctx,x,y,frame) {
-            drawSoftmanSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame), true);
+            drawOttoSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame), true);
         });
 
     menu.addSpacer(0.5);
