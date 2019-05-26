@@ -104,8 +104,10 @@ var mapLearn = new Map(28, 36, (
 mapLearn.name = "Pac-Man";
 mapLearn.wallStrokeColor = "#47b897"; // from Pac-Man Plus
 mapLearn.wallFillColor = "#000";
-mapLearn.pelletColor = "#ffb8ae";
+mapLearn.pelletColor = "#F7941B";
 mapLearn.shouldDrawMapOnly = true;
+
+var mapPacman = []
 
 // Original Pac-Man map
 var mapPacman = new Map(28, 36, (
@@ -150,7 +152,7 @@ mapPacman.name = "Pac-Man";
 //mapPacman.wallStrokeColor = "#47b897"; // from Pac-Man Plus
 mapPacman.wallStrokeColor = "#2121ff"; // from original
 mapPacman.wallFillColor = "#000";
-mapPacman.pelletColor = "#ffb8ae";
+mapPacman.pelletColor = "#F7941B";
 mapPacman.constrainGhostTurns = function(tile,openTiles) {
     // prevent ghost from turning up at these tiles
     if ((tile.x == 12 || tile.x == 15) && (tile.y == 14 || tile.y == 26)) {
@@ -182,17 +184,18 @@ var getLevelAct = function(level) {
 };
 
 var getActColor = function(act) {
-    if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
+    if (gameMode == GAME_MSPACMAN) {
         return getMsPacActColor(act);
     }
     else if (gameMode == GAME_COOKIE) {
         return getCookieActColor(act);
     }
     else {
+        if (act >= 4) { mapPacman.pelletColor = "#572192" }
         return {
             wallFillColor: mapPacman.wallFillColor,
             wallStrokeColor: mapPacman.wallStrokeColor,
-            pelletColor: mapPacman.pelletColor,
+            pelletColor: mapPacman.pelletColor
         };
     }
 };

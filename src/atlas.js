@@ -202,19 +202,19 @@ var atlas = (function(){
         drawAtCell(function(x,y) { drawMonsterSprite(ctx, x,y, 0, DIR_UP, true, true, false, "#fff"); },  row,6);
         drawAtCell(function(x,y) { drawMonsterSprite(ctx, x,y, 1, DIR_UP, true, true, false, "#fff"); },  row,7);
 
-        var drawOttoCells = function(row,col,dir) {
+        var drawSoftmanCells = function(row,col,dir) {
             var i;
             for (i=0; i<4; i++) { // frame
-                drawAtCell(function(x,y) { drawOttoSprite(ctx, x,y, dir, i); }, row, col);
+                drawAtCell(function(x,y) { drawSoftmanSprite(ctx, x,y, dir, i); }, row, col);
                 col++;
             }
         };
         row++;
-        drawOttoCells(row,0, DIR_UP);
-        drawOttoCells(row,4, DIR_RIGHT);
+        drawSoftmanCells(row,0, DIR_UP);
+        drawSoftmanCells(row,4, DIR_RIGHT);
         row++;
-        drawOttoCells(row,0, DIR_DOWN);
-        drawOttoCells(row,4, DIR_LEFT);
+        drawSoftmanCells(row,0, DIR_DOWN);
+        drawSoftmanCells(row,4, DIR_LEFT);
 
         row++;
         drawAtCell(function(x,y) { drawPacPoints(ctx, x,y, 200, "#33ffff"); }, row, 0);
@@ -246,19 +246,19 @@ var atlas = (function(){
             drawSnail(ctx,x,y, "#FFF");
         }, row, 1);
 
-        var drawMsOttoCells = function(row,col,dir) {
+        var drawMsSoftmanCells = function(row,col,dir) {
             var i;
             for (i=0; i<4; i++) { // frame
-                drawAtCell(function(x,y) { drawMsOttoSprite(ctx, x,y, dir, i); }, row, col);
+                drawAtCell(function(x,y) { drawMsSoftmanSprite(ctx, x,y, dir, i); }, row, col);
                 col++;
             }
         };
         row++;
-        drawMsOttoCells(row,0, DIR_UP);
-        drawMsOttoCells(row,4, DIR_RIGHT);
+        drawMsSoftmanCells(row,0, DIR_UP);
+        drawMsSoftmanCells(row,4, DIR_RIGHT);
         row++;
-        drawMsOttoCells(row,0, DIR_DOWN);
-        drawMsOttoCells(row,4, DIR_LEFT);
+        drawMsSoftmanCells(row,0, DIR_DOWN);
+        drawMsSoftmanCells(row,4, DIR_LEFT);
 
     };
 
@@ -406,7 +406,7 @@ var atlas = (function(){
         copyCellTo(row, col, destCtx, x, y);
     };
 
-    var copyOttoSprite = function(destCtx,x,y,dirEnum,frame) {
+    var copySoftmanSprite = function(destCtx,x,y,dirEnum,frame) {
         var col,row;
         if (dirEnum == DIR_UP) {
             col = frame;
@@ -427,7 +427,7 @@ var atlas = (function(){
         copyCellTo(row,col,destCtx,x,y);
     };
 
-    var copyMsOttoSprite = function(destCtx,x,y,dirEnum,frame) {
+    var copyMsSoftmanSprite = function(destCtx,x,y,dirEnum,frame) {
         var col,row;
         if (dirEnum == DIR_UP) {
             col = frame;
@@ -480,12 +480,6 @@ var atlas = (function(){
         copyCellTo(row,col,destCtx,x,y);
     };
 
-    var copySoftmanSprite = function(destCtx,x,y,dirEnum,frame) {
-        var row = 8;
-        var col = dirEnum*3+frame;
-        copyCellTo(row,col,destCtx,x,y);
-    };
-
     var copyFruitSprite = function(destCtx,x,y,name) {
         var row = 0;
         var col = {
@@ -513,12 +507,11 @@ var atlas = (function(){
         drawGhostSprite: copyGhostSprite,
         drawMonsterSprite: copyMonsterSprite,
         drawMuppetSprite: copyMuppetSprite,
-        drawOttoSprite: copyOttoSprite,
-        drawMsOttoSprite: copyMsOttoSprite,
+        drawSoftmanSprite: copySoftmanSprite,
+        drawMsSoftmanSprite: copyMsSoftmanSprite,
         drawPacmanSprite: copyPacmanSprite,
         drawMsPacmanSprite: copyMsPacmanSprite,
         drawCookiemanSprite: copyCookiemanSprite,
-	drawSoftmanSprite: drawSoftmanSprite, 
         drawFruitSprite: copyFruitSprite,
         drawGhostPoints: copyGhostPoints,
         drawPacFruitPoints: copyPacFruitPoints,

@@ -158,7 +158,7 @@ var initRenderer = function(){
         this.pointsEarnedTextSize = tileSize;
 
         this.energizerColor = "#FFF";
-        this.pelletColor = "#888";
+        this.pelletColor = "#F7941B";
 
         this.flashLevel = false;
     };
@@ -765,9 +765,9 @@ var initRenderer = function(){
                             bgCtx.translate(2*tileSize,0);
                         }
                     }
-                    else if (gameMode == GAME_OTTO) {
+                    else if (gameMode == GAME_SOFTMAN) {
                         for (i=0; i<lives; i++) {
-                            drawOttoSprite(bgCtx, 0,0,DIR_RIGHT, 0);
+                            drawSoftmanSprite(bgCtx, 0,0,DIR_RIGHT, 0);
                             bgCtx.translate(2*tileSize,0);
                         }
                     }
@@ -995,24 +995,24 @@ var initRenderer = function(){
                     this.drawExplodingPlayer(f/15);
                 }
             }
-            else if (gameMode == GAME_OTTO) {
+            else if (gameMode == GAME_SOFTMAN) {
                 // TODO: spin around
                 if (t < 0.8) {
                     var dirEnum = Math.floor((pacman.dirEnum - t*16))%4;
                     if (dirEnum < 0) {
                         dirEnum += 4;
                     }
-                    drawOttoSprite(ctx, pacman.pixel.x, pacman.pixel.y, dirEnum, 0);
+                    drawSoftmanSprite(ctx, pacman.pixel.x, pacman.pixel.y, dirEnum, 0);
                 }
                 else if (t < 0.95) {
                     var dirEnum = Math.floor((pacman.dirEnum - 0.8*16))%4;
                     if (dirEnum < 0) {
                         dirEnum += 4;
                     }
-                    drawOttoSprite(ctx, pacman.pixel.x, pacman.pixel.y, dirEnum, 0);
+                    drawSoftmanSprite(ctx, pacman.pixel.x, pacman.pixel.y, dirEnum, 0);
                 }
                 else {
-                    drawDeadOttoSprite(ctx,pacman.pixel.x, pacman.pixel.y);
+                    drawDeadSoftmanSprite(ctx,pacman.pixel.x, pacman.pixel.y);
                 }
             }
             else if (gameMode == GAME_MSPACMAN) {

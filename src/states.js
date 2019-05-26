@@ -97,7 +97,7 @@ var homeState = (function(){
         }
         return frame;
     };
-    var getOttoAnimFrame = function(frame) {
+    var getSoftmanAnimFrame = function(frame) {
         frame = Math.floor(frame/3);
         frame %= 4;
         return frame;
@@ -109,30 +109,6 @@ var homeState = (function(){
         },
         function(ctx,x,y,frame) {
             drawSoftmanSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame), true);
-        });
-    menu.addTextIconButton(getGameName(GAME_PACMAN),
-        function() {
-            gameMode = GAME_PACMAN;
-            exitTo(preNewGameState);
-        },
-        function(ctx,x,y,frame) {
-            atlas.drawPacmanSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame));
-        });
-    menu.addTextIconButton(getGameName(GAME_MSPACMAN),
-        function() {
-            gameMode = GAME_MSPACMAN;
-            exitTo(preNewGameState);
-        },
-        function(ctx,x,y,frame) {
-            atlas.drawMsPacmanSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame));
-        });
-    menu.addTextIconButton(getGameName(GAME_COOKIE),
-        function() {
-            gameMode = GAME_COOKIE;
-            exitTo(preNewGameState);
-        },
-        function(ctx,x,y,frame) {
-            drawCookiemanSprite(ctx,x,y,DIR_RIGHT,getIconAnimFrame(frame), true);
         });
 
     menu.addSpacer(0.5);
@@ -362,12 +338,7 @@ var gameTitleState = (function() {
     var x = mapWidth/2 - 3*w;
     var y = 3*tileSize;
     var yellowBtn = new Button(x,y,w,h,function() {
-        if (gameMode == GAME_MSPACMAN) {
-            gameMode = GAME_OTTO;
-        }
-        else if (gameMode == GAME_OTTO) {
-            gameMode = GAME_MSPACMAN;
-        }
+
     });
     yellowBtn.setIcon(function (ctx,x,y,frame) {
         getPlayerDrawFunc()(ctx,x,y,DIR_RIGHT,pacman.getAnimFrame(pacman.getStepFrame(Math.floor((gameMode==GAME_PACMAN?frame+4:frame)/1.5))),true);
@@ -946,14 +917,6 @@ var scoreState = (function(){
         atlas.drawMsPacmanSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,1);
 
         y += tileSize*3;
-        ctx.fillStyle = scoreColor; ctx.fillText(highScores[6], x,y);
-        atlas.drawOttoSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,0);
-        y += tileSize*2;
-        ctx.fillStyle = scoreColor; ctx.fillText(highScores[7], x,y);
-        drawContrails(x+2*tileSize,y+tileSize/2);
-        atlas.drawOttoSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,0);
-
-        y += tileSize*3;
         ctx.fillStyle = scoreColor; ctx.fillText(highScores[4], x,y);
         atlas.drawCookiemanSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,1);
         y += tileSize*2;
@@ -961,13 +924,6 @@ var scoreState = (function(){
         drawContrails(x+2*tileSize,y+tileSize/2);
         atlas.drawCookiemanSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,1);
 
-        y += tileSize*3;
-        ctx.fillStyle = scoreColor; ctx.fillText(highScores[4], x,y);
-        atlas.drawSoftmanSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,1);
-        y += tileSize*2;
-        ctx.fillStyle = scoreColor; ctx.fillText(highScores[5], x,y);
-        drawContrails(x+2*tileSize,y+tileSize/2);
-        atlas.drawSoftmanSprite(ctx,x+2*tileSize,y+tileSize/2,DIR_LEFT,1);
     };
 
     var drawFood = function(ctx) {
@@ -1114,10 +1070,12 @@ var aboutState = (function(){
         x = 2*tileSize;
         y = 0*tileSize;
         ctx.fillStyle = "#0FF";
-        ctx.fillText("DEVELOPER", x,y);
+        ctx.fillText("DEVELOPERS", x,y);
         y += tileSize*2;
         ctx.fillStyle = "#777";
         ctx.fillText("SHAUN WILLIAMS", x,y);
+        y += tileSize*2;
+        ctx.fillText("MASON",x,y);
 
         y += tileSize*4;
         ctx.fillStyle = "#0FF";
@@ -1137,7 +1095,7 @@ var aboutState = (function(){
 
         y += tileSize*4;
         ctx.fillStyle = "#FF0";
-        ctx.fillText("MS. PAC-MAN / CRAZY OTTO",x,y);
+        ctx.fillText("MS. PAC-MAN / SOFT-MAN",x,y);
         y += tileSize*2;
         ctx.fillStyle = "#777";
         ctx.fillText("GENERAL COMPUTING",x,y);
@@ -1257,7 +1215,7 @@ var readyNewState = newChildObject(readyState, {
 
         // increment level and ready the next map
         level++;
-        if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
+        if (gameMode == GAME_MSPACMAN) {
             setNextMsPacMap();
         }
         else if (gameMode == GAME_COOKIE) {

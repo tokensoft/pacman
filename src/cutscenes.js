@@ -146,10 +146,10 @@ var mspacmanCutscene1 = (function() {
         var frame = player.getAnimFrame();
         var func;
         if (player == pac) {
-            func = gameMode == GAME_MSPACMAN ? atlas.drawPacmanSprite : atlas.drawOttoSprite;
+            func = gameMode == GAME_MSPACMAN ? atlas.drawPacmanSprite : atlas.drawSoftmanSprite;
         }
         else if (player == mspac) {
-            func = gameMode == GAME_MSPACMAN ? atlas.drawMsPacmanSprite : atlas.drawMsOttoSprite;
+            func = gameMode == GAME_MSPACMAN ? atlas.drawMsPacmanSprite : atlas.drawMsSoftmanSprite;
         }
         func(ctx, player.pixel.x, player.pixel.y, player.dirEnum, frame);
     };
@@ -480,10 +480,10 @@ var mspacmanCutscene2 = (function() {
         var frame = player.getAnimFrame();
         var func;
         if (player == pac) {
-            func = gameMode == GAME_MSPACMAN ? atlas.drawPacmanSprite : atlas.drawOttoSprite;
+            func = gameMode == GAME_MSPACMAN ? atlas.drawPacmanSprite : atlas.drawSoftmanSprite;
         }
         else if (player == mspac) {
-            func = gameMode == GAME_MSPACMAN ? atlas.drawMsPacmanSprite : atlas.drawMsOttoSprite;
+            func = gameMode == GAME_MSPACMAN ? atlas.drawMsPacmanSprite : atlas.drawMsSoftmanSprite;
         }
         func(ctx, player.pixel.x, player.pixel.y, player.dirEnum, frame);
     };
@@ -1076,11 +1076,10 @@ var cookieCutscene2 = (function() {
 })(); // mspacCutscene1
 
 var cutscenes = [
-    [pacmanCutscene1], // GAME_PACMAN
+    [pacmanCutscene1, mspacmanCutscene1, mspacmanCutscene2], // GAME_SOFTMAN
     [mspacmanCutscene1, mspacmanCutscene2], // GAME_MSPACMAN
     [cookieCutscene1, cookieCutscene2], // GAME_COOKIE
-    [mspacmanCutscene1, mspacmanCutscene2], // GAME_OTTO
-    [pacmanCutscene1], // GAME_SOFTMAN - play pacman cutscene for now
+    [pacmanCutscene1], // GAME_PACMAN
 ];
 
 var isInCutScene = function() {
@@ -1096,7 +1095,7 @@ var isInCutScene = function() {
 
 // TODO: no cutscene after board 17 (last one after completing board 17)
 var triggerCutsceneAtEndLevel = function() {
-    if (gameMode == GAME_MSPACMAN || gameMode == GAME_OTTO) {
+    if (gameMode == GAME_MSPACMAN) {
         if (level == 2) {
             playCutScene(mspacmanCutscene1, readyNewState);
             return true;
@@ -1115,20 +1114,19 @@ var triggerCutsceneAtEndLevel = function() {
             playCutScene(cookieCutscene2, readyNewState);
             return true;
         }
+    }        
+    else if (level == 5) {
+	playCutScene(mspacmanCutscene2, readyNewState);
+	return true;
     }
+    else if (level >= 9 && (level-9)%4 == 0) {
+	playCutScene(cookieCutscene1, readyNewState);
+	return true;
+        }
     else {
-            playCutScene(pacmanCutscene1, readyNewState);
-            return true;
-        /*
-        else if (level == 5) {
-            playCutScene(pacmanCutscene2, readyNewState);
-            return true;
-        }
-        else if (level >= 9 && (level-9)%4 == 0) {
-            playCutScene(pacmanCutscene3, readyNewState);
-            return true;
-        }
-        */
+	playCutScene(pacmanCutscene1, readyNewState);
+	return true;
+	
     }
 
     // no cutscene triggered

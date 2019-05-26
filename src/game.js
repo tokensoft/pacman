@@ -2,11 +2,10 @@
 // Game
 
 // game modes
-var GAME_PACMAN = 0;
+var GAME_PACMAN = 3;
 var GAME_MSPACMAN = 1;
 var GAME_COOKIE = 2;
-var GAME_OTTO = 3;
-var GAME_SOFTMAN = 4;
+var GAME_SOFTMAN = 0;
 
 var practiceMode = false;
 var turboMode = false;
@@ -15,7 +14,7 @@ var turboMode = false;
 var gameMode = GAME_PACMAN;
 var getGameName = (function(){
 
-    var names = ["PAC-MAN", "MS PAC-MAN", "COOKIE-MAN","CRAZY OTTO", "SOFT-MAN"];
+    var names = ["SOFT-MAN", "MS PAC-MAN", "COOKIE-MAN","PAC-MAN"];
     
     return function(mode) {
         if (mode == undefined) {
@@ -29,14 +28,16 @@ var getGameDescription = (function(){
 
     var desc = [
         [
-            "ORIGINAL ARCADE:",
-            "NAMCO (C) 1980",
+            "THE UNRELEASED",
+            "SOFT-MAN PROTOTYPE:",
+            "GCC (C) 1981",
             "",
-            "REVERSE-ENGINEERING:",
-            "JAMEY PITTMAN",
+            "SPRITES REFERENCED FROM",
+            "STEVE GOLSON'S",
+            "CAX 2012 PRESENTATION",
             "",
             "REMAKE:",
-            "SHAUN WILLIAMS",
+            "MASONICGIT",
         ],
         [
             "ORIGINAL ARCADE ADDON:",
@@ -72,18 +73,15 @@ var getGameDescription = (function(){
             "SHAUN WILLIAMS",
         ],
         [
-            "THE UNRELEASED",
-            "SOFT-MAN PROTOTYPE:",
-            "GCC (C) 1981",
+            "ORIGINAL ARCADE:",
+            "NAMCO (C) 1980",
             "",
-            "SPRITES REFERENCED FROM",
-            "STEVE GOLSON'S",
-            "CAX 2012 PRESENTATION",
+            "REVERSE-ENGINEERING:",
+            "JAMEY PITTMAN",
             "",
             "REMAKE:",
-            "MASONICGIT",
+            "SHAUN WILLIAMS",
         ],
-
     ];
     
     return function(mode) {
@@ -98,10 +96,7 @@ var getGhostNames = function(mode) {
     if (mode == undefined) {
         mode = gameMode;
     }
-    if (mode == GAME_OTTO) {
-        return ["plato","darwin","freud","newton"];
-    }
-    else if (mode == GAME_MSPACMAN) {
+    if (mode == GAME_MSPACMAN) {
         return ["blinky","pinky","inky","sue"];
     }
     else if (mode == GAME_PACMAN) {
@@ -119,8 +114,8 @@ var getGhostDrawFunc = function(mode) {
     if (mode == undefined) {
         mode = gameMode;
     }
-    if (mode == GAME_OTTO) {
-        return atlas.drawMonsterSprite;
+    if (mode == GAME_SOFTMAN) {
+        return atlas.drawGhostSprite;
     }
     else if (mode == GAME_COOKIE) {
         return atlas.drawMuppetSprite;
@@ -134,8 +129,8 @@ var getPlayerDrawFunc = function(mode) {
     if (mode == undefined) {
         mode = gameMode;
     }
-    if (mode == GAME_OTTO) {
-        return atlas.drawOttoSprite;
+    if (mode == GAME_SOFTMAN) {
+        return atlas.drawSoftmanSprite;
     }
     else if (mode == GAME_PACMAN) {
         return atlas.drawPacmanSprite;
@@ -146,10 +141,6 @@ var getPlayerDrawFunc = function(mode) {
     else if (mode == GAME_COOKIE) {
         //return atlas.drawCookiemanSprite;
         return drawCookiemanSprite;
-    }
-    else if (mode == GAME_SOFTMAN) {
-        //return atlas.drawSoftmanSprite;
-        return drawSoftmanSprite;
     }
 };
 

@@ -1086,7 +1086,7 @@ var drawMonsterSprite = (function(){
     };
 })();
 
-var drawColoredOttoSprite = function(color,eyeColor) {
+var drawColoredSoftmanSprite = function(color,eyeColor) {
     var ctx;
 
     var plotLine = function(points,color) {
@@ -1405,10 +1405,10 @@ var drawColoredOttoSprite = function(color,eyeColor) {
     };
 };
 
-var drawOttoSprite = drawColoredOttoSprite("#FF0","#00F");
-var drawMsOttoSprite = drawColoredOttoSprite("#F00","#FFF");
+var drawSoftmanSprite = drawColoredSoftmanSprite("#47b8ff","#FFF");
+var drawMsSoftmanSprite = drawColoredSoftmanSprite("#47b8ff","#00F");
 
-var drawDeadOttoSprite = function(ctx,x,y) {
+var drawDeadSoftmanSprite = function(ctx,x,y) {
     var plotOutline = function(points,color) {
         var len = points.length;
         var i;
@@ -1436,8 +1436,9 @@ var drawDeadOttoSprite = function(ctx,x,y) {
         4,-6,
     ],"#F00");
     ctx.restore();
-    drawOttoSprite(ctx,x,y,DIR_LEFT,2,Math.PI/2);
+    drawSoftmanSprite(ctx,x,y,DIR_LEFT,2,Math.PI/2);
 };
+
 
 // draw pacman body
 var drawPacmanSprite = function(ctx,x,y,dirEnum,angle,mouthShift,scale,centerShift,alpha,color,rot_angle) {
@@ -1484,9 +1485,10 @@ var drawPacmanSprite = function(ctx,x,y,dirEnum,angle,mouthShift,scale,centerShi
 // draw giant pacman body
 var drawGiantPacmanSprite = function(ctx,x,y,dirEnum,frame) {
     
-    var color;
+    var color = "#47b8ff";;
     var mouthShift = 0;
     var angle = 0;
+
     if (frame == 1) {
         mouthShift = -4;
         angle = Math.atan(7/14);
@@ -1515,13 +1517,47 @@ var drawGiantPacmanSprite = function(ctx,x,y,dirEnum,frame) {
     ctx.closePath();
 
     // select and set color
+    ctx.fillStyle = color;
+    ctx.fill();
 
-    if (gameMode = GAME_SOFTMAN) {
-        color = "#0e54ce"
+    ctx.restore();
+};
+
+// draw giant softman body
+var drawGiantSoftmanSprite = function(ctx,x,y,dirEnum,frame) {
+    
+    var color = "#47b8ff";;
+    var mouthShift = 0;
+    var angle = 0;
+
+    if (frame == 1) {
+        mouthShift = -4;
+        angle = Math.atan(7/14);
     }
-    else {
-        color = "#FF0";      
+    else if (frame == 2) {
+        mouthShift = -2;
+        angle = Math.atan(13/9);
     }
+
+    ctx.save();
+    ctx.translate(x,y);
+
+    // rotate to current heading direction
+    var d90 = Math.PI/2;
+    if (dirEnum == DIR_UP) ctx.rotate(3*d90);
+    else if (dirEnum == DIR_RIGHT) ctx.rotate(0);
+    else if (dirEnum == DIR_DOWN) ctx.rotate(d90);
+    else if (dirEnum == DIR_LEFT) ctx.rotate(2*d90);
+
+    // plant corner of mouth
+    ctx.beginPath();
+    ctx.moveTo(mouthShift,0);
+
+    // draw head outline
+    ctx.arc(0,0,16,angle,2*Math.PI-angle);
+    ctx.closePath();
+
+    // select and set color
     ctx.fillStyle = color;
     ctx.fill();
 
@@ -1736,114 +1772,6 @@ var drawCookiemanSprite = (function(){
     };
 })();
 
-var drawSoftmanSprite = (function(){
-
-    // TODO: draw pupils separately in atlas
-    //      composite the body frame and a random pupil frame when drawing soft-man
-
-    var prevFrame = undefined;
-    var sx1 = 0; // shift x for first pupil
-    var sy1 = 0; // shift y for first pupil
-    var sx2 = 0; // shift x for second pupil
-    var sy2 = 0; // shift y for second pupil
-
-    var er = 2.1; // eye radius
-    var pr = 1; // pupil radius
-
-    var movePupils = function() {
-        var a1 = Math.random()*Math.PI*2;
-        var a2 = Math.random()*Math.PI*2;
-        var r1 = Math.random()*pr;
-        var r2 = Math.random()*pr;
-
-        sx1 = Math.cos(a1)*r1;
-        sy1 = Math.sin(a1)*r1;
-        sx2 = Math.cos(a2)*r2;
-        sy2 = Math.sin(a2)*r2;
-    };
-
-    return function(ctx,x,y,dirEnum,frame,shake,rot_angle) {
-        var angle = 0;
-
-        // draw body
-        var draw = function(angle) {
-            //angle = Math.PI/6*frame;
-            drawPacmanSprite(ctx,x,y,dirEnum,angle,undefined,undefined,undefined,undefined,"#0e54ce",rot_angle);
-        };
-        if (frame == 0) {
-            // closed
-            draw(0);
-        }
-        else if (frame == 1) {
-            // open
-            angle = Math.atan(4/5);
-            draw(angle);
-            angle = Math.atan(4/8); // angle for drawing eye
-        }
-        else if (frame == 2) {
-            // wide
-            angle = Math.atan(6/3);
-            draw(angle);
-            angle = Math.atan(6/6); // angle for drawing eye
-        }
-
-        ctx.save();
-        ctx.translate(x,y);
-        if (rot_angle) {
-            ctx.rotate(rot_angle);
-        }
-
-        // reflect or rotate sprite according to current direction
-        var d90 = Math.PI/2;
-        if (dirEnum == DIR_UP)
-            ctx.rotate(-d90);
-        else if (dirEnum == DIR_DOWN)
-            ctx.rotate(d90);
-        else if (dirEnum == DIR_LEFT)
-            ctx.scale(-1,1);
-
-        var x = -4; // pivot point
-        var y = -3.5;
-        var r1 = 3;   // distance from pivot of first eye
-        var r2 = 6; // distance from pivot of second eye
-        angle /= 3; // angle from pivot point
-        angle += Math.PI/8;
-        var c = Math.cos(angle);
-        var s = Math.sin(angle);
-
-        if (shake) {
-            if (frame != prevFrame) {
-                movePupils();
-            }
-            prevFrame = frame;
-        }
-
-        // second eyeball
-        ctx.beginPath();
-        ctx.arc(x+r2*c, y-r2*s, er, 0, Math.PI*2);
-        ctx.fillStyle = "#FFF";
-        ctx.fill();
-        // second pupil
-        ctx.beginPath();
-        ctx.arc(x+r2*c+sx2, y-r2*s+sy2, pr, 0, Math.PI*2);
-        ctx.fillStyle = "#000";
-        ctx.fill();
-
-        // first eyeball
-        ctx.beginPath();
-        ctx.arc(x+r1*c, y-r1*s, er, 0, Math.PI*2);
-        ctx.fillStyle = "#FFF";
-        ctx.fill();
-        // first pupil
-        ctx.beginPath();
-        ctx.arc(x+r1*c+sx1, y-r1*s+sy1, pr, 0, Math.PI*2);
-        ctx.fillStyle = "#000";
-        ctx.fill();
-
-        ctx.restore();
-
-    };
-})();
 
 ////////////////////////////////////////////////////////////////////
 // FRUIT SPRITES
