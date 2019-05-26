@@ -1,7 +1,7 @@
-var getPointerPos = function(evt) {
-    var obj = canvas;
-    var top = 0;
-    var left = 0;
+const getPointerPos = function(evt) {
+    let obj = canvas;
+    let top = 0;
+    let left = 0;
     while (obj.tagName != 'BODY') {
         top += obj.offsetTop;
         left += obj.offsetLeft;
@@ -9,11 +9,11 @@ var getPointerPos = function(evt) {
     }
 
     // calculate relative mouse position
-    var mouseX = evt.pageX - left;
-    var mouseY = evt.pageY - top;
+    let mouseX = evt.pageX - left;
+    let mouseY = evt.pageY - top;
 
     // make independent of scale
-    var ratio = getDevicePixelRatio();
+    let ratio = getDevicePixelRatio();
     mouseX /= (renderScale / ratio);
     mouseY /= (renderScale / ratio);
 
@@ -24,7 +24,7 @@ var getPointerPos = function(evt) {
     return { x: mouseX, y: mouseY };
 };
 
-var Button = function(x,y,w,h,onclick) {
+const Button = function(x,y,w,h,onclick) {
     this.x = x;
     this.y = y;
     this.w = w;
@@ -46,24 +46,24 @@ var Button = function(x,y,w,h,onclick) {
 
     // touch events
     this.startedInside = false;
-    var that = this;
-    var touchstart = function(evt) {
+    const that = this;
+    const touchstart = function(evt) {
         evt.preventDefault();
-        var fingerCount = evt.touches.length;
+        let fingerCount = evt.touches.length;
         if (fingerCount == 1) {
-            var pos = getPointerPos(evt.touches[0]);
+            let pos = getPointerPos(evt.touches[0]);
             (that.startedInside=that.contains(pos.x,pos.y)) ? that.focus() : that.blur();
         }
         else {
             touchcancel(evt);
         }
     };
-    var touchmove = function(evt) {
+    const touchmove = function(evt) {
         evt.preventDefault();
-        var fingerCount = evt.touches.length;
+        let fingerCount = evt.touches.length;
         if (fingerCount == 1) {
             if (that.startedInside) {
-                var pos = getPointerPos(evt.touches[0]);
+                let pos = getPointerPos(evt.touches[0]);
                 that.contains(pos.x, pos.y) ? that.focus() : that.blur();
             }
         }
@@ -71,9 +71,9 @@ var Button = function(x,y,w,h,onclick) {
             touchcancel(evt);
         }
     };
-    var touchend = function(evt) {
+    const touchend = function(evt) {
         evt.preventDefault();
-        var registerClick = (that.startedInside && that.isSelected);
+        let registerClick = (that.startedInside && that.isSelected);
         if (registerClick) {
             that.click();
         }
@@ -83,7 +83,7 @@ var Button = function(x,y,w,h,onclick) {
             that.focus();
         }
     };
-    var touchcancel = function(evt) {
+    const touchcancel = function(evt) {
         evt.preventDefault();
         this.startedInside = false;
         that.blur();
@@ -91,17 +91,17 @@ var Button = function(x,y,w,h,onclick) {
 
 
     // mouse events
-    var click = function(evt) {
-        var pos = getPointerPos(evt);
+    const click = function(evt) {
+        let pos = getPointerPos(evt);
         if (that.contains(pos.x, pos.y)) {
             that.click();
         }
     };
-    var mousemove = function(evt) {
-        var pos = getPointerPos(evt);
+    const mousemove = function(evt) {
+        let pos = getPointerPos(evt);
         that.contains(pos.x, pos.y) ? that.focus() : that.blur();
     };
-    var mouseleave = function(evt) {
+    const mouseleave = function(evt) {
         that.blur();
     };
 
@@ -142,7 +142,7 @@ Button.prototype = {
         clearTimeout(this.clickTimeout);
 
         // set a click delay
-        var that = this;
+        const that = this;
         if (that.onclick) {
             this.clickTimeout = setTimeout(function() { that.onclick(); }, 200);
         }
@@ -185,8 +185,8 @@ Button.prototype = {
         // draw border
         ctx.lineWidth = 2;
         ctx.beginPath();
-        var x=this.x, y=this.y, w=this.w, h=this.h;
-        var r=h/4;
+        let x=this.x, y=this.y, w=this.w, h=this.h;
+        let r=h/4;
         ctx.moveTo(x,y+r);
         ctx.quadraticCurveTo(x,y,x+r,y);
         ctx.lineTo(x+w-r,y);
@@ -229,9 +229,9 @@ Button.prototype = {
     },
 };
 
-var ToggleButton = function(x,y,w,h,isOn,setOn) {
-    var that = this;
-    var onclick = function() {
+const ToggleButton = function(x,y,w,h,isOn,setOn) {
+    const that = this;
+    const onclick = function() {
         setOn(!isOn());
         that.refreshMsg();
     };

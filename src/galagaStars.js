@@ -1,24 +1,24 @@
 
-var galagaStars = (function() {
+const galagaStars = (function() {
 
-    var stars = {};
-    var numStars = 200;
+    let stars = {};
+    let numStars = 200;
 
-    var width = mapWidth;
-    var height = Math.floor(mapHeight*1.5);
+    let width = mapWidth;
+    let height = Math.floor(mapHeight*1.5);
 
-    var ypos;
-    var yspeed=-0.5;
+    let ypos;
+    let yspeed=-0.5;
 
-    var t;
-    var flickerPeriod = 120;
-    var flickerSteps = 4;
-    var flickerGap = flickerPeriod / flickerSteps;
+    let t;
+    let flickerPeriod = 120;
+    let flickerSteps = 4;
+    let flickerGap = flickerPeriod / flickerSteps;
 
-    var init = function() {
+    const init = function() {
         t = 0;
         ypos = 0;
-        var i;
+        let i;
         for (i=0; i<numStars; i++) {
             stars[i] = {
                 x: getRandomInt(0,width-1),
@@ -29,7 +29,7 @@ var galagaStars = (function() {
         }
     };
 
-    var update = function() {
+    const update = function() {
         t++;
         t %= flickerPeriod;
 
@@ -40,11 +40,11 @@ var galagaStars = (function() {
         }
     };
 
-    var draw = function(ctx) {
-        var i;
-        var star;
-        var time;
-        var y;
+    const draw = function(ctx) {
+        let i;
+        let star;
+        let time;
+        let y;
         ctx.fillStyle = "#FFF";
         for (i=0; i<numStars; i++) {
             star = stars[i];

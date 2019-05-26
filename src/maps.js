@@ -4,7 +4,7 @@
 // Definitions of playable maps
 
 // current map
-var map;
+let map;
 
 // actor starting states
 
@@ -63,7 +63,8 @@ pacman.startPixel = {
 };
 
 // Learning Map
-var mapLearn = new Map(28, 36, (
+
+const mapLearn = new Map(28, 36, (
     "____________________________" +
     "____________________________" +
     "____________________________" +
@@ -107,11 +108,11 @@ mapLearn.wallFillColor = "#000";
 mapLearn.pelletColor = "#F7941B";
 mapLearn.shouldDrawMapOnly = true;
 
-var mapPacman = []
+let mapPacman = []
 
 // Original Pac-Man map
 
-var newMap
+let newMap
 newMap = new Map(28, 36, (
     "____________________________" +
     "____________________________" +
@@ -425,7 +426,7 @@ mapPacman.push({
 // The levels within an act progress in difficulty.
 // But the beginning of an act is generally easier than the end of the previous act to stave frustration.
 // Completing an act results in a cutscene.
-var getLevelAct = function(level) {
+const getLevelAct = function(level) {
     // Act 1: (levels 1,2)
     // Act 2: (levels 3,4,5)
     // Act 3: (levels 6,7,8,9)
@@ -443,7 +444,7 @@ var getLevelAct = function(level) {
     }
 };
 
-var getActColor = function(act) {
+const getActColor = function(act) {
     if (gameMode == GAME_MSPACMAN) {
         return getMsPacActColor(act);
     }
@@ -460,7 +461,7 @@ var getActColor = function(act) {
     }
 };
 
-var getActRange = function(act) {
+const getActRange = function(act) {
     if (act == 1) {
         return [1,2];
     }
@@ -468,13 +469,13 @@ var getActRange = function(act) {
         return [3,5];
     }
     else {
-        var start = act*4-6;
+        let start = act*4-6;
         return [start, start+3];
     }
 };
 
-var getCookieActColor = function(act) {
-    var colors = [
+const getCookieActColor = function(act) {
+    const colors = [
         "#359c9c", "#80d8fc", // turqoise
         "#c2b853", "#e6f1e7", // yellow
         "#86669c", "#f2c1db", // purple
@@ -485,7 +486,7 @@ var getCookieActColor = function(act) {
         "#5036d9", "#618dd4", // violet
         "#939473", "#fdfdf4", // grey
     ];
-    var i = ((act-1)*2) % colors.length;
+    let i = ((act-1)*2) % colors.length;
     return {
         wallFillColor: colors[i],
         wallStrokeColor: colors[i+1],
@@ -493,13 +494,13 @@ var getCookieActColor = function(act) {
     };
 };
 
-var setNextCookieMap = function() {
+const setNextCookieMap = function() {
     // cycle the colors
-    var i;
-    var act = getLevelAct(level);
+    let i;
+    let act = getLevelAct(level);
     if (!map || level == 1 || act != getLevelAct(level-1)) {
         map = mapgen();
-        var colors = getCookieActColor(act);
+        let colors = getCookieActColor(act);
         map.wallFillColor = colors.wallFillColor;
         map.wallStrokeColor = colors.wallStrokeColor;
         map.pelletColor = colors.pelletColor;
@@ -508,11 +509,11 @@ var setNextCookieMap = function() {
 
 // Ms. Pac-Man map 1
 
-var getMsPacActColor = function(act) {
+const getMsPacActColor = function(act) {
     act -= 1;
-    var mapIndex = (act <= 1) ? act : (act%2)+2;
-    var maps = [mapMsPacman1, mapMsPacman2, mapMsPacman3, mapMsPacman4];
-    var map = maps[mapIndex];
+    let mapIndex = (act <= 1) ? act : (act%2)+2;
+    const maps = [mapMsPacman1, mapMsPacman2, mapMsPacman3, mapMsPacman4];
+    let map = maps[mapIndex];
     if (act >= 4) {
         return [
             {
@@ -546,13 +547,13 @@ var getMsPacActColor = function(act) {
     }
 };
 
-var setNextMap = function() {
-    var mapIndex = 0
-    var maps = mapPacman
+const setNextMap = function() {
+    let mapIndex = 0;
+    let maps = mapPacman;
 
     // The third and fourth maps repeat indefinitely after the second map.
     // (i.e. act1=map1, act2=map2, act3=map3, act4=map4, act5=map3, act6=map4, ...)
-    var act = getLevelAct(level)-1;
+    let act = getLevelAct(level)-1;
     if (act <= 5) { mapIndex = 0 }
     else if (act <= 10) { mapIndex = 1 }
     else if (act <= 15) { mapIndex = 2 }

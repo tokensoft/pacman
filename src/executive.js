@@ -1,10 +1,10 @@
-var executive = (function(){
+const executive = (function(){
 
-    var framePeriod = 1000/60; // length of each frame at 60Hz (updates per second)
-    var gameTime; // virtual time of the last game update
+    let framePeriod = 1000/60; // length of each frame at 60Hz (updates per second)
+    let gameTime; // virtual time of the last game update
 
-    var paused = false; // flag for pausing the state updates, while still drawing
-    var running = false; // flag for truly stopping everything
+    let paused = false; // flag for pausing the state updates, while still drawing
+    let running = false; // flag for truly stopping everything
 
     /**********/
     // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
@@ -14,9 +14,9 @@ var executive = (function(){
     // fixes from Paul Irish and Tino Zijdel
 
     (function() {
-        var lastTime = 0;
-        var vendors = ['ms', 'moz', 'webkit', 'o'];
-        for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        let lastTime = 0;
+        const vendors = ['ms', 'moz', 'webkit', 'o'];
+        for(let x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
             window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
             window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
                                        || window[vendors[x]+'CancelRequestAnimationFrame'];
@@ -24,9 +24,9 @@ var executive = (function(){
      
         if (!window.requestAnimationFrame)
             window.requestAnimationFrame = function(callback, element) {
-                var currTime = new Date().getTime();
-                var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-                var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+                let currTime = new Date().getTime();
+                let timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                let id = window.setTimeout(function() { callback(currTime + timeToCall); },
                   timeToCall);
                 lastTime = currTime + timeToCall;
                 return id;
@@ -39,14 +39,14 @@ var executive = (function(){
     }());
     /**********/
 
-    var fps;
-    var updateFps = (function(){
+    let fps;
+    const updateFps = (function(){
         // TODO: fix this to reflect the average rate of the last n frames, where 0 < n < 60
-        var length = 60;
-        var times = [];
-        var startIndex = 0;
-        var endIndex = -1;
-        var filled = false;
+        let length = 60;
+        let times = [];
+        let startIndex = 0;
+        let endIndex = -1;
+        let filled = false;
 
         return function(now) {
             if (filled) {
@@ -59,8 +59,8 @@ var executive = (function(){
 
             times[endIndex] = now;
 
-            var seconds = (now - times[startIndex]) / 1000;
-            var frames = endIndex - startIndex;
+            let seconds = (now - times[startIndex]) / 1000;
+            let frames = endIndex - startIndex;
             if (frames < 0) {
                 frames += length;
             }
@@ -69,8 +69,8 @@ var executive = (function(){
     })();
         
 
-    var reqFrame; // id of requestAnimationFrame object
-    var tick = function(now) {
+    let reqFrame; // id of requestAnimationFrame object
+    const tick = function(now) {
         if (gameTime == undefined) {
             gameTime = now;
         }
@@ -79,7 +79,7 @@ var executive = (function(){
         updateFps(now);
 
         // Control frame-skipping by only allowing gameTime to lag behind the current time by some amount.
-        var maxFrameSkip = 3;
+        let maxFrameSkip = 3;
         gameTime = Math.max(gameTime, now-maxFrameSkip*framePeriod);
 
         // Prevent any updates from being called when paused.
@@ -118,9 +118,10 @@ var executive = (function(){
             vcr.onFramePeriodChange();
         },
         init: function() {
-            var that = this;
+            const that = this;
             window.addEventListener('focus', function() {that.start();});
             window.addEventListener('blur', function() {that.stop();});
+            // Check for metamask
             this.start();
         },
         start: function() {

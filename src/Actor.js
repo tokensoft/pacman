@@ -5,7 +5,7 @@
 // "Ghost" and "Player" inherit from this "Actor"
 
 // Actor constructor
-var Actor = function() {
+const Actor = function() {
 
     this.dir = {};          // facing direction vector
     this.pixel = {};        // pixel position
@@ -108,13 +108,13 @@ Actor.prototype.setDir = function(dirEnum) {
 };
 
 // used as "pattern" parameter in getStepSizeFromTable()
-var STEP_PACMAN = 0;
-var STEP_GHOST = 1;
-var STEP_PACMAN_FRIGHT = 2;
-var STEP_GHOST_FRIGHT = 3;
-var STEP_GHOST_TUNNEL = 4;
-var STEP_ELROY1 = 5;
-var STEP_ELROY2 = 6;
+const STEP_PACMAN = 0;
+const STEP_GHOST = 1;
+const STEP_PACMAN_FRIGHT = 2;
+const STEP_GHOST_FRIGHT = 3;
+const STEP_GHOST_TUNNEL = 4;
+const STEP_ELROY1 = 5;
+const STEP_ELROY2 = 6;
 
 // getter function to extract a step size from speed control table
 Actor.prototype.getStepSizeFromTable = (function(){
@@ -163,7 +163,7 @@ Actor.prototype.getStepSizeFromTable = (function(){
     "1121121121121121"); // elroy 2
 
     return function(level, pattern) {
-        var entry;
+        let entry;
         if (level < 1) return;
         else if (level==1)                  entry = 0;
         else if (level >= 2 && level <= 4)  entry = 1;
@@ -177,7 +177,7 @@ Actor.prototype.getStepSizeFromTable = (function(){
 Actor.prototype.update = function(j) {
 
     // get number of steps to advance in this frame
-    var numSteps = this.getNumSteps();
+    let numSteps = this.getNumSteps();
     if (j >= numSteps) 
         return;
 

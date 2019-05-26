@@ -2,15 +2,15 @@
 // Ghost class
 
 // modes representing the ghost's current state
-var GHOST_OUTSIDE = 0;
-var GHOST_EATEN = 1;
-var GHOST_GOING_HOME = 2;
-var GHOST_ENTERING_HOME = 3;
-var GHOST_PACING_HOME = 4;
-var GHOST_LEAVING_HOME = 5;
+const GHOST_OUTSIDE = 0;
+const GHOST_EATEN = 1;
+const GHOST_GOING_HOME = 2;
+const GHOST_ENTERING_HOME = 3;
+const GHOST_PACING_HOME = 4;
+const GHOST_LEAVING_HOME = 5;
 
 // Ghost constructor
-var Ghost = function() {
+const Ghost = function() {
     // inherit data from Actor
     Actor.apply(this);
 
@@ -30,7 +30,7 @@ Ghost.prototype.getBounceY = (function(){
     // When moving horizontal, bounce height is a function of x.
     // When moving vertical, bounce height is a function of y.
 
-    var bounceY = {};
+    let bounceY = {};
 
     // map y tile pixel to new y tile pixel
     bounceY[DIR_UP] =    [-4,-2,0,2,4,3,2,3];
@@ -55,9 +55,9 @@ Ghost.prototype.getBounceY = (function(){
             return py;
         }
 
-        var tilePixel = this.getTilePixel({x:px,y:py});
-        var tileY = Math.floor(py / tileSize);
-        var y = tileY*tileSize;
+        let tilePixel = this.getTilePixel({x:px,y:py});
+        let tileY = Math.floor(py / tileSize);
+        let y = tileY*tileSize;
 
         if (dirEnum == DIR_UP || dirEnum == DIR_DOWN) {
             y += bounceY[dirEnum][tilePixel.y];
@@ -141,7 +141,7 @@ Ghost.prototype.isSlowInTunnel = function() {
 // gets the number of steps to move in this frame
 Ghost.prototype.getNumSteps = function() {
 
-    var pattern = STEP_GHOST;
+    let pattern = STEP_GHOST;
 
     if (this.mode == GHOST_GOING_HOME || this.mode == GHOST_ENTERING_HOME)
         return 2;
@@ -186,9 +186,9 @@ Ghost.prototype.leaveHome = function() {
 };
 
 Ghost.prototype.playSounds = function() {
-    var ghostsOutside = 0;
-    var ghostsGoingHome = 0;
-    for (var i=0; i<4; i++) {
+    let ghostsOutside = 0;
+    let ghostsGoingHome = 0;
+    for (let i=0; i<4; i++) {
         if (ghosts[i].mode == GHOST_OUTSIDE)    ghostsOutside++;
         if (ghosts[i].mode == GHOST_GOING_HOME) ghostsGoingHome++;
     }
@@ -237,7 +237,7 @@ Ghost.prototype.step = function() {
 Ghost.prototype.homeSteer = (function(){
 
     // steering functions to execute for each mode
-    var steerFuncs = {};
+    let steerFuncs = {};
 
     steerFuncs[GHOST_GOING_HOME] = function() {
         // at the doormat
@@ -310,7 +310,7 @@ Ghost.prototype.homeSteer = (function(){
 
     // return a function to execute appropriate steering function for a given ghost
     return function() { 
-        var f = steerFuncs[this.mode];
+        let f = steerFuncs[this.mode];
         if (f)
             f.apply(this);
     };
@@ -319,7 +319,7 @@ Ghost.prototype.homeSteer = (function(){
 
 // special case for Ms. Pac-Man game that randomly chooses a corner for blinky and pinky when scattering
 Ghost.prototype.isScatterBrain = function() {
-    var scatter = false;
+    let scatter = false;
     if (ghostCommander.getCommand() == GHOST_CMD_SCATTER) {
         if (gameMode == GAME_MSPACMAN || gameMode == GAME_COOKIE) {
             scatter = (this == blinky || this == pinky);
@@ -334,10 +334,10 @@ Ghost.prototype.isScatterBrain = function() {
 // determine direction
 Ghost.prototype.steer = function() {
 
-    var dirEnum;                         // final direction to update to
-    var openTiles;                       // list of four booleans indicating which surrounding tiles are open
-    var oppDirEnum = rotateAboutFace(this.dirEnum); // current opposite direction enum
-    var actor;                           // actor whose corner we will target
+    let dirEnum;                         // final direction to update to
+    let openTiles;                       // list of four booleans indicating which surrounding tiles are open
+    let oppDirEnum = rotateAboutFace(this.dirEnum); // current opposite direction enum
+    let actor;                           // actor whose corner we will target
 
     // special map-specific steering when going to, entering, pacing inside, or leaving home
     this.homeSteer();
@@ -371,7 +371,7 @@ Ghost.prototype.steer = function() {
             this.dirEnum == DIR_DOWN  && this.tilePixel.y == midTile.y+1) {
 
         // get next tile
-        var nextTile = {
+        let nextTile = {
             x: this.tile.x + this.dir.x,
             y: this.tile.y + this.dir.y,
         };
@@ -411,13 +411,13 @@ Ghost.prototype.steer = function() {
 
             /* CHOOSE TURN */
 
-            var dirDecided = false;
+            let dirDecided = false;
             if (this.mode == GHOST_GOING_HOME && map.getExitDir) {
                 // If the map has a 'getExitDir' function, then we are using
                 // a custom algorithm to choose the next direction.
                 // Currently, procedurally-generated maps use this function
                 // to ensure that ghosts can return home without looping forever.
-                var exitDir = map.getExitDir(nextTile.x,nextTile.y);
+                let exitDir = map.getExitDir(nextTile.x,nextTile.y);
                 if (exitDir != undefined && exitDir != oppDirEnum) {
                     dirDecided = true;
                     dirEnum = exitDir;
@@ -444,8 +444,8 @@ Ghost.prototype.steer = function() {
 };
 
 Ghost.prototype.getPathDistLeft = function(fromPixel, dirEnum) {
-    var distLeft = tileSize;
-    var pixel = this.getTargetPixel();
+    let distLeft = tileSize;
+    let pixel = this.getTargetPixel();
     if (this.targetting == 'pacman') {
         if (dirEnum == DIR_UP || dirEnum == DIR_DOWN)
             distLeft = Math.abs(fromPixel.y - pixel.y);

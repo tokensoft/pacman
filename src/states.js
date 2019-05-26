@@ -4,10 +4,10 @@
 // state is set to any of these states, each containing an init(), draw(), and update()
 
 // current game state
-var state;
+let state;
 
 // switches to another game state
-var switchState = function(nextState,fadeDuration, continueUpdate1, continueUpdate2) {
+const switchState = function(nextState,fadeDuration, continueUpdate1, continueUpdate2) {
     state = (fadeDuration) ? fadeNextState(state,nextState,fadeDuration,continueUpdate1, continueUpdate2) : nextState;
     audio.silence();
     state.init();
@@ -21,13 +21,13 @@ var switchState = function(nextState,fadeDuration, continueUpdate1, continueUpda
 
 // Creates a state that will fade from a given state to another in the given amount of time.
 // if continueUpdate1 is true, then prevState.update will be called while fading out
-// if continueUpdate2 is true, then nextState.update will be called while fading in
-var fadeNextState = function (prevState, nextState, frameDuration, continueUpdate1, continueUpdate2) {
-    var frames;
-    var midFrame = Math.floor(frameDuration/2);
-    var inFirstState = function() { return frames < midFrame; };
-    var getStateTime = function() { return frames/frameDuration*2 + (inFirstState() ? 0 : -1); };
-    var initialized = false;
+// if continueUpdate2 is true, then nextState.update will be called while fading inc
+const fadeNextState = function (prevState, nextState, frameDuration, continueUpdate1, continueUpdate2) {
+    let frames;
+    let midFrame = Math.floor(frameDuration/2);
+    const inFirstState = function() { return frames < midFrame; };
+    const getStateTime = function() { return frames/frameDuration*2 + (inFirstState() ? 0 : -1); };
+    let initialized = false;
 
     return {
         init: function() {
@@ -36,7 +36,7 @@ var fadeNextState = function (prevState, nextState, frameDuration, continueUpdat
         },
         draw: function() {
             if (!initialized) return;
-            var t = getStateTime();
+            let t = getStateTime();
             if (frames < midFrame) {
                 if (prevState) {
                     prevState.draw();
@@ -81,15 +81,15 @@ var fadeNextState = function (prevState, nextState, frameDuration, continueUpdat
 // Home State
 // (the home title screen state)
 
-var homeState = (function(){
+const homeState = (function(){
 
-    var exitTo = function(s) {
+    const exitTo = function(s) {
         switchState(s);
         menu.disable();
     };
 
-    var menu = new Menu("CHOOSE A GAME",2*tileSize,0*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
-    var getIconAnimFrame = function(frame) {
+    let menu = new Menu("CHOOSE A GAME",2*tileSize,0*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    const getIconAnimFrame = function(frame) {
         frame = Math.floor(frame/3)+1;
         frame %= 4;
         if (frame == 3) {
@@ -97,7 +97,7 @@ var homeState = (function(){
         }
         return frame;
     };
-    var getSoftmanAnimFrame = function(frame) {
+    const getSoftmanAnimFrame = function(frame) {
         frame = Math.floor(frame/3);
         frame %= 4;
         return frame;
@@ -144,9 +144,9 @@ var homeState = (function(){
 //////////////////////////////////////////////////////////////////////////////////////
 // Learn State
 
-var learnState = (function(){
+const learnState = (function(){
 
-    var exitTo = function(s) {
+    const exitTo = function(s) {
         switchState(s);
         menu.disable();
         forEachCharBtn(function (btn) {
@@ -156,7 +156,7 @@ var learnState = (function(){
         clearCheats();
     };
 
-    var menu = new Menu("LEARN", 2*tileSize,-tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    let menu = new Menu("LEARN", 2*tileSize,-tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
     menu.addSpacer(7);
     menu.addTextButton("BACK",
         function() {
@@ -165,12 +165,12 @@ var learnState = (function(){
     menu.backButton = menu.buttons[menu.buttonCount-1];
     menu.noArrowKeys = true;
 
-    var pad = tileSize;
-    var w = 30;
-    var h = 30;
-    var x = mapWidth/2 - 2*(w) - 1.5*pad;
-    var y = 4*tileSize;
-    var redBtn = new Button(x,y,w,h,function(){
+    let pad = tileSize;
+    let w = 30;
+    let h = 30;
+    let x = mapWidth/2 - 2*(w) - 1.5*pad;
+    let y = 4*tileSize;
+    const redBtn = new Button(x,y,w,h,function(){
         setAllVisibility(false);
         blinky.isVisible = true;
         setVisibility(blinky,true);
@@ -179,7 +179,7 @@ var learnState = (function(){
         getGhostDrawFunc()(ctx,x,y,Math.floor(frame/6)%2,DIR_DOWN,undefined,undefined,undefined,blinky.color);
     });
     x += w+pad;
-    var pinkBtn = new Button(x,y,w,h,function(){
+    const pinkBtn = new Button(x,y,w,h,function(){
         setAllVisibility(false);
         setVisibility(pinky,true);
     });
@@ -187,7 +187,7 @@ var learnState = (function(){
         getGhostDrawFunc()(ctx,x,y,Math.floor(frame/6)%2,DIR_DOWN,undefined,undefined,undefined,pinky.color);
     });
     x += w+pad;
-    var cyanBtn = new Button(x,y,w,h,function(){
+    const cyanBtn = new Button(x,y,w,h,function(){
         setAllVisibility(false);
         setVisibility(inky,true);
     });
@@ -195,25 +195,25 @@ var learnState = (function(){
         getGhostDrawFunc()(ctx,x,y,Math.floor(frame/6)%2,DIR_DOWN,undefined,undefined,undefined,inky.color);
     });
     x += w+pad;
-    var orangeBtn = new Button(x,y,w,h,function(){
+    const orangeBtn = new Button(x,y,w,h,function(){
         setAllVisibility(false);
         setVisibility(clyde,true);
     });
     orangeBtn.setIcon(function (ctx,x,y,frame) {
         getGhostDrawFunc()(ctx,x,y,Math.floor(frame/6)%2,DIR_DOWN,undefined,undefined,undefined,clyde.color);
     });
-    var forEachCharBtn = function(callback) {
+    const forEachCharBtn = function(callback) {
         callback(redBtn);
         callback(pinkBtn);
         callback(cyanBtn);
         callback(orangeBtn);
     };
 
-    var setVisibility = function(g,visible) {
+    const setVisibility = function(g,visible) {
         g.isVisible = g.isDrawTarget = g.isDrawPath = visible;
     };
 
-    var setAllVisibility = function(visible) {
+    const setAllVisibility = function(visible) {
         setVisibility(blinky,visible);
         setVisibility(pinky,visible);
         setVisibility(inky,visible);
@@ -247,7 +247,7 @@ var learnState = (function(){
 
             // set ghost states
             for (i=0; i<4; i++) {
-                var a = actors[i];
+                let a = actors[i];
                 a.reset();
                 a.mode = GHOST_OUTSIDE;
             }
@@ -281,7 +281,7 @@ var learnState = (function(){
             forEachCharBtn(function (btn) {
                 btn.update();
             });
-            var i,j;
+            let i,j;
             for (j=0; j<2; j++) {
                 pacman.update(j);
                 for (i=0;i<4;i++) {
@@ -302,11 +302,11 @@ var learnState = (function(){
 // Game Title
 // (provides functions for managing the game title with clickable player and enemies below it)
 
-var gameTitleState = (function() {
+const gameTitleState = (function() {
 
-    var name,nameColor;
+    let name,nameColor;
 
-    var resetTitle = function() {
+    const resetTitle = function() {
         if (yellowBtn.isSelected) {
             name = getGameName();
             nameColor = gameMode == GAME_COOKIE ? "#47b8ff" : pacman.color;
@@ -333,11 +333,11 @@ var gameTitleState = (function() {
         }
     };
 
-    var w = 20;
-    var h = 30;
-    var x = mapWidth/2 - 3*w;
-    var y = 3*tileSize;
-    var yellowBtn = new Button(x,y,w,h,function() {
+    let w = 20;
+    let h = 30;
+    let x = mapWidth/2 - 3*w;
+    let y = 3*tileSize;
+    let yellowBtn = new Button(x,y,w,h,function() {
 
     });
     yellowBtn.setIcon(function (ctx,x,y,frame) {
@@ -345,30 +345,30 @@ var gameTitleState = (function() {
     });
 
     x += 2*w;
-    var redBtn = new Button(x,y,w,h);
+    let redBtn = new Button(x,y,w,h);
     redBtn.setIcon(function (ctx,x,y,frame) {
         getGhostDrawFunc()(ctx,x,y,Math.floor(frame/6)%2,DIR_LEFT,undefined,undefined,undefined,blinky.color);
     });
 
     x += w;
-    var pinkBtn = new Button(x,y,w,h);
+    let pinkBtn = new Button(x,y,w,h);
     pinkBtn.setIcon(function (ctx,x,y,frame) {
         getGhostDrawFunc()(ctx,x,y,Math.floor(frame/6)%2,DIR_LEFT,undefined,undefined,undefined,pinky.color);
     });
 
     x += w;
-    var cyanBtn = new Button(x,y,w,h)
+    let cyanBtn = new Button(x,y,w,h)
     cyanBtn.setIcon(function (ctx,x,y,frame) {
         getGhostDrawFunc()(ctx,x,y,Math.floor(frame/6)%2,DIR_LEFT,undefined,undefined,undefined,inky.color);
     });
 
     x += w;
-    var orangeBtn = new Button(x,y,w,h);
+    let orangeBtn = new Button(x,y,w,h);
     orangeBtn.setIcon(function (ctx,x,y,frame) {
         getGhostDrawFunc()(ctx,x,y,Math.floor(frame/6)%2,DIR_LEFT,undefined,undefined,undefined,clyde.color);
     });
     
-    var forEachCharBtn = function(callback) {
+    const forEachCharBtn = function(callback) {
         callback(yellowBtn);
         callback(redBtn);
         callback(pinkBtn);
@@ -421,15 +421,15 @@ var gameTitleState = (function() {
 // Pre New Game State
 // (the main menu for the currently selected game)
 
-var preNewGameState = (function() {
+const preNewGameState = (function() {
 
-    var exitTo = function(s,fade) {
+    const exitTo = function(s,fade) {
         gameTitleState.shutdown();
         menu.disable();
         switchState(s,fade);
     };
 
-    var menu = new Menu("",2*tileSize,0,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    let menu = new Menu("",2*tileSize,0,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
 
     menu.addSpacer(2);
     menu.addTextButton("PLAY",
@@ -492,33 +492,38 @@ var preNewGameState = (function() {
 //////////////////////////////////////////////////////////////////////////////////////
 // Select Act State
 
-var selectActState = (function() {
+const selectActState = (function() {
 
     // TODO: create ingame menu option to return to this menu (with last act played present)
 
-    var menu;
-    var numActs = 4;
-    var defaultStartAct = 1;
-    var startAct = defaultStartAct;
+    let menu;
+    let numActs = 4;
+    let defaultStartAct = 1;
+    let startAct = defaultStartAct;
 
-    var exitTo = function(state,fade) {
+    const exitTo = function(state,fade) {
         gameTitleState.shutdown();
         menu.disable();
         switchState(state,fade);
     };
 
-    var chooseLevelFromAct = function(act) {
+    const openMenu = function(state,fade) {
+        gameTitleState.shutdown();
+        menu.disable();
+    };
+
+    const chooseLevelFromAct = function(act) {
         selectLevelState.setAct(act);
         exitTo(selectLevelState);
     };
 
-    var scrollToAct = function(act) {
+    const scrollToAct = function(act) {
         // just rebuild the menu
         selectActState.setStartAct(act);
         exitTo(selectActState);
     };
 
-    var drawArrow = function(ctx,x,y,dir) {
+    const drawArrow = function(ctx,x,y,dir) {
         ctx.save();
         ctx.translate(x,y);
         ctx.scale(1,dir);
@@ -532,13 +537,13 @@ var selectActState = (function() {
         ctx.restore();
     };
 
-    var buildMenu = function(act) {
+    const buildMenu = function(act) {
         // set buttons starting at the given act
         startAct = act;
 
         menu = new Menu("",2*tileSize,0,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
-        var i;
-        var range;
+        let i;
+        let range;
         menu.addSpacer(2);
         menu.addIconButton(
             function(ctx,x,y) {
@@ -557,8 +562,8 @@ var selectActState = (function() {
                 })(i),
                 (function(j){
                     return function(ctx,x,y) {
-                        var s = tileSize/3*2;
-                        var r = tileSize/6;
+                        let s = tileSize/3*2;
+                        let r = tileSize/6;
                         ctx.save();
                         ctx.translate(x,y);
                         ctx.beginPath();
@@ -572,7 +577,7 @@ var selectActState = (function() {
                         ctx.lineTo(-r,s);
                         ctx.quadraticCurveTo(-s,s,-s,r);
                         ctx.closePath();
-                        var colors = getActColor(act+j);
+                        let colors = getActColor(act+j);
                         ctx.fillStyle = colors.wallFillColor;
                         ctx.strokeStyle = colors.wallStrokeColor;
                         ctx.fill();
@@ -621,28 +626,28 @@ var selectActState = (function() {
 //////////////////////////////////////////////////////////////////////////////////////
 // Select Level State
 
-var selectLevelState = (function() {
+const selectLevelState = (function() {
 
-    var menu;
-    var act = 1;
+    let menu;
+    let act = 1;
 
-    var exitTo = function(state,fade) {
+    const exitTo = function(state,fade) {
         gameTitleState.shutdown();
         menu.disable();
         switchState(state,fade);
     };
 
-    var playLevel = function(i) {
+    const playLevel = function(i) {
         // TODO: set level (will have to set up fruit history correctly)
         newGameState.setStartLevel(i);
         exitTo(newGameState, 60);
     };
 
-    var buildMenu = function(act) {
-        var range = getActRange(act);
+    const buildMenu = function(act) {
+        let range = getActRange(act);
 
         menu = new Menu("",2*tileSize,0,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
-        var i;
+        let i;
         menu.addSpacer(2);
         if (range[0] < range[1]) {
             for (i=range[0]; i<=range[1]; i++) {
@@ -654,7 +659,7 @@ var selectLevelState = (function() {
                     })(i),
                     (function(j){
                         return function(ctx,x,y) {
-                            var f = fruit.getFruitFromLevel(j);
+                            let f = fruit.getFruitFromLevel(j);
                             if (f) {
                                 atlas.drawFruitSprite(ctx,x,y,f.name);
                             }
@@ -698,15 +703,15 @@ var selectLevelState = (function() {
 // About Game State
 // (the screen shows some information about the game)
 
-var aboutGameState = (function() {
+const aboutGameState = (function() {
 
-    var exitTo = function(s,fade) {
+    const exitTo = function(s,fade) {
         gameTitleState.shutdown();
         menu.disable();
         switchState(s,fade);
     };
 
-    var menu = new Menu("",2*tileSize,0,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    let menu = new Menu("",2*tileSize,0,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
 
     menu.addSpacer(8);
     menu.addTextButton("BACK",
@@ -715,16 +720,16 @@ var aboutGameState = (function() {
         });
     menu.backButton = menu.buttons[menu.buttonCount-1];
 
-    var desc;
-    var numDescLines;
+    let desc;
+    let numDescLines;
 
-    var drawDesc = function(ctx){
+    const drawDesc = function(ctx){
         ctx.font = tileSize+"px ArcadeR";
         ctx.fillStyle = "#FFF";
         ctx.textBaseline = "top";
         ctx.textAlign = "center";
-        var y = 12*tileSize;
-        var i;
+        let y = 12*tileSize;
+        let i;
         for (i=0; i<numDescLines; i++) {
             ctx.fillText(desc[i],14*tileSize,y+i*2*tileSize);
         }
@@ -756,15 +761,15 @@ var aboutGameState = (function() {
 // Cut Scene Menu State
 // (the screen that shows a list of the available cutscenes for the current game)
 
-var cutSceneMenuState = (function() {
+const cutSceneMenuState = (function() {
 
-    var exitTo = function(s,fade) {
+    const exitTo = function(s,fade) {
         gameTitleState.shutdown();
         menu.disable();
         switchState(s,fade);
     };
 
-    var exitToCutscene = function(s) {
+    const exitToCutscene = function(s) {
         if (s) {
             gameTitleState.shutdown();
             menu.disable();
@@ -772,7 +777,7 @@ var cutSceneMenuState = (function() {
         }
     };
 
-    var menu = new Menu("",2*tileSize,0,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    let menu = new Menu("",2*tileSize,0,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
 
     menu.addSpacer(2);
     menu.addTextButton("CUTSCENE 1",
@@ -818,35 +823,35 @@ var cutSceneMenuState = (function() {
 // Score State
 // (the high score screen state)
 
-var scoreState = (function(){
+const scoreState = (function(){
 
-    var exitTo = function(s) {
+    const exitTo = function(s) {
         switchState(s);
         menu.disable();
     };
 
-    var menu = new Menu("", 2*tileSize,mapHeight-6*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    let menu = new Menu("", 2*tileSize,mapHeight-6*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
     menu.addTextButton("BACK",
         function() {
             exitTo(homeState);
         });
     menu.backButton = menu.buttons[menu.buttonCount-1];
 
-    var frame = 0;
+    let frame = 0;
 
-    var bulbs = {};
-    var numBulbs;
+    let bulbs = {};
+    let numBulbs;
     (function(){
-        var x = -1.5*tileSize;
-        var y = -1*tileSize;
-        var w = 18*tileSize;
-        var h = 29*tileSize;
-        var s = 3;
+        let x = -1.5*tileSize;
+        let y = -1*tileSize;
+        let w = 18*tileSize;
+        let h = 29*tileSize;
+        let s = 3;
 
-        var i=0;
-        var x0 = x;
-        var y0 = y;
-        var addBulb = function(x,y) { bulbs[i++] = { x:x, y:y }; };
+        let i=0;
+        let x0 = x;
+        let y0 = y;
+        let addBulb = function(x,y) { bulbs[i++] = { x:x, y:y }; };
         for (; y0<y+h; y0+=s) { addBulb(x0,y0); }
         for (; x0<x+w; x0+=s) { addBulb(x0,y0); }
         for (; y0>y; y0-=s) { addBulb(x0,y0); }
@@ -855,11 +860,11 @@ var scoreState = (function(){
         numBulbs = i;
     })();
 
-    var drawScoreBox = function(ctx) {
+    const drawScoreBox = function(ctx) {
 
         // draw chaser lights around the marquee
         ctx.fillStyle = "#555";
-        var i,b,s=2;
+        let i,b,s=2;
         for (i=0; i<numBulbs; i++) {
             b = bulbs[i];
             ctx.fillRect(b.x, b.y, s, s);
@@ -873,16 +878,16 @@ var scoreState = (function(){
         ctx.font = tileSize+"px ArcadeR";
         ctx.textBaseline = "top";
         ctx.textAlign = "right";
-        var scoreColor = "#AAA";
-        var captionColor = "#444";
+        const scoreColor = "#AAA";
+        const captionColor = "#444";
 
-        var x,y;
+        let x,y;
         x = 9*tileSize;
         y = 0;
         ctx.fillStyle = "#FFF"; ctx.fillText("HIGH SCORES", x+4*tileSize,y);
         y += tileSize*4;
 
-        var drawContrails = function(x,y) {
+        const drawContrails = function(x,y) {
             ctx.lineWidth = 1.0;
             ctx.lineCap = "round";
             ctx.strokeStyle = "rgba(255,255,255,0.5)";
@@ -890,7 +895,7 @@ var scoreState = (function(){
             ctx.save();
             ctx.translate(-2.5,0);
 
-            var dy;
+            let dy;
             for (dy=-4; dy<=4; dy+=2) {
                 ctx.beginPath();
                 ctx.moveTo(x+tileSize,y+dy);
@@ -926,14 +931,14 @@ var scoreState = (function(){
 
     };
 
-    var drawFood = function(ctx) {
+    const drawFood = function(ctx) {
         ctx.globalAlpha = 0.5;
         ctx.font = tileSize + "px sans-serif";
         ctx.textBaseline = "middle";
         ctx.textAlign = "left";
 
-        var x = 20*tileSize;
-        var y = 0;
+        let x = 20*tileSize;
+        let y = 0;
 
         ctx.fillStyle = "#ffb8ae";
         ctx.fillRect(x-1,y-1.5,2,2);
@@ -952,7 +957,7 @@ var scoreState = (function(){
         atlas.drawGhostSprite(ctx,x,y,0,DIR_RIGHT,true);
         atlas.drawGhostPoints(ctx,x+2*tileSize,y,200);
 
-        var alpha = ctx.globalAlpha;
+        let alpha = ctx.globalAlpha;
 
         y += 2*tileSize;
         ctx.globalAlpha = alpha*0.5;
@@ -978,7 +983,7 @@ var scoreState = (function(){
         atlas.drawGhostSprite(ctx,x+6*tileSize,y,0,DIR_RIGHT,true);
         atlas.drawGhostPoints(ctx,x+8*tileSize,y,1600);
 
-        var mspac_fruits = [
+        const mspac_fruits = [
             {name: 'cherry',     points: 100},
             {name: 'strawberry', points: 200},
             {name: 'orange',     points: 500},
@@ -988,7 +993,7 @@ var scoreState = (function(){
             {name: 'banana',     points: 5000},
         ];
 
-        var pac_fruits = [
+        const pac_fruits = [
             {name:'cherry',     points:100},
             {name:'strawberry', points:300},
             {name:'orange',     points:500},
@@ -999,7 +1004,7 @@ var scoreState = (function(){
             {name:'key',        points:5000},
         ];
 
-        var i,f;
+        let i,f;
         y += 3*tileSize;
         for (i=0; i<pac_fruits.length; i++) {
             f = pac_fruits[i];
@@ -1043,14 +1048,14 @@ var scoreState = (function(){
 // About State
 // (the about screen state)
 
-var aboutState = (function(){
+const aboutState = (function(){
 
-    var exitTo = function(s) {
+    const exitTo = function(s) {
         switchState(s);
         menu.disable();
     };
 
-    var menu = new Menu("", 2*tileSize,mapHeight-11*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    let menu = new Menu("", 2*tileSize,mapHeight-11*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
     menu.addTextButton("GO TO PROJECT PAGE",
         function() {
             window.open("https://github.com/shaunew/Pac-Man");
@@ -1061,12 +1066,12 @@ var aboutState = (function(){
         });
     menu.backButton = menu.buttons[menu.buttonCount-1];
 
-    var drawBody = function(ctx) {
+    const drawBody = function(ctx) {
         ctx.font = tileSize+"px ArcadeR";
         ctx.textBaseline = "top";
         ctx.textAlign = "left";
 
-        var x,y;
+        let x,y;
         x = 2*tileSize;
         y = 0*tileSize;
         ctx.fillStyle = "#0FF";
@@ -1129,10 +1134,10 @@ var aboutState = (function(){
 // New Game state
 // (state when first starting a new game)
 
-var newGameState = (function() {
-    var frames;
-    var duration = 0;
-    var startLevel = 1;
+const newGameState = (function() {
+    let frames;
+    let duration = 0;
+    let startLevel = 1;
 
     return {
         init: function() {
@@ -1171,14 +1176,14 @@ var newGameState = (function() {
 // Ready state
 // (state when map is displayed and pausing before play)
 
-var readyState =  (function(){
-    var frames;
-    var duration = 4;
+const readyState =  (function(){
+    let frames;
+    let duration = 4;
     
     return {
         init: function() {
             audio.startMusic.play();
-            var i;
+            let i;
             for (i=0; i<5; i++)
                 actors[i].reset();
             ghostCommander.reset();
@@ -1209,7 +1214,7 @@ var readyState =  (function(){
 // Ready New Level state
 // (ready state when pausing before new level)
 
-var readyNewState = newChildObject(readyState, {
+const readyNewState = newChildObject(readyState, {
 
     init: function() {
 
@@ -1234,7 +1239,7 @@ var readyNewState = newChildObject(readyState, {
 // Ready Restart Level state
 // (ready state when pausing before restarted level)
 
-var readyRestartState = newChildObject(readyState, {
+const readyRestartState = newChildObject(readyState, {
 
     init: function() {
         extraLives--;
@@ -1251,7 +1256,7 @@ var readyRestartState = newChildObject(readyState, {
 // Play state
 // (state when playing the game)
 
-var playState = {
+const playState = {
     init: function() { 
         if (practiceMode) {
             vcr.reset();
@@ -1272,7 +1277,7 @@ var playState = {
     // handles collision between pac-man and ghosts
     // returns true if collision happened
     isPacmanCollide: function() {
-        var i,g;
+        let i,g;
         for (i = 0; i<4; i++) {
             g = ghosts[i];
             if (g.tile.x == pacman.tile.x && g.tile.y == pacman.tile.y && g.mode == GHOST_OUTSIDE) {
@@ -1300,9 +1305,9 @@ var playState = {
                 vcr.record();
             }
 
-            var i,j; // loop index
-            var maxSteps = 2;
-            var skip = false;
+            let i,j; // loop index
+            let maxSteps = 2;
+            let skip = false;
 
             // skip this frame if needed,
             // but update ghosts running home
@@ -1369,14 +1374,14 @@ var playState = {
 // Script state
 // (a state that triggers functions at certain times)
 
-var scriptState = (function(){
+const scriptState = (function(){
 
     return {
         init: function() {
             this.frames = 0;        // frames since state began
             this.triggerFrame = 0;  // frames since last trigger
 
-            var trigger = this.triggers[0];
+            let trigger = this.triggers[0];
             this.drawFunc = trigger ? trigger.draw : undefined;   // current draw function
             this.updateFunc = trigger ? trigger.update : undefined; // current update function
         },
@@ -1385,7 +1390,7 @@ var scriptState = (function(){
             // if trigger is found for current time,
             // call its init() function
             // and store its draw() and update() functions
-            var trigger = this.triggers[this.frames];
+            let trigger = this.triggers[this.frames];
             if (trigger) {
                 if (trigger.init) trigger.init();
                 this.drawFunc = trigger.draw;
@@ -1412,7 +1417,7 @@ var scriptState = (function(){
 // Seekable Script state
 // (a script state that can be controled by the VCR)
 
-var seekableScriptState = newChildObject(scriptState, {
+const seekableScriptState = newChildObject(scriptState, {
 
     init: function() {
         scriptState.init.call(this);
@@ -1456,10 +1461,10 @@ var seekableScriptState = newChildObject(scriptState, {
 // Dead state
 // (state when player has lost a life)
 
-var deadState = (function() {
+const deadState = (function() {
     
     // this state will always have these drawn
-    var commonDraw = function() {
+    const commonDraw = function() {
         renderer.blitMap();
         renderer.drawScore();
     };
@@ -1473,7 +1478,7 @@ var deadState = (function() {
                     audio.die.play();
                 },
                 update: function() {
-                    var i;
+                    let i;
                     for (i=0; i<4; i++) 
                         actors[i].frames++; // keep animating ghosts
                 },
@@ -1528,10 +1533,10 @@ var deadState = (function() {
 // Finish state
 // (state when player has completed a level)
 
-var finishState = (function(){
+const finishState = (function(){
 
     // this state will always have these drawn
-    var commonDraw = function() {
+    const commonDraw = function() {
         renderer.blitMap();
         renderer.drawScore();
 
@@ -1541,7 +1546,7 @@ var finishState = (function(){
     };
     
     // flash the floor and draw
-    var flashFloorAndDraw = function(on) {
+    const flashFloorAndDraw = function(on) {
         renderer.setLevelFlash(on);
         commonDraw();
     };
@@ -1583,8 +1588,8 @@ var finishState = (function(){
 // Game Over state
 // (state when player has lost last life)
 
-var overState = (function() {
-    var frames;
+const overState = (function() {
+    let frames;
     return {
         init: function() {
             frames = 0;

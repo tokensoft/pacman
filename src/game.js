@@ -2,19 +2,19 @@
 // Game
 
 // game modes
-var GAME_PACMAN = 3;
-var GAME_MSPACMAN = 1;
-var GAME_COOKIE = 2;
-var GAME_SOFTMAN = 0;
+const GAME_PACMAN = 3;
+const GAME_MSPACMAN = 1;
+const GAME_COOKIE = 2;
+const GAME_SOFTMAN = 0;
 
-var practiceMode = false;
-var turboMode = false;
+let practiceMode = false;
+let turboMode = false;
 
 // current game mode
-var gameMode = GAME_PACMAN;
-var getGameName = (function(){
+let gameMode = GAME_PACMAN;
+const getGameName = (function(){
 
-    var names = ["SOFT-MAN", "MS PAC-MAN", "COOKIE-MAN","PAC-MAN"];
+    const names = ["SOFT-MAN", "MS PAC-MAN", "COOKIE-MAN","PAC-MAN"];
     
     return function(mode) {
         if (mode == undefined) {
@@ -24,9 +24,9 @@ var getGameName = (function(){
     };
 })();
 
-var getGameDescription = (function(){
+const getGameDescription = (function(){
 
-    var desc = [
+    const desc = [
         [
             "THE UNRELEASED",
             "SOFT-MAN PROTOTYPE:",
@@ -92,7 +92,7 @@ var getGameDescription = (function(){
     };
 })();
 
-var getGhostNames = function(mode) {
+const getGhostNames = function(mode) {
     if (mode == undefined) {
         mode = gameMode;
     }
@@ -110,7 +110,7 @@ var getGhostNames = function(mode) {
     }
 };
 
-var getGhostDrawFunc = function(mode) {
+const getGhostDrawFunc = function(mode) {
     if (mode == undefined) {
         mode = gameMode;
     }
@@ -125,7 +125,7 @@ var getGhostDrawFunc = function(mode) {
     }
 };
 
-var getPlayerDrawFunc = function(mode) {
+const getPlayerDrawFunc = function(mode) {
     if (mode == undefined) {
         mode = gameMode;
     }
@@ -146,7 +146,7 @@ var getPlayerDrawFunc = function(mode) {
 
 
 // for clearing, backing up, and restoring cheat states (before and after cutscenes presently)
-var clearCheats, backupCheats, restoreCheats;
+let clearCheats, backupCheats, restoreCheats;
 (function(){
     clearCheats = function() {
         pacman.invincible = false;
@@ -158,7 +158,7 @@ var clearCheats, backupCheats, restoreCheats;
         executive.setUpdatesPerSecond(60);
     };
 
-    var i, invincible, ai, isDrawPath, isDrawTarget;
+    let i, invincible, ai, isDrawPath, isDrawTarget;
     isDrawPath = {};
     isDrawTarget = {};
     backupCheats = function() {
@@ -180,25 +180,25 @@ var clearCheats, backupCheats, restoreCheats;
 })();
 
 // current level, lives, and score
-var level = 1;
-var extraLives = 0;
+let level = 1;
+let extraLives = 0;
 
 // VCR functions
 
-var savedLevel = {};
-var savedExtraLives = {};
-var savedHighScore = {};
-var savedScore = {};
-var savedState = {};
+let savedLevel = {};
+let savedExtraLives = {};
+let savedHighScore = {};
+let savedScore = {};
+let savedState = {};
 
-var saveGame = function(t) {
+const saveGame = function(t) {
     savedLevel[t] = level;
     savedExtraLives[t] = extraLives;
     savedHighScore[t] = getHighScore();
     savedScore[t] = getScore();
     savedState[t] = state;
 };
-var loadGame = function(t) {
+const loadGame = function(t) {
     level = savedLevel[t];
     if (extraLives != savedExtraLives[t]) {
         extraLives = savedExtraLives[t];
@@ -212,14 +212,14 @@ var loadGame = function(t) {
 /// SCORING
 // (manages scores and high scores for each game type)
 
-var scores = [
+const scores = [
     0,0, // pacman
     0,0, // mspac
     0,0, // cookie
     0,0, // otto
     0,0, // softman
     0 ];
-var highScores = [
+const highScores = [
     10000,10000, // pacman
     10000,10000, // mspac
     10000,10000, // cookie
@@ -227,7 +227,7 @@ var highScores = [
     10000,10000, // softman
     ];
 
-var getScoreIndex = function() {
+const getScoreIndex = function() {
     if (practiceMode) {
         return 8;
     }
@@ -235,10 +235,10 @@ var getScoreIndex = function() {
 };
 
 // handle a score increment
-var addScore = function(p) {
+const addScore = function(p) {
 
     // get current scores
-    var score = getScore();
+    let score = getScore();
 
     // handle extra life at 10000 points
     if (score < 10000 && score+p >= 10000) {
@@ -256,26 +256,26 @@ var addScore = function(p) {
     }
 };
 
-var getScore = function() {
+const getScore = function() {
     return scores[getScoreIndex()];
 };
-var setScore = function(score) {
+const setScore = function(score) {
     scores[getScoreIndex()] = score;
 };
 
-var getHighScore = function() {
+const getHighScore = function() {
     return highScores[getScoreIndex()];
 };
-var setHighScore = function(highScore) {
+const setHighScore = function(highScore) {
     highScores[getScoreIndex()] = highScore;
     saveHighScores();
 };
 // High Score Persistence
 
-var loadHighScores = function() {
-    var hs;
-    var hslen;
-    var i;
+const loadHighScores = function() {
+    let hs;
+    let hslen;
+    let i;
     if (localStorage && localStorage.highScores) {
         hs = JSON.parse(localStorage.highScores);
         hslen = hs.length;
@@ -284,7 +284,7 @@ var loadHighScores = function() {
         }
     }
 };
-var saveHighScores = function() {
+const saveHighScores = function() {
     if (localStorage) {
         localStorage.highScores = JSON.stringify(highScores);
     }

@@ -2,14 +2,14 @@
 // Sprites
 // (sprites are created using canvas paths)
 
-var drawGhostSprite = (function(){
+const drawGhostSprite = (function(){
 
     // add top of the ghost head to the current canvas path
-    var addHead = (function() {
+    const addHead = (function() {
 
         // pixel coordinates for the top of the head
         // on the original arcade ghost sprite
-        var coords = [
+        const coords = [
             0,6,
             1,3,
             2,2,
@@ -25,7 +25,7 @@ var drawGhostSprite = (function(){
         ];
 
         return function(ctx) {
-            var i;
+            let i;
             ctx.save();
 
             // translate by half a pixel to the right
@@ -48,11 +48,11 @@ var drawGhostSprite = (function(){
     })();
 
     // add first ghost animation frame feet to the current canvas path
-    var addFeet1 = (function(){
+    const addFeet1 = (function(){
 
         // pixel coordinates for the first feet animation
         // on the original arcade ghost sprite
-        var coords = [
+        const coords = [
             13,13,
             11,11,
             9,13,
@@ -66,7 +66,7 @@ var drawGhostSprite = (function(){
         ];
 
         return function(ctx) {
-            var i;
+            let i;
             ctx.save();
 
             // translate half a pixel right and down
@@ -84,11 +84,11 @@ var drawGhostSprite = (function(){
     })();
 
     // add second ghost animation frame feet to the current canvas path
-    var addFeet2 = (function(){
+    const addFeet2 = (function(){
 
         // pixel coordinates for the second feet animation
         // on the original arcade ghost sprite
-        var coords = [
+        const coords = [
             13,12,
             12,13,
             11,13,
@@ -102,7 +102,7 @@ var drawGhostSprite = (function(){
         ];
 
         return function(ctx) {
-            var i;
+            let i;
             ctx.save();
 
             // translate half a pixel right and down
@@ -120,13 +120,13 @@ var drawGhostSprite = (function(){
     })();
 
     // draw regular ghost eyes
-    var addEyes = function(ctx,dirEnum){
-        var i;
+    const addEyes = function(ctx,dirEnum){
+        let i;
 
         ctx.save();
         ctx.translate(2,3);
 
-        var coords = [
+        const coords = [
             0,1,
             1,0,
             2,0,
@@ -137,7 +137,7 @@ var drawGhostSprite = (function(){
             0,3
         ];
 
-        var drawEyeball = function() {
+        const drawEyeball = function() {
             ctx.translate(0.5,0.5);
             ctx.beginPath();
             ctx.moveTo(coords[0],coords[1]);
@@ -183,7 +183,7 @@ var drawGhostSprite = (function(){
     };
 
     // draw scared ghost face
-    var addScaredFace = function(ctx,flash){
+    const addScaredFace = function(ctx,flash){
         ctx.strokeStyle = ctx.fillStyle = flash ? "#F00" : "#FF0";
 
         // eyes
@@ -191,7 +191,7 @@ var drawGhostSprite = (function(){
         ctx.fillRect(8,5,2,2);
 
         // mouth
-        var coords = [
+        const coords = [
             1,10,
             2,9,
             3,9,
@@ -262,13 +262,13 @@ var drawGhostSprite = (function(){
 })();
 
 // draw points displayed when pac-man eats a ghost or a fruit
-var drawPacPoints = (function(){
-    var ctx;
-    var color;
+const drawPacPoints = (function(){
+    let ctx;
+    let color;
 
-    var plotOutline = function(points,color) {
-        var len = points.length;
-        var i;
+    const plotOutline = function(points,color) {
+        let len = points.length;
+        let i;
         ctx.beginPath();
         ctx.moveTo(points[0],points[1]);
         for (i=2; i<len; i+=2) {
@@ -281,9 +281,9 @@ var drawPacPoints = (function(){
         ctx.stroke();
     };
 
-    var plotLine = function(points,color) {
-        var len = points.length;
-        var i;
+    const plotLine = function(points,color) {
+        let len = points.length;
+        let i;
         ctx.beginPath();
         ctx.moveTo(points[0],points[1]);
         for (i=2; i<len; i+=2) {
@@ -295,7 +295,7 @@ var drawPacPoints = (function(){
         ctx.stroke();
     };
 
-    var draw0 = function(x,y) {
+    const draw0 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotOutline([
@@ -311,11 +311,11 @@ var drawPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw1narrow = function(x,y) {
+    const draw1narrow = function(x,y) {
         plotLine([x,y,x,y+6],color);
     };
 
-    var draw1 = function(x,y) {
+    const draw1 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotLine([
@@ -328,7 +328,7 @@ var drawPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw2 = function(x,y) {
+    const draw2 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotLine([
@@ -344,7 +344,7 @@ var drawPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw3 = function(x,y) {
+    const draw3 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotLine([
@@ -360,7 +360,7 @@ var drawPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw4 = function(x,y) {
+    const draw4 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotLine([
@@ -373,7 +373,7 @@ var drawPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw5 = function(x,y) {
+    const draw5 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotLine([
@@ -390,7 +390,7 @@ var drawPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw6 = function(x,y) {
+    const draw6 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotLine([
@@ -407,7 +407,7 @@ var drawPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw7 = function(x,y) {
+    const draw7 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotLine([
@@ -421,7 +421,7 @@ var drawPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw8 = function(x,y) {
+    const draw8 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotOutline([
@@ -445,77 +445,77 @@ var drawPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw100 = function() {
+    const draw100 = function() {
         draw1(-5,-3);
         draw0(-1,-3);
         draw0(4,-3);
     };
 
-    var draw200 = function() {
+    const draw200 = function() {
         draw2(-7,-3);
         draw0(-1,-3);
         draw0(4,-3);
     };
 
-    var draw300 = function() {
+    const draw300 = function() {
         draw3(-7,-3);
         draw0(-1,-3);
         draw0(4,-3);
     };
     
-    var draw400 = function() {
+    const draw400 = function() {
         draw4(-7,-3);
         draw0(-1,-3);
         draw0(4,-3);
     };
 
-    var draw500 = function() {
+    const draw500 = function() {
         draw5(-7,-3);
         draw0(-1,-3);
         draw0(4,-3);
     };
 
-    var draw700 = function() {
+    const draw700 = function() {
         draw7(-7,-3);
         draw0(-1,-3);
         draw0(4,-3);
     };
 
-    var draw800 = function() {
+    const draw800 = function() {
         draw8(-7,-3);
         draw0(-1,-3);
         draw0(4,-3);
     };
 
-    var draw1000 = function() {
+    const draw1000 = function() {
         draw1(-8,-3);
         draw0(-4,-3);
         draw0(1,-3);
         draw0(6,-3);
     };
     
-    var draw1600 = function() {
+    const draw1600 = function() {
         draw1narrow(-7,-3);
         draw6(-5,-3);
         draw0(0,-3);
         draw0(5,-3);
     };
 
-    var draw2000 = function() {
+    const draw2000 = function() {
         draw2(-10,-3);
         draw0(-4,-3);
         draw0(1,-3);
         draw0(6,-3);
     };
 
-    var draw3000 = function() {
+    const draw3000 = function() {
         draw3(-10,-3);
         draw0(-4,-3);
         draw0(1,-3);
         draw0(6,-3);
     };
 
-    var draw5000 = function() {
+    const draw5000 = function() {
         draw5(-10,-3);
         draw0(-4,-3);
         draw0(1,-3);
@@ -530,7 +530,7 @@ var drawPacPoints = (function(){
         ctx.translate(x+0.5,y+0.5);
         ctx.translate(0,-1);
 
-        var f = {
+        let f = {
             100: draw100,
             200: draw200,
             300: draw300,
@@ -554,13 +554,13 @@ var drawPacPoints = (function(){
 })();
 
 // draw points displayed when ms. pac-man eats a fruit
-var drawMsPacPoints = (function(){
-    var ctx;
-    var color = "#fff";
+const drawMsPacPoints = (function(){
+    let ctx;
+    let color = "#fff";
 
-    var plotOutline = function(points,color) {
-        var len = points.length;
-        var i;
+    const plotOutline = function(points,color) {
+        let len = points.length;
+        let i;
         ctx.beginPath();
         ctx.moveTo(points[0],points[1]);
         for (i=2; i<len; i+=2) {
@@ -573,9 +573,9 @@ var drawMsPacPoints = (function(){
         ctx.stroke();
     };
 
-    var plotLine = function(points,color) {
-        var len = points.length;
-        var i;
+    const plotLine = function(points,color) {
+        let len = points.length;
+        let i;
         ctx.beginPath();
         ctx.moveTo(points[0],points[1]);
         for (i=2; i<len; i+=2) {
@@ -588,7 +588,7 @@ var drawMsPacPoints = (function(){
     };
 
 
-    var draw0 = function(x,y) {
+    const draw0 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotOutline([
@@ -600,7 +600,7 @@ var drawMsPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw1 = function(x,y) {
+    const draw1 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotLine([
@@ -610,7 +610,7 @@ var drawMsPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw2 = function(x,y) {
+    const draw2 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotLine([
@@ -624,7 +624,7 @@ var drawMsPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw5 = function(x,y) {
+    const draw5 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotLine([
@@ -638,7 +638,7 @@ var drawMsPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw7 = function(x,y) {
+    const draw7 = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotLine([
@@ -649,45 +649,45 @@ var drawMsPacPoints = (function(){
         ctx.restore();
     };
 
-    var draw100 = function() {
+    const draw100 = function() {
         draw1(-5,-5);
         draw0(-1,-2);
         draw0(3,1);
     };
 
-    var draw200 = function() {
+    const draw200 = function() {
         draw2(-5,-5);
         draw0(-1,-2);
         draw0(3,1);
     };
 
-    var draw500 = function() {
+    const draw500 = function() {
         draw5(-5,-5);
         draw0(-1,-2);
         draw0(3,1);
     };
 
-    var draw700 = function() {
+    const draw700 = function() {
         draw7(-5,-5);
         draw0(-1,-2);
         draw0(3,1);
     };
 
-    var draw1000 = function() {
+    const draw1000 = function() {
         draw1(-7,-7);
         draw0(-3,-4);
         draw0(1,-1);
         draw0(5,2);
     };
 
-    var draw2000 = function() {
+    const draw2000 = function() {
         draw2(-7,-7);
         draw0(-3,-4);
         draw0(1,-1);
         draw0(5,2);
     };
 
-    var draw5000 = function() {
+    const draw5000 = function() {
         draw5(-7,-7);
         draw0(-3,-4);
         draw0(1,-1);
@@ -700,7 +700,7 @@ var drawMsPacPoints = (function(){
         ctx.save();
         ctx.translate(x+0.5,y+0.5);
 
-        var f = {
+        let f = {
             100: draw100,
             200: draw200,
             500: draw500,
@@ -718,13 +718,13 @@ var drawMsPacPoints = (function(){
     };
 })();
 
-var drawMonsterSprite = (function(){
-    var ctx;
-    var color;
+const drawMonsterSprite = (function(){
+    let ctx;
+    let color;
 
-    var plotOutline = function(points,color) {
-        var len = points.length;
-        var i;
+    const plotOutline = function(points,color) {
+        let len = points.length;
+        let i;
         ctx.beginPath();
         ctx.moveTo(points[0],points[1]);
         for (i=2; i<len; i+=2) {
@@ -737,9 +737,9 @@ var drawMonsterSprite = (function(){
         ctx.stroke();
     };
 
-    var plotLine = function(points,color) {
-        var len = points.length;
-        var i;
+    const plotLine = function(points,color) {
+        let len = points.length;
+        let i;
         ctx.beginPath();
         ctx.moveTo(points[0],points[1]);
         for (i=2; i<len; i+=2) {
@@ -751,9 +751,9 @@ var drawMonsterSprite = (function(){
         ctx.stroke();
     };
 
-    var plotSolid = function(points,color) {
-        var len = points.length;
-        var i;
+    const plotSolid = function(points,color) {
+        let len = points.length;
+        let i;
         ctx.beginPath();
         ctx.moveTo(points[0],points[1]);
         for (i=2; i<len; i+=2) {
@@ -769,8 +769,8 @@ var drawMonsterSprite = (function(){
 
 
     // draw regular ghost eyes
-    var drawEye = function(dirEnum,x,y){
-        var i;
+    const drawEye = function(dirEnum,x,y){
+        let i;
 
         ctx.save();
         ctx.translate(x,y);
@@ -803,7 +803,7 @@ var drawMonsterSprite = (function(){
         ctx.restore();
     };
 
-    var drawRightBody = function() {
+    const drawRightBody = function() {
         plotSolid([
             -7,-3,
             -3,-7,
@@ -824,7 +824,7 @@ var drawMonsterSprite = (function(){
         ],color);
     };
 
-    var drawRightShoe = function(x,y) {
+    const drawRightShoe = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
         plotSolid([
@@ -838,7 +838,7 @@ var drawMonsterSprite = (function(){
         ctx.restore();
     };
 
-    var drawRight0 = function() {
+    const drawRight0 = function() {
         // antenna tips
         plotLine([-1,-7,0,-6],"#FFF");
         plotLine([5,-7,6,-6],"#FFF");
@@ -852,7 +852,7 @@ var drawMonsterSprite = (function(){
         drawEye(DIR_RIGHT,2,-4);
     };
 
-    var drawRight1 = function() {
+    const drawRight1 = function() {
         // antenna tips
         plotLine([-1,-7,0,-7],"#FFF");
         plotLine([5,-7,6,-7],"#FFF");
@@ -866,19 +866,19 @@ var drawMonsterSprite = (function(){
         drawEye(DIR_RIGHT,2,-4);
     };
 
-    var drawLeft0 = function() {
+    const drawLeft0 = function() {
         ctx.scale(-1,1);
         ctx.translate(1,0);
         drawRight0();
     };
     
-    var drawLeft1 = function() {
+    const drawLeft1 = function() {
         ctx.scale(-1,1);
         ctx.translate(1,0);
         drawRight1();
     };
 
-    var drawUpDownBody0 = function() {
+    const drawUpDownBody0 = function() {
         plotLine([-6,-7,-7,-6],"#FFF");
         plotLine([5,-7,6,-6],"#FFF");
         plotSolid([
@@ -909,7 +909,7 @@ var drawMonsterSprite = (function(){
         ],color);
     };
 
-    var drawUpDownBody1 = function() {
+    const drawUpDownBody1 = function() {
         plotLine([-6,-6,-7,-5],"#FFF");
         plotLine([5,-6,6,-5],"#FFF");
         plotSolid([
@@ -942,7 +942,7 @@ var drawMonsterSprite = (function(){
         ],color);
     };
 
-    var drawUp0 = function() {
+    const drawUp0 = function() {
         drawUpDownBody0();
         drawEye(DIR_UP,-5,-5);
         drawEye(DIR_UP,1,-5);
@@ -954,7 +954,7 @@ var drawMonsterSprite = (function(){
         ],"#00F");
     };
 
-    var drawUp1 = function() {
+    const drawUp1 = function() {
         drawUpDownBody1();
         drawEye(DIR_UP,-5,-5);
         drawEye(DIR_UP,1,-5);
@@ -966,7 +966,7 @@ var drawMonsterSprite = (function(){
         ],"#00F");
     };
 
-    var drawDown0 = function() {
+    const drawDown0 = function() {
         drawUpDownBody0();
         drawEye(DIR_DOWN,-5,-4);
         drawEye(DIR_DOWN,1,-4);
@@ -982,7 +982,7 @@ var drawMonsterSprite = (function(){
         plotLine([-4,6,-2,6],"#00F");
     };
 
-    var drawDown1 = function() {
+    const drawDown1 = function() {
         drawUpDownBody1();
         drawEye(DIR_DOWN,-5,-4);
         drawEye(DIR_DOWN,1,-4);
@@ -998,10 +998,10 @@ var drawMonsterSprite = (function(){
         plotLine([1,6,3,6],"#00F");
     };
 
-    var borderColor;
-    var faceColor;
+    let borderColor;
+    let faceColor;
 
-    var drawScaredBody = function() {
+    const drawScaredBody = function() {
         plotOutline([
             -6,-2,
             -2,-5,
@@ -1032,7 +1032,7 @@ var drawMonsterSprite = (function(){
     };
 
 
-    var drawScared0 = function(flash) {
+    const drawScared0 = function(flash) {
         plotLine([-2,-2,-2,0],faceColor);
         plotLine([-3,-1,-1,-1],faceColor);
         plotLine([2,-2,2,0],faceColor);
@@ -1042,7 +1042,7 @@ var drawMonsterSprite = (function(){
         drawScaredBody();
     };
 
-    var drawScared1 = function(flash) {
+    const drawScared1 = function(flash) {
         plotLine([-3,-2,-1,0],faceColor);
         plotLine([-3,0,-1,-2],faceColor);
         plotLine([1,-2,3,0],faceColor);
@@ -1086,12 +1086,12 @@ var drawMonsterSprite = (function(){
     };
 })();
 
-var drawColoredSoftmanSprite = function(color,eyeColor) {
-    var ctx;
+const drawColoredSoftmanSprite = function(color,eyeColor) {
+    let ctx;
 
-    var plotLine = function(points,color) {
-        var len = points.length;
-        var i;
+    const plotLine = function(points,color) {
+        let len = points.length;
+        let i;
         ctx.beginPath();
         ctx.moveTo(points[0],points[1]);
         for (i=2; i<len; i+=2) {
@@ -1103,9 +1103,9 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
         ctx.stroke();
     };
 
-    var plotSolid = function(points,color) {
-        var len = points.length;
-        var i;
+    const plotSolid = function(points,color) {
+        let len = points.length;
+        let i;
         ctx.beginPath();
         ctx.moveTo(points[0],points[1]);
         for (i=2; i<len; i+=2) {
@@ -1119,7 +1119,7 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
         ctx.stroke();
     };
 
-    var drawRightEye = function() {
+    const drawRightEye = function() {
         plotSolid([
             -4,-5,
             -3,-6,
@@ -1130,7 +1130,7 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
         ],eyeColor);
     };
 
-    var drawRight0 = function() {
+    const drawRight0 = function() {
         plotSolid([
             -5,-4,
             -3,-6,
@@ -1158,7 +1158,7 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
         ],color);
         drawRightEye();
     };
-    var drawRight1 = function() {
+    const drawRight1 = function() {
         plotSolid([
             -5,-4,
             -3,-6,
@@ -1184,7 +1184,7 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
         ],color);
         drawRightEye();
     };
-    var drawRight2 = function() {
+    const drawRight2 = function() {
         plotSolid([
             -5,-4,
             -3,-6,
@@ -1208,7 +1208,7 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
         ],color);
         drawRightEye();
     };
-    var drawRight3 = function() {
+    const drawRight3 = function() {
         plotSolid([
             -5,-4,
             -3,-6,
@@ -1235,7 +1235,7 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
         drawRightEye();
     };
 
-    var drawUpDownEyes = function() {
+    const drawUpDownEyes = function() {
         plotSolid([
             -5,-5,
             -4,-6,
@@ -1254,7 +1254,7 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
         ],eyeColor);
     };
 
-    var drawUpDownHead = function() {
+    const drawUpDownHead = function() {
         plotSolid([
             -4,-4,
             -2,-6,
@@ -1267,7 +1267,7 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
         ],color);
     };
 
-    var drawUpDownLeg0 = function(y,xs) {
+    const drawUpDownLeg0 = function(y,xs) {
         ctx.save();
         ctx.translate(0,y);
         ctx.scale(xs,1);
@@ -1284,7 +1284,7 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
         ctx.restore();
     };
 
-    var drawUpDownLeg1 = function(y,xs) {
+    const drawUpDownLeg1 = function(y,xs) {
         ctx.save();
         ctx.translate(0,y);
         ctx.scale(xs,1);
@@ -1304,44 +1304,44 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
 
         ctx.restore();
     };
-    var drawUpDownLegs0 = function() {
+    const drawUpDownLegs0 = function() {
         drawUpDownLeg0(0,-1);
         drawUpDownLeg1(-2,1);
     };
 
-    var drawUpDownLegs1 = function() {
+    const drawUpDownLegs1 = function() {
         drawUpDownLeg0(-2,-1);
         drawUpDownLeg1(-2,1);
     };
 
-    var drawUpDownLegs2 = function() {
+    const drawUpDownLegs2 = function() {
         drawUpDownLeg1(-2,-1);
         drawUpDownLeg0(0,1);
     };
 
-    var drawUpDownLegs3 = function() {
+    const drawUpDownLegs3 = function() {
         drawUpDownLeg1(0,-1);
         drawUpDownLeg0(0,1);
     };
 
-    var drawDown0 = function() {
+    const drawDown0 = function() {
         drawUpDownHead();
         drawUpDownEyes();
         drawUpDownLegs0();
         plotLine([-2,-3,2,-3],"#000");
     };
-    var drawDown1 = function() {
+    const drawDown1 = function() {
         drawUpDownHead();
         drawUpDownEyes();
         drawUpDownLegs1();
     };
-    var drawDown2 = function() {
+    const drawDown2 = function() {
         drawUpDownHead();
         drawUpDownEyes();
         drawUpDownLegs2();
         plotLine([-2,-3,2,-3],"#000");
     };
-    var drawDown3 = function() {
+    const drawDown3 = function() {
         drawUpDownHead();
         drawUpDownEyes();
         drawUpDownLegs3();
@@ -1353,22 +1353,22 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
         ],"#000");
     };
 
-    var drawUp0 = function() {
+    const drawUp0 = function() {
         drawUpDownEyes();
         drawUpDownHead();
         drawUpDownLegs0();
     };
-    var drawUp1 = function() {
+    const drawUp1 = function() {
         drawUpDownEyes();
         drawUpDownHead();
         drawUpDownLegs1();
     };
-    var drawUp2 = function() {
+    const drawUp2 = function() {
         drawUpDownEyes();
         drawUpDownHead();
         drawUpDownLegs2();
     };
-    var drawUp3 = function() {
+    const drawUp3 = function() {
         drawUpDownEyes();
         drawUpDownHead();
         drawUpDownLegs3();
@@ -1405,13 +1405,13 @@ var drawColoredSoftmanSprite = function(color,eyeColor) {
     };
 };
 
-var drawSoftmanSprite = drawColoredSoftmanSprite("#47b8ff","#FFF");
-var drawMsSoftmanSprite = drawColoredSoftmanSprite("#47b8ff","#00F");
+const drawSoftmanSprite = drawColoredSoftmanSprite("#47b8ff","#FFF");
+const drawMsSoftmanSprite = drawColoredSoftmanSprite("#47b8ff","#00F");
 
-var drawDeadSoftmanSprite = function(ctx,x,y) {
-    var plotOutline = function(points,color) {
-        var len = points.length;
-        var i;
+const drawDeadSoftmanSprite = function(ctx,x,y) {
+    const plotOutline = function(points,color) {
+        let len = points.length;
+        let i;
         ctx.beginPath();
         ctx.moveTo(points[0],points[1]);
         for (i=2; i<len; i+=2) {
@@ -1441,7 +1441,7 @@ var drawDeadSoftmanSprite = function(ctx,x,y) {
 
 
 // draw pacman body
-var drawPacmanSprite = function(ctx,x,y,dirEnum,angle,mouthShift,scale,centerShift,alpha,color,rot_angle) {
+const drawPacmanSprite = function(ctx,x,y,dirEnum,angle,mouthShift,scale,centerShift,alpha,color,rot_angle) {
 
     if (mouthShift == undefined) mouthShift = 0;
     if (centerShift == undefined) centerShift = 0;
@@ -1460,7 +1460,7 @@ var drawPacmanSprite = function(ctx,x,y,dirEnum,angle,mouthShift,scale,centerShi
     }
 
     // rotate to current heading direction
-    var d90 = Math.PI/2;
+    let d90 = Math.PI/2;
     if (dirEnum == DIR_UP) ctx.rotate(3*d90);
     else if (dirEnum == DIR_RIGHT) ctx.rotate(0);
     else if (dirEnum == DIR_DOWN) ctx.rotate(d90);
@@ -1483,11 +1483,11 @@ var drawPacmanSprite = function(ctx,x,y,dirEnum,angle,mouthShift,scale,centerShi
 };
 
 // draw giant pacman body
-var drawGiantPacmanSprite = function(ctx,x,y,dirEnum,frame) {
+const drawGiantPacmanSprite = function(ctx,x,y,dirEnum,frame) {
     
-    var color = "#47b8ff";;
-    var mouthShift = 0;
-    var angle = 0;
+    let color = "#47b8ff";;
+    let mouthShift = 0;
+    let angle = 0;
 
     if (frame == 1) {
         mouthShift = -4;
@@ -1502,7 +1502,7 @@ var drawGiantPacmanSprite = function(ctx,x,y,dirEnum,frame) {
     ctx.translate(x,y);
 
     // rotate to current heading direction
-    var d90 = Math.PI/2;
+    let d90 = Math.PI/2;
     if (dirEnum == DIR_UP) ctx.rotate(3*d90);
     else if (dirEnum == DIR_RIGHT) ctx.rotate(0);
     else if (dirEnum == DIR_DOWN) ctx.rotate(d90);
@@ -1524,11 +1524,11 @@ var drawGiantPacmanSprite = function(ctx,x,y,dirEnum,frame) {
 };
 
 // draw giant softman body
-var drawGiantSoftmanSprite = function(ctx,x,y,dirEnum,frame) {
+const drawGiantSoftmanSprite = function(ctx,x,y,dirEnum,frame) {
     
-    var color = "#47b8ff";;
-    var mouthShift = 0;
-    var angle = 0;
+    let color = "#47b8ff";;
+    let mouthShift = 0;
+    let angle = 0;
 
     if (frame == 1) {
         mouthShift = -4;
@@ -1543,7 +1543,7 @@ var drawGiantSoftmanSprite = function(ctx,x,y,dirEnum,frame) {
     ctx.translate(x,y);
 
     // rotate to current heading direction
-    var d90 = Math.PI/2;
+    let d90 = Math.PI/2;
     if (dirEnum == DIR_UP) ctx.rotate(3*d90);
     else if (dirEnum == DIR_RIGHT) ctx.rotate(0);
     else if (dirEnum == DIR_DOWN) ctx.rotate(d90);
@@ -1565,8 +1565,8 @@ var drawGiantSoftmanSprite = function(ctx,x,y,dirEnum,frame) {
 };
 
 
-var drawMsPacmanSprite = function(ctx,x,y,dirEnum,frame,rot_angle) {
-    var angle = 0;
+const drawMsPacmanSprite = function(ctx,x,y,dirEnum,frame,rot_angle) {
+    let angle = 0;
 
     // draw body
     if (frame == 0) {
@@ -1593,7 +1593,7 @@ var drawMsPacmanSprite = function(ctx,x,y,dirEnum,frame,rot_angle) {
     }
 
     // reflect or rotate sprite according to current direction
-    var d90 = Math.PI/2;
+    let d90 = Math.PI/2;
     if (dirEnum == DIR_UP)
         ctx.rotate(-d90);
     else if (dirEnum == DIR_DOWN)
@@ -1602,7 +1602,8 @@ var drawMsPacmanSprite = function(ctx,x,y,dirEnum,frame,rot_angle) {
         ctx.scale(-1,1);
 
     // bow
-    var x=-7.5,y=-7.5;
+    x=-7.5;
+    y=-7.5;
     ctx.fillStyle = "#F00";
     ctx.beginPath(); ctx.arc(x+1,y+4,1.25,0,Math.PI*2); ctx.closePath(); ctx.fill();
     ctx.beginPath(); ctx.arc(x+2,y+5,1.25,0,Math.PI*2); ctx.closePath(); ctx.fill();
@@ -1625,10 +1626,10 @@ var drawMsPacmanSprite = function(ctx,x,y,dirEnum,frame,rot_angle) {
         ctx.lineTo(6.5,1.5);
     }
     else {
-        var r1 = 7.5;
-        var r2 = 8.5;
-        var c = Math.cos(angle);
-        var s = Math.sin(angle);
+        let r1 = 7.5;
+        let r2 = 8.5;
+        let c = Math.cos(angle);
+        let s = Math.sin(angle);
         ctx.moveTo(-3+r1*c,r1*s);
         ctx.lineTo(-3+r2*c,r2*s);
         ctx.moveTo(-3+r1*c,-r1*s);
@@ -1651,10 +1652,10 @@ var drawMsPacmanSprite = function(ctx,x,y,dirEnum,frame,rot_angle) {
         ctx.lineTo(-0.5,-2);
     }
     else {
-        var r1 = 0.5;
-        var r2 = 2.5;
-        var c = Math.cos(angle);
-        var s = Math.sin(angle);
+        let r1 = 0.5;
+        let r2 = 2.5;
+        let c = Math.cos(angle);
+        let s = Math.sin(angle);
         ctx.moveTo(-3+r1*c,-2-r1*s);
         ctx.lineTo(-3+r2*c,-2-r2*s);
     }
@@ -1663,25 +1664,25 @@ var drawMsPacmanSprite = function(ctx,x,y,dirEnum,frame,rot_angle) {
     ctx.restore();
 };
 
-var drawCookiemanSprite = (function(){
+const drawCookiemanSprite = (function(){
 
     // TODO: draw pupils separately in atlas
     //      composite the body frame and a random pupil frame when drawing cookie-man
 
-    var prevFrame = undefined;
-    var sx1 = 0; // shift x for first pupil
-    var sy1 = 0; // shift y for first pupil
-    var sx2 = 0; // shift x for second pupil
-    var sy2 = 0; // shift y for second pupil
+    let prevFrame = undefined;
+    let sx1 = 0; // shift x for first pupil
+    let sy1 = 0; // shift y for first pupil
+    let sx2 = 0; // shift x for second pupil
+    let sy2 = 0; // shift y for second pupil
 
-    var er = 2.1; // eye radius
-    var pr = 1; // pupil radius
+    let er = 2.1; // eye radius
+    let pr = 1; // pupil radius
 
-    var movePupils = function() {
-        var a1 = Math.random()*Math.PI*2;
-        var a2 = Math.random()*Math.PI*2;
-        var r1 = Math.random()*pr;
-        var r2 = Math.random()*pr;
+    const movePupils = function() {
+        let a1 = Math.random()*Math.PI*2;
+        let a2 = Math.random()*Math.PI*2;
+        let r1 = Math.random()*pr;
+        let r2 = Math.random()*pr;
 
         sx1 = Math.cos(a1)*r1;
         sy1 = Math.sin(a1)*r1;
@@ -1690,10 +1691,10 @@ var drawCookiemanSprite = (function(){
     };
 
     return function(ctx,x,y,dirEnum,frame,shake,rot_angle) {
-        var angle = 0;
+        let angle = 0;
 
         // draw body
-        var draw = function(angle) {
+        const draw = function(angle) {
             //angle = Math.PI/6*frame;
             drawPacmanSprite(ctx,x,y,dirEnum,angle,undefined,undefined,undefined,undefined,"#47b8ff",rot_angle);
         };
@@ -1721,7 +1722,7 @@ var drawCookiemanSprite = (function(){
         }
 
         // reflect or rotate sprite according to current direction
-        var d90 = Math.PI/2;
+        let d90 = Math.PI/2;
         if (dirEnum == DIR_UP)
             ctx.rotate(-d90);
         else if (dirEnum == DIR_DOWN)
@@ -1729,14 +1730,14 @@ var drawCookiemanSprite = (function(){
         else if (dirEnum == DIR_LEFT)
             ctx.scale(-1,1);
 
-        var x = -4; // pivot point
-        var y = -3.5;
-        var r1 = 3;   // distance from pivot of first eye
-        var r2 = 6; // distance from pivot of second eye
+        x = -4; // pivot point
+        y = -3.5;
+        let r1 = 3;   // distance from pivot of first eye
+        let r2 = 6; // distance from pivot of second eye
         angle /= 3; // angle from pivot point
         angle += Math.PI/8;
-        var c = Math.cos(angle);
-        var s = Math.sin(angle);
+        let c = Math.cos(angle);
+        let s = Math.sin(angle);
 
         if (shake) {
             if (frame != prevFrame) {
@@ -1776,10 +1777,10 @@ var drawCookiemanSprite = (function(){
 ////////////////////////////////////////////////////////////////////
 // FRUIT SPRITES
 
-var drawCherry = function(ctx,x,y) {
+const drawCherry = function(ctx,x,y) {
 
     // cherry
-    var cherry = function(x,y) {
+    const cherry = function(x,y) {
         ctx.save();
         ctx.translate(x,y);
 
@@ -1823,7 +1824,7 @@ var drawCherry = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawStrawberry = function(ctx,x,y) {
+const drawStrawberry = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -1840,7 +1841,7 @@ var drawStrawberry = function(ctx,x,y) {
     ctx.stroke();
 
     // white spots
-    var spots = [
+    spots = [
         {x:-4,y:-1},
         {x:-3,y:2 },
         {x:-2,y:0 },
@@ -1853,9 +1854,10 @@ var drawStrawberry = function(ctx,x,y) {
         {x:4, y:-2 } ];
 
     ctx.fillStyle = "#fff";
-    var i,len;
+    i = 0;
+    len = 0;
     for (i=0, len=spots.length; i<len; i++) {
-        var s = spots[i];
+        let s = spots[i];
         ctx.beginPath();
         ctx.arc(s.x,s.y,0.75,0,2*Math.PI);
         ctx.fill();
@@ -1891,7 +1893,7 @@ var drawStrawberry = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawOrange = function(ctx,x,y) {
+const drawOrange = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -1936,7 +1938,7 @@ var drawOrange = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawApple = function(ctx,x,y) {
+const drawApple = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -1974,7 +1976,7 @@ var drawApple = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawMelon = function(ctx,x,y) {
+const drawMelon = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -2016,7 +2018,7 @@ var drawMelon = function(ctx,x,y) {
     ctx.stroke();
     */
     // dark spots
-    var spots = [
+    let spots = [
         0,-2,
         -1,-1,
         -2,0,
@@ -2041,17 +2043,18 @@ var drawMelon = function(ctx,x,y) {
          ];
 
     ctx.fillStyle="#69b4af";
-    var i,len;
+    let i = 0;
+    let len = 0;
     for (i=0, len=spots.length; i<len; i+=2) {
-        var x = spots[i];
-        var y = spots[i+1];
+        let x = spots[i];
+        let y = spots[i+1];
         ctx.beginPath();
         ctx.arc(x,y,0.65,0,2*Math.PI);
         ctx.fill();
     }
 
     // white spots
-    var spots = [
+    spots = [
         {x: 0,y:-3},
         {x:-2,y:-1},
         {x:-4,y: 1},
@@ -2064,9 +2067,10 @@ var drawMelon = function(ctx,x,y) {
          ];
 
     ctx.fillStyle = "#fff";
-    var i,len;
+    i = 0;
+    len = 0;
     for (i=0, len=spots.length; i<len; i++) {
-        var s = spots[i];
+        let s = spots[i];
         ctx.beginPath();
         ctx.arc(s.x,s.y,0.65,0,2*Math.PI);
         ctx.fill();
@@ -2075,7 +2079,7 @@ var drawMelon = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawGalaxian = function(ctx,x,y) {
+const drawGalaxian = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -2131,7 +2135,7 @@ var drawGalaxian = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawBell = function(ctx,x,y) {
+const drawBell = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -2171,7 +2175,7 @@ var drawBell = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawKey = function(ctx,x,y) {
+const drawKey = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -2213,7 +2217,7 @@ var drawKey = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawPretzel = function(ctx,x,y) {
+const drawPretzel = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -2235,7 +2239,7 @@ var drawPretzel = function(ctx,x,y) {
     ctx.stroke();
 
     // salt
-    var spots = [
+    let spots = [
         -5,-6,
         1,-6,
         4,-4,
@@ -2247,10 +2251,10 @@ var drawPretzel = function(ctx,x,y) {
          ];
 
     ctx.fillStyle = "#fff";
-    var i,len;
+    let i,len;
     for (i=0, len=spots.length; i<len; i+=2) {
-        var x = spots[i];
-        var y = spots[i+1];
+        let x = spots[i];
+        let y = spots[i+1];
         ctx.beginPath();
         ctx.arc(x,y,0.65,0,2*Math.PI);
         ctx.fill();
@@ -2259,7 +2263,7 @@ var drawPretzel = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawPear = function(ctx,x,y) {
+const drawPear = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -2295,7 +2299,7 @@ var drawPear = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawBanana = function(ctx,x,y) {
+const drawBanana = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -2339,7 +2343,7 @@ var drawBanana = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawCookie = function(ctx,x,y) {
+const drawCookie = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -2351,7 +2355,7 @@ var drawCookie = function(ctx,x,y) {
     ctx.fill();
 
     // chocolate chips
-    var spots = [
+    const spots = [
         0,-3,
         -4,-1,
         0,2,
@@ -2360,10 +2364,10 @@ var drawCookie = function(ctx,x,y) {
          ];
 
     ctx.fillStyle = "#000";
-    var i,len;
+    let i,len;
     for (i=0, len=spots.length; i<len; i+=2) {
-        var x = spots[i];
-        var y = spots[i+1];
+        let x = spots[i];
+        let y = spots[i+1];
         ctx.beginPath();
         ctx.arc(x,y,0.75,0,2*Math.PI);
         ctx.fill();
@@ -2372,7 +2376,7 @@ var drawCookie = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawCookieFlash = function(ctx,x,y) {
+const drawCookieFlash = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
 
@@ -2386,7 +2390,7 @@ var drawCookieFlash = function(ctx,x,y) {
     ctx.stroke();
 
     // chocolate chips
-    var spots = [
+    let spots = [
         0,-3,
         -4,-1,
         0,2,
@@ -2395,10 +2399,10 @@ var drawCookieFlash = function(ctx,x,y) {
          ];
 
     ctx.fillStyle = "#f9bd6d";
-    var i,len;
+    let i,len;
     for (i=0, len=spots.length; i<len; i+=2) {
-        var x = spots[i];
-        var y = spots[i+1];
+        let x = spots[i];
+        let y = spots[i+1];
         ctx.beginPath();
         ctx.arc(x,y,0.75,0,2*Math.PI);
         ctx.fill();
@@ -2407,8 +2411,8 @@ var drawCookieFlash = function(ctx,x,y) {
     ctx.restore();
 };
 
-var getSpriteFuncFromFruitName = function(name) {
-    var funcs = {
+const getSpriteFuncFromFruitName = function(name) {
+    const funcs = {
         'cherry': drawCherry,
         'strawberry': drawStrawberry,
         'orange': drawOrange,
@@ -2426,7 +2430,7 @@ var getSpriteFuncFromFruitName = function(name) {
     return funcs[name];
 };
 
-var drawRecordSymbol = function(ctx,x,y,color) {
+const drawRecordSymbol = function(ctx,x,y,color) {
     ctx.save();
     ctx.fillStyle = color;
     ctx.translate(x,y);
@@ -2438,13 +2442,13 @@ var drawRecordSymbol = function(ctx,x,y,color) {
     ctx.restore();
 };
 
-var drawRewindSymbol = function(ctx,x,y,color) {
+const drawRewindSymbol = function(ctx,x,y,color) {
     ctx.save();
     ctx.fillStyle = color;
     ctx.translate(x,y);
 
-    var s = 3;
-    var drawTriangle = function(x) {
+    let s = 3;
+    const drawTriangle = function(x) {
         ctx.beginPath();
         ctx.moveTo(x,s);
         ctx.lineTo(x-2*s,0);
@@ -2458,10 +2462,10 @@ var drawRewindSymbol = function(ctx,x,y,color) {
     ctx.restore();
 };
 
-var drawUpSymbol = function(ctx,x,y,color) {
+const drawUpSymbol = function(ctx,x,y,color) {
     ctx.save();
     ctx.translate(x,y);
-    var s = tileSize;
+    let s = tileSize;
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.moveTo(0,-s/2);
@@ -2472,10 +2476,10 @@ var drawUpSymbol = function(ctx,x,y,color) {
     ctx.restore();
 };
 
-var drawDownSymbol = function(ctx,x,y,color) {
+const drawDownSymbol = function(ctx,x,y,color) {
     ctx.save();
     ctx.translate(x,y);
-    var s = tileSize;
+    let s = tileSize;
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.moveTo(0,s/2);
@@ -2486,10 +2490,10 @@ var drawDownSymbol = function(ctx,x,y,color) {
     ctx.restore();
 };
 
-var drawSnail = (function(){
-    var plotSolid = function(points,color) {
-        var len = points.length;
-        var i;
+const drawSnail = (function(){
+    const plotSolid = function(points,color) {
+        let len = points.length;
+        let i;
         ctx.beginPath();
         ctx.moveTo(points[0],points[1]);
         for (i=2; i<len; i+=2) {
@@ -2548,7 +2552,7 @@ var drawSnail = (function(){
     };
 })();
 
-var drawHeartSprite = function(ctx,x,y) {
+const drawHeartSprite = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
     ctx.fillStyle = "#ffb8ff";
@@ -2567,7 +2571,7 @@ var drawHeartSprite = function(ctx,x,y) {
     ctx.restore();
 };
 
-var drawExclamationPoint = function(ctx,x,y) {
+const drawExclamationPoint = function(ctx,x,y) {
     ctx.save();
     ctx.translate(x,y);
     ctx.lineWidth = 0.5;

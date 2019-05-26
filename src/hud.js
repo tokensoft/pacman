@@ -1,12 +1,12 @@
 
-var hud = (function(){
+const hud = (function(){
 
-    var on = false;
+    let on = false;
 
     return {
 
         update: function() {
-            var valid = this.isValidState();
+            let valid = this.isValidState();
             if (valid != on) {
                 on = valid;
                 if (on) {

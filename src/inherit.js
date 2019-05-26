@@ -16,17 +16,17 @@
 //          hello: function() { return "world"; },
 //      };
 
-var newChildObject = function(parentObj, newObj) {
+const newChildObject = function(parentObj, newObj) {
 
     // equivalent to: var resultObj = { __proto__: parentObj };
-    var x = function(){};
+    let x = function(){};
     x.prototype = parentObj;
-    var resultObj = new x();
+    let resultObj = new x();
 
     // store new members in resultObj
     if (newObj) {
-        var hasProp = {}.hasOwnProperty;
-        for (var name in newObj) {
+        let hasProp = {}.hasOwnProperty;
+        for (let name in newObj) {
             if (hasProp.call(newObj, name)) {
                 resultObj[name] = newObj[name];
             }
@@ -36,4 +36,4 @@ var newChildObject = function(parentObj, newObj) {
     return resultObj;
 };
 
-var DEBUG = false;
+let DEBUG = false;

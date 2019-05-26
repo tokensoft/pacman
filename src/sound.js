@@ -1,12 +1,12 @@
 /* Sound handlers added by Dr James Freeman who was sad such a great reverse was a silent movie  */
 
-var audio = new preloadAudio();
+const audio = new preloadAudio();
 
 function audioTrack(url, volume) {
-    var audio = new Audio(url);
+    let audio = new Audio(url);
     if (volume) audio.volume = volume;
     audio.load();
-    var looping = false;
+    let looping = false;
     this.play = function(noResetTime) {
         playSound(noResetTime);
     };
@@ -40,7 +40,7 @@ function audioTrack(url, volume) {
             if (!noResetTime ) audio.currentTime = 0;
         }
         try{
-            var playPromise = audio.play();
+            let playPromise = audio.play();
             if(playPromise) {
                 playPromise.then(function(){}).catch(function(err){});
             }
@@ -69,14 +69,14 @@ function preloadAudio() {
     this.startMusic        = new audioTrack('sounds/start-music.mp3');
 
     this.ghostReset = function(noResetTime) {
-        for (var s in this) {
+        for (let s in this) {
             if (s == 'silence' || s == 'ghostReset' ) return;
             if (s.match(/^ghost/)) this[s].stopLoop(noResetTime);
         }
     };
 
     this.silence = function(noResetTime) {
-        for (var s in this) {
+        for (let s in this) {
             if (s == 'silence' || s == 'ghostReset' ) return;
             this[s].stopLoop(noResetTime);
         }

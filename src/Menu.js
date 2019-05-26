@@ -1,4 +1,4 @@
-var Menu = function(title,x,y,w,h,pad,font,fontcolor) {
+const Menu = function(title,x,y,w,h,pad,font,fontcolor) {
     this.title = title;
     this.x = x;
     this.y = y;
@@ -23,7 +23,7 @@ var Menu = function(title,x,y,w,h,pad,font,fontcolor) {
 Menu.prototype = {
 
     clickCurrentOption: function() {
-        var i;
+        let i;
         for (i=0; i<this.buttonCount; i++) {
             if (this.buttons[i].isSelected) {
                 this.buttons[i].onclick();
@@ -33,8 +33,8 @@ Menu.prototype = {
     },
 
     selectNextOption: function() {
-        var i;
-        var nextBtn;
+        let i;
+        let nextBtn;
         for (i=0; i<this.buttonCount; i++) {
             if (this.buttons[i].isSelected) {
                 this.buttons[i].blur();
@@ -47,8 +47,8 @@ Menu.prototype = {
     },
 
     selectPrevOption: function() {
-        var i;
-        var nextBtn;
+        let i;
+        let nextBtn;
         for (i=0; i<this.buttonCount; i++) {
             if (this.buttons[i].isSelected) {
                 this.buttons[i].blur();
@@ -61,14 +61,14 @@ Menu.prototype = {
     },
 
     addToggleButton: function(isOn,setOn) {
-        var b = new ToggleButton(this.x+this.pad,this.currentY,this.w-this.pad*2,this.h,isOn,setOn);
+        const b = new ToggleButton(this.x+this.pad,this.currentY,this.w-this.pad*2,this.h,isOn,setOn);
         this.buttons.push(b);
         this.buttonCount++;
         this.currentY += this.pad + this.h;
     },
 
     addToggleTextButton: function(label,isOn,setOn) {
-        var b = new ToggleButton(this.x+this.pad,this.currentY,this.w-this.pad*2,this.h,isOn,setOn);
+        const b = new ToggleButton(this.x+this.pad,this.currentY,this.w-this.pad*2,this.h,isOn,setOn);
         b.setFont(this.font,this.fontcolor);
         b.setToggleLabel(label);
         this.buttons.push(b);
@@ -77,7 +77,7 @@ Menu.prototype = {
     },
 
     addTextButton: function(msg,onclick) {
-        var b = new Button(this.x+this.pad,this.currentY,this.w-this.pad*2,this.h,onclick);
+        const b = new Button(this.x+this.pad,this.currentY,this.w-this.pad*2,this.h,onclick);
         b.setFont(this.font,this.fontcolor);
         b.setText(msg);
         this.buttons.push(b);
@@ -86,7 +86,7 @@ Menu.prototype = {
     },
 
     addTextIconButton: function(msg,onclick,drawIcon) {
-        var b = new Button(this.x+this.pad,this.currentY,this.w-this.pad*2,this.h,onclick);
+        const b = new Button(this.x+this.pad,this.currentY,this.w-this.pad*2,this.h,onclick);
         b.setFont(this.font,this.fontcolor);
         b.setText(msg);
         b.setIcon(drawIcon);
@@ -96,7 +96,7 @@ Menu.prototype = {
     },
 
     addIconButton: function(drawIcon,onclick) {
-        var b = new Button(this.x+this.pad,this.currentY,this.w-this.pad*2,this.h,onclick);
+        const b = new Button(this.x+this.pad,this.currentY,this.w-this.pad*2,this.h,onclick);
         b.setIcon(drawIcon);
         this.buttons.push(b);
         this.buttonCount++;
@@ -111,7 +111,7 @@ Menu.prototype = {
     },
 
     enable: function() {
-        var i;
+        let i;
         for (i=0; i<this.buttonCount; i++) {
             this.buttons[i].enable();
         }
@@ -119,7 +119,7 @@ Menu.prototype = {
     },
 
     disable: function() {
-        var i;
+        let i;
         for (i=0; i<this.buttonCount; i++) {
             this.buttons[i].disable();
         }
@@ -138,14 +138,14 @@ Menu.prototype = {
             ctx.fillStyle = "#FFF";
             ctx.fillText(this.title,this.x + this.w/2, this.y+this.pad + this.h/2);
         }
-        var i;
+        let i;
         for (i=0; i<this.buttonCount; i++) {
             this.buttons[i].draw(ctx);
         }
     },
 
     update: function() {
-        var i;
+        let i;
         for (i=0; i<this.buttonCount; i++) {
             this.buttons[i].update();
         }

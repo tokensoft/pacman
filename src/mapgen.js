@@ -1,9 +1,9 @@
-var mapgen = (function(){
+const mapgen = (function(){
 
-    var shuffle = function(list) {
-        var len = list.length;
-        var i,j;
-        var temp;
+    const shuffle = function(list) {
+        let len = list.length;
+        let i,j;
+        let temp;
         for (i=0; i<len; i++) {
             j = getRandomInt(0,len-1);
             temp = list[i];
@@ -12,28 +12,28 @@ var mapgen = (function(){
         }
     };
 
-    var randomElement = function(list) {
-        var len = list.length;
+    const randomElement = function(list) {
+        let len = list.length;
         if (len > 0) {
             return list[getRandomInt(0,len-1)];
         }
     };
 
-    var UP = 0;
-    var RIGHT = 1;
-    var DOWN = 2;
-    var LEFT = 3;
+    const UP = 0;
+    const RIGHT = 1;
+    const DOWN = 2;
+    const LEFT = 3;
 
-    var cells = [];
-    var tallRows = [];
-    var narrowCols = [];
+    let cells = [];
+    let tallRows = [];
+    let narrowCols = [];
 
-    var rows = 9;
-    var cols = 5;
+    let rows = 9;
+    let cols = 5;
 
-    var reset = function() {
-        var i;
-        var c;
+    const reset = function() {
+        let i;
+        let c;
 
         // initialize cells
         for (i=0; i<rows*cols; i++) {
@@ -50,7 +50,7 @@ var mapgen = (function(){
 
         // allow each cell to refer to surround cells by direction
         for (i=0; i<rows*cols; i++) {
-            var c = cells[i];
+            let c = cells[i];
             if (c.x > 0)
                 c.next[LEFT] = cells[i-1];
             if (c.x < cols - 1)
@@ -84,14 +84,14 @@ var mapgen = (function(){
         c.connect[UP] = c.connect[LEFT] = true;
     };
 
-    var genRandom = function() {
+    const genRandom = function() {
 
-        var getLeftMostEmptyCells = function() {
-            var x;
-            var leftCells = [];
+        const getLeftMostEmptyCells = function() {
+            let x;
+            let leftCells = [];
             for (x=0; x<cols; x++) {
                 for (y=0; y<rows; y++) {
-                    var c = cells[x+y*cols];
+                    let c = cells[x+y*cols];
                     if (!c.filled) {
                         leftCells.push(c);
                     }
@@ -103,7 +103,7 @@ var mapgen = (function(){
             }
             return leftCells;
         };
-        var isOpenCell = function(cell,i,prevDir,size) {
+        const isOpenCell = function(cell,i,prevDir,size) {
 
             // prevent wall from going through starting position
             if (cell.y == 6 && cell.x == 0 && i == DOWN ||
@@ -129,9 +129,9 @@ var mapgen = (function(){
 
             return false;
         };
-        var getOpenCells = function(cell,prevDir,size) {
-            var openCells = [];
-            var numOpenCells = 0;
+        const getOpenCells = function(cell,prevDir,size) {
+            let openCells = [];
+            let numOpenCells = 0;
             for (i=0; i<4; i++) {
                 if (isOpenCell(cell,i,prevDir,size)) {
                     openCells.push(i);
@@ -140,7 +140,7 @@ var mapgen = (function(){
             }
             return { openCells: openCells, numOpenCells: numOpenCells };
         };
-        var connectCell = function(cell,dir) {
+        const connectCell = function(cell,dir) {
             cell.connect[dir] = true;
             cell.next[dir].connect[rotateAboutFace(dir)] = true;
             if (cell.x == 0 && dir == RIGHT) {
@@ -148,22 +148,22 @@ var mapgen = (function(){
             }
         };
 
-        var gen = function() {
+        const gen = function() {
         
-            var cell;      // cell at the center of growth (open cells are chosen around this cell)
-            var newCell;   // most recent cell filled
-            var firstCell; // the starting cell of the current group
+            let cell;      // cell at the center of growth (open cells are chosen around this cell)
+            let newCell;   // most recent cell filled
+            let firstCell; // the starting cell of the current group
 
-            var openCells;    // list of open cells around the center cell
-            var numOpenCells; // size of openCells
+            let openCells;    // list of open cells around the center cell
+            let numOpenCells; // size of openCells
 
-            var dir; // the most recent direction of growth relative to the center cell
-            var i;   // loop control variable used for iterating directions
+            let dir; // the most recent direction of growth relative to the center cell
+            let i;   // loop control variable used for iterating directions
 
-            var numFilled = 0;  // current count of total cells filled
-            var numGroups;      // current count of cell groups created
-            var size;           // current number of cells in the current group
-            var probStopGrowingAtSize = [ // probability of stopping growth at sizes...
+            let numFilled = 0;  // current count of total cells filled
+            let numGroups;      // current count of cell groups created
+            let size;           // current number of cells in the current group
+            let probStopGrowingAtSize = [ // probability of stopping growth at sizes...
                     0,     // size 0
                     0,     // size 1
                     0.10,  // size 2
@@ -173,17 +173,17 @@ var mapgen = (function(){
 
             // A single cell group of size 1 is allowed at each row at y=0 and y=rows-1,
             // so keep count of those created.
-            var singleCount = {};
+            let singleCount = {};
             singleCount[0] = singleCount[rows-1] = 0;
-            var probTopAndBotSingleCellJoin = 0.35;
+            let probTopAndBotSingleCellJoin = 0.35;
 
             // A count and limit of the number long pieces (i.e. an "L" of size 4 or "T" of size 5)
-            var longPieces = 0;
-            var maxLongPieces = 1;
-            var probExtendAtSize2 = 1;
-            var probExtendAtSize3or4 = 0.5;
+            let longPieces = 0;
+            let maxLongPieces = 1;
+            let probExtendAtSize2 = 1;
+            let probExtendAtSize3or4 = 0.5;
 
-            var fillCell = function(cell) {
+            const fillCell = function(cell) {
                 cell.filled = true;
                 cell.no = numFilled++;
                 cell.group = numGroups;
@@ -225,17 +225,17 @@ var mapgen = (function(){
                     // only allow the piece to grow to 5 cells at most.
                     while (size < 5) {
 
-                        var stop = false;
+                        let stop = false;
 
                         if (size == 2) {
                             // With a horizontal 2-cell group, try to turn it into a 4-cell "L" group.
                             // This is done here because this case cannot be reached when a piece has already grown to size 3.
-                            var c = firstCell;
+                            let c = firstCell;
                             if (c.x > 0 && c.connect[RIGHT] && c.next[RIGHT] && c.next[RIGHT].next[RIGHT]) {
                                 if (longPieces < maxLongPieces && Math.random() <= probExtendAtSize2) {
 
                                     c = c.next[RIGHT].next[RIGHT];
-                                    var dirs = {};
+                                    let dirs = {};
                                     if (isOpenCell(c,UP)) {
                                         dirs[UP] = true;
                                     }
@@ -271,7 +271,7 @@ var mapgen = (function(){
 
                         if (!stop) {
                             // find available open adjacent cells.
-                            var result = getOpenCells(cell,dir,size);
+                            let result = getOpenCells(cell,dir,size);
                             openCells = result['openCells'];
                             numOpenCells = result['numOpenCells'];
 
@@ -324,7 +324,7 @@ var mapgen = (function(){
                             else if (size == 2) {
 
                                 // With a vertical 2-cell group, attach to the right wall if adjacent.
-                                var c = firstCell;
+                                let c = firstCell;
                                 if (c.x == cols-1) {
 
                                     // select the top cell
@@ -339,8 +339,8 @@ var mapgen = (function(){
 
                                 // Try to extend group to have a long leg
                                 if (longPieces < maxLongPieces && firstCell.x > 0 && Math.random() <= probExtendAtSize3or4) {
-                                    var dirs = [];
-                                    var dirsLength = 0;
+                                    let dirs = [];
+                                    let dirsLength = 0;
                                     for (i=0; i<4; i++) {
                                         if (cell.connect[i] && isOpenCell(cell.next[i],i)) {
                                             dirs.push(i);
@@ -366,10 +366,10 @@ var mapgen = (function(){
         };
 
 
-        var setResizeCandidates = function() {
-            var i;
-            var c,q,c2,q2;
-            var x,y;
+        const setResizeCandidates = function() {
+            let i;
+            let c,q,c2,q2;
+            let x,y;
             for (i=0; i<rows*cols; i++) {
                 c = cells[i];
                 x = i % cols;
@@ -428,13 +428,13 @@ var mapgen = (function(){
         };
 
         // Identify if a cell is the center of a cross.
-        var cellIsCrossCenter = function(c) {
+        const cellIsCrossCenter = function(c) {
             return c.connect[UP] && c.connect[RIGHT] && c.connect[DOWN] && c.connect[LEFT];
         };
 
-        var chooseNarrowCols = function() {
+        const chooseNarrowCols = function() {
 
-            var canShrinkWidth = function(x,y) {
+            const canShrinkWidth = function(x,y) {
 
                 // Can cause no more tight turns.
                 if (y==rows-1) {
@@ -442,8 +442,8 @@ var mapgen = (function(){
                 }
 
                 // get the right-hand-side bound
-                var x0;
-                var c,c2;
+                let x0;
+                let c,c2;
                 for (x0=x; x0<cols; x0++) {
                     c = cells[x0+y*cols];
                     c2 = c.next[DOWN]
@@ -454,8 +454,8 @@ var mapgen = (function(){
                 }
 
                 // build candidate list
-                var candidates = [];
-                var numCandidates = 0;
+                let candidates = [];
+                let numCandidates = 0;
                 for (; c2; c2=c2.next[LEFT]) {
                     if (c2.isShrinkWidthCandidate) {
                         candidates.push(c2);
@@ -470,7 +470,7 @@ var mapgen = (function(){
                 }
                 shuffle(candidates);
 
-                var i;
+                let i;
                 for (i=0; i<numCandidates; i++) {
                     c2 = candidates[i];
                     if (canShrinkWidth(c2.x,c2.y)) {
@@ -483,8 +483,8 @@ var mapgen = (function(){
                 return false;
             };
 
-            var x;
-            var c;
+            let x;
+            let c;
             for (x=cols-1; x>=0; x--) {
                 c = cells[x];
                 if (c.isShrinkWidthCandidate && canShrinkWidth(x,0)) {
@@ -497,9 +497,9 @@ var mapgen = (function(){
             return false;
         };
 
-        var chooseTallRows = function() {
+        const chooseTallRows = function() {
 
-            var canRaiseHeight = function(x,y) {
+            const canRaiseHeight = function(x,y) {
 
                 // Can cause no more tight turns.
                 if (x==cols-1) {
@@ -507,9 +507,9 @@ var mapgen = (function(){
                 }
 
                 // find the first cell below that will create too tight a turn on the right
-                var y0;
-                var c;
-                var c2;
+                let y0;
+                let c;
+                let c2;
                 for (y0=y; y0>=0; y0--) {
                     c = cells[x+y0*cols];
                     c2 = c.next[RIGHT]
@@ -520,8 +520,8 @@ var mapgen = (function(){
                 }
 
                 // Proceed from the right cell upwards, looking for a cell that can be raised.
-                var candidates = [];
-                var numCandidates = 0;
+                let candidates = [];
+                let numCandidates = 0;
                 for (; c2; c2=c2.next[DOWN]) {
                     if (c2.isRaiseHeightCandidate) {
                         candidates.push(c2);
@@ -536,7 +536,7 @@ var mapgen = (function(){
                 }
                 shuffle(candidates);
 
-                var i;
+                let i;
                 for (i=0; i<numCandidates; i++) {
                     c2 = candidates[i];
                     if (canRaiseHeight(c2.x,c2.y)) {
@@ -551,8 +551,7 @@ var mapgen = (function(){
 
             // From the top left, examine cells below until hitting top of ghost house.
             // A raisable cell must be found before the ghost house.
-            var y;
-            var c;
+            let c;
             for (y=0; y<3; y++) {
                 c = cells[y*cols];
                 if (c.isRaiseHeightCandidate && canRaiseHeight(0,y)) {
@@ -566,10 +565,10 @@ var mapgen = (function(){
         };
 
         // This is a function to detect impurities in the map that have no heuristic implemented to avoid it yet in gen().
-        var isDesirable = function() {
+        const isDesirable = function() {
 
             // ensure a solid top right corner
-            var c = cells[4];
+            let c = cells[4];
             if (c.connect[UP] || c.connect[RIGHT]) {
                 return false;
             }
@@ -581,15 +580,15 @@ var mapgen = (function(){
             }
 
             // ensure there are no two stacked/side-by-side 2-cell pieces.
-            var isHori = function(x,y) {
-                var q1 = cells[x+y*cols].connect;
-                var q2 = cells[x+1+y*cols].connect;
+            const isHori = function(x,y) {
+                let q1 = cells[x+y*cols].connect;
+                let q2 = cells[x+1+y*cols].connect;
                 return !q1[UP] && !q1[DOWN] && (x==0 || !q1[LEFT]) && q1[RIGHT] && 
                        !q2[UP] && !q2[DOWN] && q2[LEFT] && !q2[RIGHT];
             };
-            var isVert = function(x,y) {
-                var q1 = cells[x+y*cols].connect;
-                var q2 = cells[x+(y+1)*cols].connect;
+            const isVert = function(x,y) {
+                let q1 = cells[x+y*cols].connect;
+                let q2 = cells[x+(y+1)*cols].connect;
                 if (x==cols-1) {
                     // special case (we can consider two single cells as vertical at the right edge)
                     return !q1[LEFT] && !q1[UP] && !q1[DOWN] &&
@@ -598,8 +597,8 @@ var mapgen = (function(){
                 return !q1[LEFT] && !q1[RIGHT] && !q1[UP] && q1[DOWN] && 
                        !q2[LEFT] && !q2[RIGHT] && q2[UP] && !q2[DOWN];
             };
-            var x,y;
-            var g;
+            let x,y;
+            let g;
             for (y=0; y<rows-1; y++) {
                 for (x=0; x<cols-1; x++) {
                     if (isHori(x,y) && isHori(x,y+1) ||
@@ -642,8 +641,8 @@ var mapgen = (function(){
         };
 
         // set the final position and size of each cell when upscaling the simple model to actual size
-        var setUpScaleCoords = function() {
-            var i,c;
+        const setUpScaleCoords = function() {
+            let i,c;
             for (i=0; i<rows*cols; i++) {
                 c = cells[i];
                 c.final_x = c.x*3;
@@ -659,9 +658,9 @@ var mapgen = (function(){
             }
         };
 
-        var reassignGroup = function(oldg,newg) {
-            var i;
-            var c;
+        const reassignGroup = function(oldg,newg) {
+            let i;
+            let c;
             for (i=0; i<rows*cols; i++) {
                 c = cells[i];
                 if (c.group == oldg) {
@@ -670,30 +669,30 @@ var mapgen = (function(){
             }
         };
 
-        var createTunnels = function() {
+        const createTunnels = function() {
 
             // declare candidates
-            var singleDeadEndCells = [];
-            var topSingleDeadEndCells = [];
-            var botSingleDeadEndCells = [];
+            let singleDeadEndCells = [];
+            let topSingleDeadEndCells = [];
+            let botSingleDeadEndCells = [];
 
-            var voidTunnelCells = [];
-            var topVoidTunnelCells = [];
-            var botVoidTunnelCells = [];
+            let voidTunnelCells = [];
+            let topVoidTunnelCells = [];
+            let botVoidTunnelCells = [];
 
-            var edgeTunnelCells = [];
-            var topEdgeTunnelCells = [];
-            var botEdgeTunnelCells = [];
+            let edgeTunnelCells = [];
+            let topEdgeTunnelCells = [];
+            let botEdgeTunnelCells = [];
 
-            var doubleDeadEndCells = [];
+            let doubleDeadEndCells = [];
 
-            var numTunnelsCreated = 0;
+            let numTunnelsCreated = 0;
 
             // prepare candidates
-            var y;
-            var c;
-            var upDead;
-            var downDead;
+            let y;
+            let c;
+            let upDead;
+            let downDead;
             for (y=0; y<rows; y++) {
                 c = cells[cols-1+y*cols];
                 if (c.connect[UP]) {
@@ -732,7 +731,7 @@ var mapgen = (function(){
                             singleDeadEndCells.push(c);
                             c.isSingleDeadEndCandidate = true;
                             c.singleDeadEndDir = upDead ? UP : DOWN;
-                            var offset = upDead ? 1 : 0;
+                            let offset = upDead ? 1 : 0;
                             if (c.y <= 1+offset) {
                                 topSingleDeadEndCells.push(c);
                             }
@@ -755,9 +754,9 @@ var mapgen = (function(){
             }
 
             // choose tunnels from candidates
-            var numTunnelsDesired = Math.random() <= 0.45 ? 2 : 1;
-            var c;
-            var selectSingleDeadEnd = function(c) {
+            let numTunnelsDesired = Math.random() <= 0.45 ? 2 : 1;
+
+            const selectSingleDeadEnd = function(c) {
                 c.connect[RIGHT] = true;
                 if (c.singleDeadEndDir == UP) {
                     c.topTunnel = true;
@@ -821,7 +820,7 @@ var mapgen = (function(){
             }
 
             // don't allow a horizontal path to cut straight through a map (through tunnels)
-            var exit,topy;
+            let exit,topy;
             for (y=0; y<rows; y++) {
                 c = cells[cols-1+y*cols];
                 if (c.topTunnel) {
@@ -844,11 +843,11 @@ var mapgen = (function(){
             }
 
             // clear unused void tunnels (dead ends)
-            var len = voidTunnelCells.length;
-            var i;
+            let len = voidTunnelCells.length;
+            let i;
 
-            var replaceGroup = function(oldg,newg) {
-                var i,c;
+            const replaceGroup = function(oldg,newg) {
+                let i,c;
                 for (i=0; i<rows*cols; i++) {
                     c = cells[i];
                     if (c.group == oldg) {
@@ -868,12 +867,12 @@ var mapgen = (function(){
             return true;
         };
 
-        var joinWalls = function() {
+        const joinWalls = function() {
 
             // randomly join wall pieces to the boundary to increase difficulty
 
-            var x,y;
-            var c;
+            let x,y;
+            let c;
 
             // join cells to the top boundary
             for (x=0; x<cols; x++) {
@@ -918,7 +917,7 @@ var mapgen = (function(){
             }
 
             // join cells to the right boundary
-            var c2;
+            let c2;
             for (y=1; y<rows-1; y++) {
                 c = cells[cols-1+y*cols];
                 if (c.raiseHeight) {
@@ -940,7 +939,7 @@ var mapgen = (function(){
         };
 
         // try to generate a valid map, and keep count of tries.
-        var genCount = 0;
+        let genCount = 0;
         while (true) {
             reset();
             gen();
@@ -961,18 +960,18 @@ var mapgen = (function(){
     };
 
     // Transform the simple cells to a tile array used for creating the map.
-    var getTiles = function() {
+    const getTiles = function() {
 
-        var tiles = []; // each is a character indicating a wall(|), path(.), or blank(_).
-        var tileCells = []; // maps each tile to a specific cell of our simple map
-        var subrows = rows*3+1+3;
-        var subcols = cols*3-1+2;
+        let tiles = []; // each is a character indicating a wall(|), path(.), or blank(_).
+        let tileCells = []; // maps each tile to a specific cell of our simple map
+        let subrows = rows*3+1+3;
+        let subcols = cols*3-1+2;
 
-        var midcols = subcols-2;
-        var fullcols = (subcols-2)*2;
+        let midcols = subcols-2;
+        let fullcols = (subcols-2)*2;
 
         // getter and setter for tiles (ensures vertical symmetry axis)
-        var setTile = function(x,y,v) {
+        const setTile = function(x,y,v) {
             if (x<0 || x>subcols-1 || y<0 || y>subrows-1) {
                 return;
             }
@@ -980,7 +979,7 @@ var mapgen = (function(){
             tiles[midcols+x+y*fullcols] = v;
             tiles[midcols-1-x+y*fullcols] = v;
         };
-        var getTile = function(x,y) {
+        const getTile = function(x,y) {
             if (x<0 || x>subcols-1 || y<0 || y>subrows-1) {
                 return undefined;
             }
@@ -989,14 +988,14 @@ var mapgen = (function(){
         };
 
         // getter and setter for tile cells
-        var setTileCell = function(x,y,cell) {
+        const setTileCell = function(x,y,cell) {
             if (x<0 || x>subcols-1 || y<0 || y>subrows-1) {
                 return;
             }
             x -= 2;
             tileCells[x+y*subcols] = cell;
         };
-        var getTileCell = function(x,y) {
+        const getTileCell = function(x,y) {
             if (x<0 || x>subcols-1 || y<0 || y>subrows-1) {
                 return undefined;
             }
@@ -1005,7 +1004,7 @@ var mapgen = (function(){
         };
 
         // initialize tiles
-        var i;
+        let i;
         for (i=0; i<subrows*fullcols; i++) {
             tiles.push('_');
         }
@@ -1014,9 +1013,9 @@ var mapgen = (function(){
         }
 
         // set tile cells
-        var c;
-        var x,y,w,h;
-        var x0,y0;
+        let c;
+        let x,y,w,h;
+        let x0,y0;
         for (i=0; i<rows*cols; i++) {
             c = cells[i];
             for (x0=0; x0<c.final_w; x0++) {
@@ -1027,7 +1026,7 @@ var mapgen = (function(){
         }
 
         // set path tiles
-        var cl, cu;
+        let cl, cu;
         for (y=0; y<subrows; y++) {
             for (x=0; x<subcols; x++) {
                 c = getTileCell(x,y); // cell
@@ -1058,7 +1057,6 @@ var mapgen = (function(){
         }
 
         // extend tunnels
-        var y;
         for (c=cells[cols-1]; c; c = c.next[DOWN]) {
             if (c.topTunnel) {
                 y = c.final_y+1;
@@ -1082,11 +1080,11 @@ var mapgen = (function(){
         setTile(2,12,'-');
 
         // set energizers
-        var getTopEnergizerRange = function() {
-            var miny;
-            var maxy = subrows/2;
-            var x = subcols-2;
-            var y;
+        const getTopEnergizerRange = function() {
+            let miny;
+            let maxy = subrows/2;
+            let x = subcols-2;
+            let y;
             for (y=2; y<maxy; y++) {
                 if (getTile(x,y) == '.' && getTile(x,y+1) == '.') {
                     miny = y+1;
@@ -1102,11 +1100,11 @@ var mapgen = (function(){
             }
             return {miny:miny, maxy:maxy};
         };
-        var getBotEnergizerRange = function() {
-            var miny = subrows/2;
-            var maxy;
-            var x = subcols-2;
-            var y;
+        const getBotEnergizerRange = function() {
+            let miny = subrows/2;
+            let maxy;
+            let x = subcols-2;
+            let y;
             for (y=subrows-3; y>=miny; y--) {
                 if (getTile(x,y) == '.' && getTile(x,y+1) == '.') {
                     maxy = y;
@@ -1122,9 +1120,9 @@ var mapgen = (function(){
             }
             return {miny:miny, maxy:maxy};
         };
-        var x = subcols-2;
-        var y;
-        var range;
+        x = subcols-2;
+        y = 0;
+        let range;
         if (range = getTopEnergizerRange()) {
             y = getRandomInt(range.miny, range.maxy);
             setTile(x,y,'o');
@@ -1135,8 +1133,8 @@ var mapgen = (function(){
         }
 
         // erase pellets in the tunnels
-        var eraseUntilIntersection = function(x,y) {
-            var adj;
+        const eraseUntilIntersection = function(x,y) {
+            let adj;
             while (true) {
                 adj = [];
                 if (getTile(x-1,y) == '.') {
@@ -1172,8 +1170,9 @@ var mapgen = (function(){
         setTile(1,subrows-8,' ');
 
         // erase pellets around the ghost house
-        var i,j;
-        var y;
+        i=0
+        j=0;
+        y=0;
         for (i=0; i<7; i++) {
 
             // erase pellets from bottom of the ghost house proceeding down until
@@ -1230,7 +1229,7 @@ var mapgen = (function(){
             "____________________________");
     };
 
-    var randomColor = function() {
+    const randomColor = function() {
         return '#'+('00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6);
     };
 
@@ -1238,11 +1237,11 @@ var mapgen = (function(){
     // we also remove (destroyX,destroyY) from the map to try to constrain the path
     // from going a certain way from the start.
     // (We created this because the ghost's minimum distance direction is not always sufficient in procedural maps)
-    var getShortestDistGraph = function(map,x0,y0,isNodeTile) {
+    const getShortestDistGraph = function(map,x0,y0,isNodeTile) {
 
         // build graph
-        var graph = {};
-        var x,y,i,j;
+        let graph = {};
+        let x,y,i,j;
         for (y=0; y<36; y++) {
             for (x=0; x<28; x++) {
                 if (isNodeTile(x,y)) {
@@ -1262,11 +1261,11 @@ var mapgen = (function(){
             }
         }
 
-        var node = graph[x0+y0*28];
+        let node = graph[x0+y0*28];
         node.completed = true;
         node.dist = 0;
-        var d;
-        var next_node,min_dist,dist;
+        let d;
+        let next_node,min_dist,dist;
         while (true) {
 
             // update distances of current node's neighbors
@@ -1311,12 +1310,12 @@ var mapgen = (function(){
     };
 
     // retrieves the direction enum from a node's penultimate node to itself.
-    var getDirFromPenult = function(node) {
+    const getDirFromPenult = function(node) {
         if (!node.penult) {
             return undefined;
         }
-        var dx = node.x - node.penult.x;
-        var dy = node.y - node.penult.y;
+        let dx = node.x - node.penult.x;
+        let dy = node.y - node.penult.y;
         if (dy == -1) {
             return DIR_UP;
         }
@@ -1333,22 +1332,22 @@ var mapgen = (function(){
 
     // sometimes the ghosts can get stuck in loops when trying to return home
     // so we build a path from all tiles to the ghost door tile
-    var makeExitPaths = function(map) {
-        var isNodeTile = function(x,y) {
+    const makeExitPaths = function(map) {
+        const isNodeTile = function(x,y) {
             if (x<0 || x>=28 || y<0 || y>=36) {
                 return false;
             }
             return map.isFloorTile(x,y);
         };
-        var graph = getShortestDistGraph(map,map.doorTile.x,map.doorTile.y,isNodeTile);
+        let graph = getShortestDistGraph(map,map.doorTile.x,map.doorTile.y,isNodeTile);
 
         // give the map a function that tells the ghost which direction to go to return home
         map.getExitDir = function(x,y) {
             if (x<0 || x>=28 || y<0 || y>=36) {
                 return undefined;
             }
-            var node = graph[x+y*28];
-            var dirEnum = getDirFromPenult(node);
+            let node = graph[x+y*28];
+            let dirEnum = getDirFromPenult(node);
             if (dirEnum != undefined) {
                 return rotateAboutFace(dirEnum); // reverse direction (door->ghost to door<-ghost)
             }
@@ -1356,34 +1355,34 @@ var mapgen = (function(){
     };
 
     // add fruit paths to a map
-    var makeFruitPaths = (function(){
-        var reversed = {
+    const makeFruitPaths = (function(){
+        const reversed = {
             'v':'^',
             '^':'v',
             '<':'>',
             '>':'<',
         };
-        var reversePath = function(path) {
-            var rpath = "";
-            var i;
+        const reversePath = function(path) {
+            let rpath = "";
+            let i;
             for (i=path.length-1; i>=0; i--) {
                 rpath += reversed[path[i]];
             }
             return rpath;
         };
 
-        var dirChars = {};
+        let dirChars = {};
         dirChars[DIR_UP] = '^';
         dirChars[DIR_DOWN] = 'v';
         dirChars[DIR_LEFT] = '<';
         dirChars[DIR_RIGHT] = '>';
 
-        var getPathFromGraph = function(graph,x0,y0,x1,y1,reverse) {
+        const getPathFromGraph = function(graph,x0,y0,x1,y1,reverse) {
             // from (x0,y0) to (x1,y1)
-            var start_node = graph[x0+y0*28];
-            var dx,dy;
-            var path = "";
-            var node;
+            let start_node = graph[x0+y0*28];
+            let dx,dy;
+            let path = "";
+            let node;
             for (node=graph[x1+y1*28]; node!=start_node; node=node.penult) {
                 path = dirChars[getDirFromPenult(node)] + path;
             }
@@ -1394,7 +1393,7 @@ var mapgen = (function(){
 
             paths = {entrances:[], exits:[]};
 
-            var isFloorTile = function(x,y) {
+            const isFloorTile = function(x,y) {
                 if (x<0 || x>=28 || y<0 || y>=36) {
                     return false
                 }
@@ -1436,7 +1435,7 @@ var mapgen = (function(){
 
     return function() {
         genRandom();
-        var map = new Map(28,36,getTiles());
+        let map = new Map(28,36,getTiles());
 
         makeFruitPaths(map);
         makeExitPaths(map);

@@ -1,21 +1,21 @@
 ////////////////////////////////////////////////////
 // In-Game Menu
-var inGameMenu = (function() {
+const inGameMenu = (function() {
 
-    var w=tileSize*6,h=tileSize*3;
+    let w=tileSize*6,h=tileSize*3;
 
-    var getMainMenu = function() {
+    const getMainMenu = function() {
         return practiceMode ? practiceMenu : menu;
     };
-    var showMainMenu = function() {
+    const showMainMenu = function() {
         getMainMenu().enable();
     };
-    var hideMainMenu = function() {
+    const hideMainMenu = function() {
         getMainMenu().disable();
     };
 
     // button to enable in-game menu
-    var btn = new Button(mapWidth/2 - w/2,mapHeight,w,h, function() {
+    let btn = new Button(mapWidth/2 - w/2,mapHeight,w,h, function() {
         showMainMenu();
         vcr.onHudDisable();
     });
@@ -23,7 +23,7 @@ var inGameMenu = (function() {
     btn.setFont(tileSize+"px ArcadeR","#FFF");
 
     // confirms a menu action
-    var confirmMenu = new Menu("QUESTION?",2*tileSize,5*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    let confirmMenu = new Menu("QUESTION?",2*tileSize,5*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
     confirmMenu.addTextButton("YES", function() {
         confirmMenu.disable();
         confirmMenu.onConfirm();
@@ -38,7 +38,7 @@ var inGameMenu = (function() {
     });
     confirmMenu.backButton = confirmMenu.buttons[confirmMenu.buttonCount-1];
 
-    var showConfirm = function(title,onConfirm) {
+    const showConfirm = function(title,onConfirm) {
         hideMainMenu();
         confirmMenu.title = title;
         confirmMenu.onConfirm = onConfirm;
@@ -46,7 +46,7 @@ var inGameMenu = (function() {
     };
 
     // regular menu
-    var menu = new Menu("PAUSED",2*tileSize,5*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    let menu = new Menu("PAUSED",2*tileSize,5*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
     menu.addTextButton("RESUME", function() {
         menu.disable();
     });
@@ -58,7 +58,7 @@ var inGameMenu = (function() {
     menu.backButton = menu.buttons[0];
 
     // practice menu
-    var practiceMenu = new Menu("PAUSED",2*tileSize,5*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    let practiceMenu = new Menu("PAUSED",2*tileSize,5*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
     practiceMenu.addTextButton("RESUME", function() {
         hideMainMenu();
         vcr.onHudEnable();
@@ -88,7 +88,7 @@ var inGameMenu = (function() {
     practiceMenu.backButton = practiceMenu.buttons[0];
 
     // cheats menu
-    var cheatsMenu = new Menu("CHEATS",2*tileSize,5*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
+    let cheatsMenu = new Menu("CHEATS",2*tileSize,5*tileSize,mapWidth-4*tileSize,3*tileSize,tileSize,tileSize+"px ArcadeR", "#EEE");
     cheatsMenu.addToggleTextButton("INVINCIBLE",
         function() {
             return pacman.invincible;
@@ -108,7 +108,7 @@ var inGameMenu = (function() {
             return blinky.isDrawTarget;
         },
         function(on) {
-            for (var i=0; i<4; i++) {
+            for (let i=0; i<4; i++) {
                 ghosts[i].isDrawTarget = on;
             }
         });
@@ -117,7 +117,7 @@ var inGameMenu = (function() {
             return blinky.isDrawPath;
         },
         function(on) {
-            for (var i=0; i<4; i++) {
+            for (let i=0; i<4; i++) {
                 ghosts[i].isDrawPath = on;
             }
         });
@@ -128,11 +128,11 @@ var inGameMenu = (function() {
     });
     cheatsMenu.backButton = cheatsMenu.buttons[cheatsMenu.buttons.length-1];
 
-    var menus = [menu, practiceMenu, confirmMenu, cheatsMenu];
-    var getVisibleMenu = function() {
-        var len = menus.length;
-        var i;
-        var m;
+    const menus = [menu, practiceMenu, confirmMenu, cheatsMenu];
+    const getVisibleMenu = function() {
+        let len = menus.length;
+        let i;
+        let m;
         for (i=0; i<len; i++) {
             m = menus[i];
             if (m.isEnabled()) {
@@ -154,7 +154,7 @@ var inGameMenu = (function() {
             }
         },
         draw: function(ctx) {
-            var m = getVisibleMenu();
+            let m = getVisibleMenu();
             if (m) {
                 ctx.fillStyle = "rgba(0,0,0,0.8)";
                 ctx.fillRect(-mapPad-1,-mapPad-1,mapWidth+1,mapHeight+1);

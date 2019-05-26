@@ -3,13 +3,13 @@
 // (an ascii map of tiles representing a level maze)
 
 // size of a square tile in pixels
-var tileSize = 8;
+const tileSize = 8;
 
 // the center pixel of a tile
-var midTile = {x:3, y:4};
+const midTile = {x:3, y:4};
 
 // constructor
-var Map = function(numCols, numRows, tiles) {
+const Map = function(numCols, numRows, tiles) {
 
     // sizes
     this.numCols = numCols;
@@ -44,7 +44,7 @@ Map.prototype.save = function(t) {
 Map.prototype.eraseFuture = function(t) {
     // current state at t.
     // erase all states after t.
-    var i;
+    let i;
     for (i=0; i<this.numTiles; i++) {
         if (t <= this.timeEaten[i]) {
             delete this.timeEaten[i];
@@ -53,14 +53,14 @@ Map.prototype.eraseFuture = function(t) {
 };
 
 Map.prototype.load = function(t,abs_t) {
-    var firstTile,curTile;
-    var refresh = function(i) {
-        var x,y;
+    let firstTile,curTile;
+    let refresh = function(i) {
+        let x,y;
         x = i%this.numCols;
         y = Math.floor(i/this.numCols);
         renderer.refreshPellet(x,y);
     };
-    var i;
+    let i;
     for (i=0; i<this.numTiles; i++) {
         firstTile = this.startTiles[i];
         if (firstTile == '.' || firstTile == 'o') {
@@ -98,23 +98,23 @@ Map.prototype.resetCurrent = function() {
 // map without a spritesheet.
 Map.prototype.parseWalls = function() {
 
-    var that = this;
+    const that = this;
 
     // creates a list of drawable canvas paths to render the map walls
     this.paths = [];
 
     // a map of wall tiles that already belong to a built path
-    var visited = {};
+    let visited = {};
 
     // we extend the x range to suggest the continuation of the tunnels
-    var toIndex = function(x,y) {
+    const toIndex = function(x,y) {
         if (x>=-2 && x<that.numCols+2 && y>=0 && y<that.numRows)
             return (x+2)+y*(that.numCols+4);
     };
 
     // a map of which wall tiles that are not completely surrounded by other wall tiles
-    var edges = {};
-    var i=0,x,y;
+    let edges = {};
+    let i=0,x,y;
     for (y=0;y<this.numRows;y++) {
         for (x=-2;x<this.numCols+2;x++,i++) {
             if (this.getTile(x,y) == '|' &&
@@ -132,11 +132,11 @@ Map.prototype.parseWalls = function() {
     }
 
     // walks along edge wall tiles starting at the given index to build a canvas path
-    var makePath = function(tx,ty) {
+    const makePath = function(tx,ty) {
 
         // get initial direction
-        var dir = {};
-        var dirEnum;
+        let dir = {};
+        let dirEnum;
         if (toIndex(tx+1,ty) in edges)
             dirEnum = DIR_RIGHT;
         else if (toIndex(tx, ty+1) in edges)
@@ -150,16 +150,16 @@ Map.prototype.parseWalls = function() {
         ty += dir.y;
 
         // backup initial location and direction
-        var init_tx = tx;
-        var init_ty = ty;
-        var init_dirEnum = dirEnum;
+        let init_tx = tx;
+        let init_ty = ty;
+        let init_dirEnum = dirEnum;
 
-        var path = [];
-        var pad; // (persists for each call to getStartPoint)
-        var point;
-        var lastPoint;
+        let path = [];
+        let pad; // (persists for each call to getStartPoint)
+        let point;
+        let lastPoint;
 
-        var turn,turnAround;
+        let turn,turnAround;
 
         /*
 
@@ -175,16 +175,16 @@ Map.prototype.parseWalls = function() {
            left.  In that case, there will be a padding distance applied.
            
         */
-        var getStartPoint = function(tx,ty,dirEnum) {
-            var dir = {};
+        const getStartPoint = function(tx,ty,dirEnum) {
+            let dir = {};
             setDirFromEnum(dir, dirEnum);
             if (!(toIndex(tx+dir.y,ty-dir.x) in edges))
                 pad = that.isFloorTile(tx+dir.y,ty-dir.x) ? 5 : 0;
-            var px = -tileSize/2+pad;
-            var py = tileSize/2;
-            var a = getClockwiseAngleFromTop(dirEnum);
-            var c = Math.cos(a);
-            var s = Math.sin(a);
+            let px = -tileSize/2+pad;
+            let py = tileSize/2;
+            let a = getClockwiseAngleFromTop(dirEnum);
+            let c = Math.cos(a);
+            let s = Math.sin(a);
             return {
                 // the first expression is the rotated point centered at origin
                 // the second expression is to translate it to the tile
@@ -273,9 +273,9 @@ Map.prototype.parseDots = function() {
     this.numEnergizers = 0;
     this.energizers = [];
 
-    var x,y;
-    var i = 0;
-    var tile;
+    let x,y;
+    let i = 0;
+    let tile;
     for (y=0; y<this.numRows; y++) for (x=0; x<this.numCols; x++) {
         tile = this.tiles[i];
         if (tile == '.') {
@@ -305,7 +305,7 @@ Map.prototype.parseTunnels = (function(){
     
     // starting from x,y and increment x by dx...
     // determine where the tunnel entrance begins
-    var getTunnelEntrance = function(x,y,dx) {
+    const getTunnelEntrance = function(x,y,dx) {
         while (!this.isFloorTile(x,y-1) && !this.isFloorTile(x,y+1) && this.isFloorTile(x,y))
             x += dx;
         return x;
@@ -313,13 +313,13 @@ Map.prototype.parseTunnels = (function(){
 
     // the number of margin tiles outside of the map on one side of a tunnel
     // There are (2*marginTiles) tiles outside of the map per tunnel.
-    var marginTiles = 2;
+    let marginTiles = 2;
 
     return function() {
         this.tunnelRows = {};
-        var y;
-        var i;
-        var left,right;
+        let y;
+        let i;
+        let left,right;
         for (y=0;y<this.numRows;y++)
             // a map row is a tunnel if opposite ends are both walkable tiles
             if (this.isFloorTile(0,y) && this.isFloorTile(this.numCols-1,y))
@@ -334,8 +334,8 @@ Map.prototype.parseTunnels = (function(){
 
 // teleport actor to other side of tunnel if necessary
 Map.prototype.teleport = function(actor){
-    var i;
-    var t = this.tunnelRows[actor.tile.y];
+    let i;
+    const t = this.tunnelRows[actor.tile.y];
     if (t) {
         if (actor.pixel.x < t.leftExit)       actor.pixel.x = t.rightExit;
         else if (actor.pixel.x > t.rightExit) actor.pixel.x = t.leftExit;
@@ -349,7 +349,7 @@ Map.prototype.posToIndex = function(x,y) {
 
 // define which tiles are inside the tunnel
 Map.prototype.isTunnelTile = function(x,y) {
-    var tunnel = this.tunnelRows[y];
+    const tunnel = this.tunnelRows[y];
     return tunnel && (x < tunnel.leftEntrance || x > tunnel.rightEntrance);
 };
 
@@ -377,7 +377,7 @@ Map.prototype.isFloorTile = function(x,y) {
 // mark the dot at the given coordinate eaten
 Map.prototype.onDotEat = function(x,y) {
     this.dotsEaten++;
-    var i = this.posToIndex(x,y);
+    let i = this.posToIndex(x,y);
     this.currentTiles[i] = ' ';
     this.timeEaten[i] = vcr.getTime();
     renderer.erasePellet(x,y);

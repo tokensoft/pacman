@@ -2,7 +2,7 @@
 // Player is the controllable character (Pac-Man)
 
 // Player constructor
-var Player = function() {
+const Player = function() {
 
     // inherit data from Actor
     Actor.apply(this);
@@ -66,7 +66,7 @@ Player.prototype.getNumSteps = function() {
     if (turboMode)
         return 2;
 
-    var pattern = energizer.isActive() ? STEP_PACMAN_FRIGHT : STEP_PACMAN;
+    let pattern = energizer.isActive() ? STEP_PACMAN_FRIGHT : STEP_PACMAN;
     return this.getStepSizeFromTable(level, pattern);
 };
 
@@ -107,7 +107,7 @@ Player.prototype.clearInputDir = function(dirEnum) {
 Player.prototype.step = (function(){
 
     // return sign of a number
-    var sign = function(x) {
+    const sign = function(x) {
         if (x<0) return -1;
         if (x>0) return 1;
         return 0;
@@ -122,8 +122,8 @@ Player.prototype.step = (function(){
         }
 
         // identify the axes of motion
-        var a = (this.dir.x != 0) ? 'x' : 'y'; // axis of motion
-        var b = (this.dir.x != 0) ? 'y' : 'x'; // axis perpendicular to motion
+        let a = (this.dir.x != 0) ? 'x' : 'y'; // axis of motion
+        let b = (this.dir.x != 0) ? 'y' : 'x'; // axis perpendicular to motion
 
         // Don't proceed past the middle of a tile if facing a wall
         this.stopped = this.stopped || (this.distToMid[a] == 0 && !isNextTileFloor(this.tile, this.dir));
@@ -150,7 +150,7 @@ Player.prototype.steer = function() {
             return;
 
         // make turn that is closest to target
-        var openTiles = getOpenTiles(this.tile, this.dirEnum);
+        let openTiles = getOpenTiles(this.tile, this.dirEnum);
         this.setTarget();
         this.setNextDir(getTurnClosestToTarget(this.tile, this.targetTile, openTiles));
     }
@@ -165,9 +165,9 @@ Player.prototype.steer = function() {
     }
     else {
         // Determine if input direction is open.
-        var inputDir = {};
+        let inputDir = {};
         setDirFromEnum(inputDir, this.inputDirEnum);
-        var inputDirOpen = isNextTileFloor(this.tile, inputDir);
+        let inputDirOpen = isNextTileFloor(this.tile, inputDir);
 
         if (inputDirOpen) {
             this.setDir(this.inputDirEnum);
@@ -189,7 +189,7 @@ Player.prototype.steer = function() {
 // update this frame
 Player.prototype.update = function(j) {
 
-    var numSteps = this.getNumSteps();
+    let numSteps = this.getNumSteps();
     if (j >= numSteps)
         return;
 
@@ -205,7 +205,7 @@ Player.prototype.update = function(j) {
 
     // eat something
     if (map) {
-        var t = map.getTile(this.tile.x, this.tile.y);
+        let t = map.getTile(this.tile.x, this.tile.y);
         if (t == '.' || t == 'o') {
             this.lastMeal.x = this.tile.x;
             this.lastMeal.y = this.tile.y
