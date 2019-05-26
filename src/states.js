@@ -1215,15 +1215,7 @@ var readyNewState = newChildObject(readyState, {
 
         // increment level and ready the next map
         level++;
-        if (gameMode == GAME_MSPACMAN) {
-            setNextMsPacMap();
-        }
-        else if (gameMode == GAME_COOKIE) {
-            setNextCookieMap();
-        }
-        else {
-            map = mapPacman;
-        }
+        setNextMap();
 
         map.resetCurrent();
         fruit.onNewLevel();
