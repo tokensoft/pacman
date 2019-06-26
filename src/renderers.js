@@ -878,8 +878,16 @@ const initRenderer = function(){
             else if (tile == 'o') {
                 bgCtx.fillStyle = map.pelletColor;
                 bgCtx.beginPath();
-                bgCtx.arc(x*tileSize+midTile.x+0.5,y*tileSize+midTile.y,this.energizerSize/2,0,Math.PI*2);
-                bgCtx.fill();
+                let image = new Image()
+
+                image.onload = () => {
+                    bgCtx.drawImage(image, x * tileSize + midTile.x / 3, y * tileSize + midTile.y / 2, this.energizerSize, this.energizerSize);
+                }
+                if (map.pelletType === 'btc') {
+                  image.src = 'icon/bitcoin.svg'
+								} else if (map.pelletType === 'eth') {
+                   image.src = 'icon/ethereum.png'
+								}
             }
             if (!isTranslated) {
                 bgCtx.translate(-mapPad,-mapPad);

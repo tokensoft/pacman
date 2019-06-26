@@ -3943,8 +3943,16 @@ const initRenderer = function(){
             else if (tile == 'o') {
                 bgCtx.fillStyle = map.pelletColor;
                 bgCtx.beginPath();
-                bgCtx.arc(x*tileSize+midTile.x+0.5,y*tileSize+midTile.y,this.energizerSize/2,0,Math.PI*2);
-                bgCtx.fill();
+                let image = new Image()
+
+                image.onload = () => {
+                    bgCtx.drawImage(image, x * tileSize + midTile.x / 3, y * tileSize + midTile.y / 2, this.energizerSize, this.energizerSize);
+                }
+                if (map.pelletType === 'btc') {
+                  image.src = 'icon/bitcoin.svg'
+								} else if (map.pelletType === 'eth') {
+                   image.src = 'icon/ethereum.png'
+								}
             }
             if (!isTranslated) {
                 bgCtx.translate(-mapPad,-mapPad);
@@ -13045,7 +13053,7 @@ const getActColor = function(act) {
         return {
             wallFillColor: mapPacman.wallFillColor,
             wallStrokeColor: mapPacman.wallStrokeColor,
-            pelletColor: mapPacman.pelletColor
+
         };
     }
 };
@@ -13143,17 +13151,38 @@ const setNextMap = function() {
     // The third and fourth maps repeat indefinitely after the second map.
     // (i.e. act1=map1, act2=map2, act3=map3, act4=map4, act5=map3, act6=map4, ...)
     let act = getLevelAct(level)-1;
-    if (act <= 5) { mapIndex = 0 }
-    else if (act <= 10) { mapIndex = 1 }
-    else if (act <= 15) { mapIndex = 2 }
-    else if (act <= 20) { mapIndex = 3 }
+    window.act = act
+    if (act <= 2) { mapIndex = 0 }
+    else if (act <= 5) { mapIndex = 1 }
+    else if (act <= 7) { mapIndex = 2 }
+    else if (act <= 9) { mapIndex = 3 }
     else { mapIndex = parseInt(Math.random() * 10) % 5 }
     map = maps[mapIndex].map;
-    map.wallStrokeColor = "#2121ff"; // from original                                  
-    map.wallFillColor = "#000";
-    map.pelletColor = "#F7941B";
-    if (act >= 4) {
-      map.pelletColor = "#572192";
+    if (act == 1) {
+			// Bitcoin 
+      map.wallStrokeColor = "#2121ff"; // from original                                  
+      map.wallFillColor = "#000";
+      map.pelletColor = "#F7941B";
+      map.pelletType = 'btc'
+		} else if (act == 0) {
+			// Ethereum 
+      map.wallStrokeColor = "#2121ff"; // from original                                  
+      map.wallFillColor = "#000";
+      map.pelletColor = "#FFFFFF";
+      map.pelletType = 'eth'
+		} else if (act == 2) {
+			// Ethereum - Classic
+      map.wallStrokeColor = "#2121ff"; // from original                                  
+      map.wallFillColor = "#000";
+      map.pelletColor = "#F7941B";
+      map.pelletType = 'eth'
+		}
+    if (act >= 2) {
+			// Bitcoin 
+      map.wallStrokeColor = "#2121ff"; // from original                                  
+      map.wallFillColor = "#000";
+      map.pelletColor = "#F7941B";
+      map.pelletType = 'btc'
     }
 };
 
