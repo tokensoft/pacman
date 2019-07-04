@@ -13158,13 +13158,13 @@ const setNextMap = function() {
     else if (act <= 9) { mapIndex = 3 }
     else { mapIndex = parseInt(Math.random() * 10) % 5 }
     map = maps[mapIndex].map;
-    if (act == 1) {
+    if (act == 0) {
 			// Bitcoin 
       map.wallStrokeColor = "#2121ff"; // from original                                  
       map.wallFillColor = "#000";
       map.pelletColor = "#F7941B";
       map.pelletType = 'btc'
-		} else if (act == 0) {
+		} else if (act == 1) {
 			// Ethereum 
       map.wallStrokeColor = "#2121ff"; // from original                                  
       map.wallFillColor = "#000";
