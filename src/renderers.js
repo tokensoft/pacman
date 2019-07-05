@@ -882,17 +882,21 @@ const initRenderer = function(){
 
                 image.onload = () => {
                     bgCtx.drawImage(image, x * tileSize + midTile.x / 3, y * tileSize + midTile.y / 2, this.energizerSize, this.energizerSize);
-                }
-                if (map.pelletType === 'btc') {
-                  image.src = 'icon/bitcoin.svg'
-								} else if (map.pelletType === 'eth') {
-                   image.src = 'icon/ethereum.png'
 								}
-            }
-            if (!isTranslated) {
-                bgCtx.translate(-mapPad,-mapPad);
-            }
-        },
+								if (map.pelletType === 'etc') {
+										image.src = 'icon/ethereum-classic.png'								
+								} else if (map.pelletType === 'eth') {
+										image.src = 'icon/ethereum.png'
+								} else {
+										image.src = 'icon/bitcoin.svg'
+								}
+								if (!isTranslated) {
+										bgCtx.translate(-mapPad,-mapPad);
+										
+								}
+						}
+								
+				 },
 
         // draw the current score and high score
         drawScore: function() {

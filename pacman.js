@@ -3947,17 +3947,21 @@ const initRenderer = function(){
 
                 image.onload = () => {
                     bgCtx.drawImage(image, x * tileSize + midTile.x / 3, y * tileSize + midTile.y / 2, this.energizerSize, this.energizerSize);
-                }
-                if (map.pelletType === 'btc') {
-                  image.src = 'icon/bitcoin.svg'
-								} else if (map.pelletType === 'eth') {
-                   image.src = 'icon/ethereum.png'
 								}
-            }
-            if (!isTranslated) {
-                bgCtx.translate(-mapPad,-mapPad);
-            }
-        },
+								if (map.pelletType === 'etc') {
+										image.src = 'icon/ethereum-classic.png'								
+								} else if (map.pelletType === 'eth') {
+										image.src = 'icon/ethereum.png'
+								} else {
+										image.src = 'icon/bitcoin.svg'
+								}
+								if (!isTranslated) {
+										bgCtx.translate(-mapPad,-mapPad);
+										
+								}
+						}
+								
+				 },
 
         // draw the current score and high score
         drawScore: function() {
@@ -13158,7 +13162,7 @@ const setNextMap = function() {
     else if (act <= 9) { mapIndex = 3 }
     else { mapIndex = parseInt(Math.random() * 10) % 5 }
     map = maps[mapIndex].map;
-    if (act == 0) {
+    if (act == 2) {
 			// Bitcoin 
       map.wallStrokeColor = "#2121ff"; // from original                                  
       map.wallFillColor = "#000";
@@ -13170,12 +13174,12 @@ const setNextMap = function() {
       map.wallFillColor = "#000";
       map.pelletColor = "#f9f9f9";
       map.pelletType = 'eth'
-		} else if (act == 2) {
+		} else if (act == 0) {
 			// Ethereum - Classic
       map.wallStrokeColor = "#2121ff"; // from original                                  
       map.wallFillColor = "#000";
-      map.pelletColor = "#F7941B";
-      map.pelletType = 'eth'
+      map.pelletColor = "#5AC561";
+      map.pelletType = 'etc'
 		}
     if (act >= 2) {
 			// Bitcoin 

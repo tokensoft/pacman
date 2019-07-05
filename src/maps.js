@@ -561,32 +561,26 @@ const setNextMap = function() {
     else if (act <= 9) { mapIndex = 3 }
     else { mapIndex = parseInt(Math.random() * 10) % 5 }
     map = maps[mapIndex].map;
-    if (act == 0) {
-			// Bitcoin 
+    if (act == 2) {
+			// Ethereum - Classic
       map.wallStrokeColor = "#2121ff"; // from original                                  
       map.wallFillColor = "#000";
-      map.pelletColor = "#F7941B";
-      map.pelletType = 'btc'
+      map.pelletColor = "#5AC561";
+      map.pelletType = 'etc'
 		} else if (act == 1) {
 			// Ethereum 
       map.wallStrokeColor = "#2121ff"; // from original                                  
       map.wallFillColor = "#000";
       map.pelletColor = "#f9f9f9";
       map.pelletType = 'eth'
-		} else if (act == 2) {
-			// Ethereum - Classic
-      map.wallStrokeColor = "#2121ff"; // from original                                  
-      map.wallFillColor = "#000";
-      map.pelletColor = "#F7941B";
-      map.pelletType = 'eth'
-		}
-    if (act >= 2) {
+		} else {
 			// Bitcoin 
       map.wallStrokeColor = "#2121ff"; // from original                                  
       map.wallFillColor = "#000";
       map.pelletColor = "#F7941B";
       map.pelletType = 'btc'
-    }
+		}
+
 };
 
 
