@@ -1,7 +1,12 @@
-Pac-Man
+The Adventures of Softman
 =======
 
-A historical tribute and accurate remake of the original Pac-Man arcade game
+Go toe to toe with your favorite US regulators the SEC, FINCEN, the NYDFS and the CFTC while trying to capture your favorite cryptocurrencies. Will you win or do the regulators eventually catch up? *Hint: The game has unlimited levels and the regulators only get faster.*
+
+![SEC](https://github.com/tokensoft/pacman/raw/master/images/softman-sec.png)
+![NYDFS](https://github.com/tokensoft/pacman/raw/master/images/softman-nydfs.png)
+![FINCEN](https://github.com/tokensoft/pacman/raw/master/images/softman-fincen.png)
+![CFTC](https://github.com/tokensoft/pacman/raw/master/images/softman-cftc.png)
 
 Inspired by [The Pac-Man Dossier](http://home.comcast.net/~jpittman2/pacman/pacmandossier.html)
 
@@ -10,8 +15,6 @@ Inspired by [The Pac-Man Dossier](http://home.comcast.net/~jpittman2/pacman/pacm
 - Sound
 - Cutscenes
 - 2 Player switch-off
-
-Contact me at shaunewilliams@gmail.com
 
 License
 -------
