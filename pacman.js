@@ -13168,7 +13168,7 @@ const setNextMap = function() {
 			// Ethereum 
       map.wallStrokeColor = "#2121ff"; // from original                                  
       map.wallFillColor = "#000";
-      map.pelletColor = "#FFFFFF";
+      map.pelletColor = "#f9f9f9";
       map.pelletType = 'eth'
 		} else if (act == 2) {
 			// Ethereum - Classic
