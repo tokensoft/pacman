@@ -131,7 +131,7 @@ function preloadAudio() {
     this.ghostNormalMove   = new audioTrack('sounds/ghost-normal-move.mp3');
     this.extend            = new audioTrack('sounds/extend.mp3');
     this.eating            = new audioTrack('sounds/eating.mp3', 0.5);
-    this.startMusic        = new audioTrack('sounds/start-music.mp3');
+		this.startMusic        = new audioTrack('sounds/start-music.mp3');
 
     this.ghostReset = function(noResetTime) {
         for (let s in this) {
@@ -13163,31 +13163,25 @@ const setNextMap = function() {
     else { mapIndex = parseInt(Math.random() * 10) % 5 }
     map = maps[mapIndex].map;
     if (act == 2) {
-			// Bitcoin 
+			// Ethereum - Classic
       map.wallStrokeColor = "#2121ff"; // from original                                  
       map.wallFillColor = "#000";
-      map.pelletColor = "#F7941B";
-      map.pelletType = 'btc'
+      map.pelletColor = "#5AC561";
+      map.pelletType = 'etc'
 		} else if (act == 1) {
 			// Ethereum 
       map.wallStrokeColor = "#2121ff"; // from original                                  
       map.wallFillColor = "#000";
       map.pelletColor = "#f9f9f9";
       map.pelletType = 'eth'
-		} else if (act == 0) {
-			// Ethereum - Classic
-      map.wallStrokeColor = "#2121ff"; // from original                                  
-      map.wallFillColor = "#000";
-      map.pelletColor = "#5AC561";
-      map.pelletType = 'etc'
-		}
-    if (act >= 2) {
+		} else {
 			// Bitcoin 
       map.wallStrokeColor = "#2121ff"; // from original                                  
       map.wallFillColor = "#000";
       map.pelletColor = "#F7941B";
       map.pelletType = 'btc'
-    }
+		}
+
 };
 
 
